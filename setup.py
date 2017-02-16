@@ -15,6 +15,7 @@ setup(
         'numpy',
         'scipy',
         'matplotlib',
+        'docopt',
     ],
     entry_points={
         'console_scripts': [
