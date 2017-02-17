@@ -15,6 +15,7 @@ setup(
         'numpy',
         'scipy',
         'matplotlib',
+        'biopython',
         'docopt',
     ],
     entry_points={
