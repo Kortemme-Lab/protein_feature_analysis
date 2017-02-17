@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import Bio.PDB as PDB
 
 from .Feature import Feature
+from . import Geometry
 
 
 class RamachandranFeature(Feature):
@@ -29,8 +30,8 @@ class RamachandranFeature(Feature):
       for chain in model:
         for residue in chain:
           try:
-            feature_dict = {'phi' : self.get_phi(chain, residue),
-                            'psi' : self.get_psi(chain, residue)}
+            feature_dict = {'phi' : Geometry.get_phi(chain, residue),
+                            'psi' : Geometry.get_psi(chain, residue)}
             self.feature_list.append(feature_dict)
           except:
             pass
@@ -44,3 +45,7 @@ class RamachandranFeature(Feature):
 
     plt.axis([- np.pi, np.pi, - np.pi, np.pi])
     plt.show()
+
+  def save(self, input_path):
+    '''Save the data into a csv file.'''
+    pass
