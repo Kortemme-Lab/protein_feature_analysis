@@ -15,9 +15,9 @@ class RamachandranFeature(Feature):
   def __init__(self):
     super().__init__()
 
-  def extract(self, input_path):
+  def extract(self, input_path, total_num_threads=1, my_id=0):
     '''Extract phi, psi angles from structures in the input path.'''
-    for f in os.listdir(input_path):
+    for f in self.list_my_jobs(input_path, total_num_threads, my_id):
       if f.endswith('.pdb'):
         self.extract_from_one_file(os.path.join(input_path, f))
 
