@@ -9,5 +9,7 @@ if __name__ == '__main__':
   input_path = sys.argv[2]
 
   feature = PFA.features.RamachandranFeature()
-  feature.extract(input_path)
+  #feature.extract(input_path)
+  #feature.save(data_path)
+  feature.load(data_path)
   feature.visualize()

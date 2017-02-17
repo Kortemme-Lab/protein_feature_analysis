@@ -3,6 +3,7 @@ import os
 import matplotlib
 matplotlib.use('TkAgg') 
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 import Bio.PDB as PDB
 
@@ -46,6 +47,16 @@ class RamachandranFeature(Feature):
     plt.axis([- np.pi, np.pi, - np.pi, np.pi])
     plt.show()
 
-  def save(self, input_path):
+  def save(self, data_path):
     '''Save the data into a csv file.'''
-    pass
+    data = [ (d['phi'], d['psi']) for d in self.feature_list ]
+    df = pd.DataFrame(data=data, columns=['phi', 'psi'])
+    
+    self.append_to_csv(df, os.path.join(data_path, 'rama_features.csv'))
+
+  def load(self, data_path):
+    '''Load data from a csv file.'''
+    df = pd.read_csv(os.path.join(data_path, 'rama_features.csv'), header=None)
+    
+    for index, row in df.iterrows():
+      self.feature_list.append({'phi':row[0], 'psi':row[1]})

@@ -17,6 +17,8 @@ setup(
         'matplotlib',
         'biopython',
         'docopt',
+        'pandas',
+        'flufl.lock'
     ],
     entry_points={
         'console_scripts': [
