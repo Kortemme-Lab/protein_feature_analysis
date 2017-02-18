@@ -17,7 +17,7 @@ if __name__ == '__main__':
   #feature.visualize()
   #feature.plot_shifts()
   #feature.plot_shift_length_histogram()
-  feature.scatter_plot_two_features(lambda d : d['phi1'], lambda d : d['psi1'], [-np.pi, np.pi, -np.pi, np.pi])
+  #feature.scatter_plot_two_features(lambda d : d['phi1'], lambda d : d['psi1'], [-np.pi, np.pi, -np.pi, np.pi])
   #feature.scatter_plot_two_features(lambda d : d['phi2'], lambda d : d['psi2'], [-np.pi, np.pi, -np.pi, np.pi])
   #feature.scatter_plot_two_features(lambda d : d['shift'][0], lambda d : d['shift'][1])
   #feature.scatter_plot_two_features(lambda d : d['shift'][0], lambda d : d['shift'][2])
@@ -30,3 +30,5 @@ if __name__ == '__main__':
   #feature.scatter_plot_two_features(lambda d : d['theta_x'], lambda d : d['theta_y'], tx_r + ty_r)
   #feature.scatter_plot_two_features(lambda d : d['theta_x'], lambda d : d['theta_z'], tx_r + tz_r)
   #feature.scatter_plot_two_features(lambda d : d['theta_y'], lambda d : d['theta_z'], ty_r + tz_r)
+  
+  feature.scatter_plot_three_features(lambda d : d['theta_x'], lambda d : d['theta_y'], lambda d : d['theta_z'], tx_r + ty_r + tz_r)

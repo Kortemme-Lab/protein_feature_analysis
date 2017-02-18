@@ -113,7 +113,7 @@ class BackboneMicroEnvironmentFeature(Feature):
 
     fig =plt.figure()
     ax = fig.gca(projection='3d')
-    ax.scatter(X, Y, Z, c='green')
+    ax.scatter(X, Y, Z, c='green', s=5)
     ax.quiver([0], [0], [0], [1.32869], [0], [0], color='blue')
     ax.quiver([0], [0], [0], [1.52326 * np.cos(n_ca_c_angle)], [1.52326 * np.sin(n_ca_c_angle)], [0], color='red')
 
@@ -136,7 +136,25 @@ class BackboneMicroEnvironmentFeature(Feature):
     f1 = [feature1_l(d) for d in self.feature_list]
     f2 = [feature2_l(d) for d in self.feature_list]
 
-    plt.scatter(f1, f2)
+    plt.scatter(f1, f2, s=5)
     if axis:
       plt.axis(axis)
+    plt.show()
+
+  def scatter_plot_three_features(self, feature1_l, feature2_l, feature3_l, axis=None):
+    '''Make a scatter plot of three features, given their lambda expressions.'''
+
+    f1 = [feature1_l(d) for d in self.feature_list]
+    f2 = [feature2_l(d) for d in self.feature_list]
+    f3 = [feature3_l(d) for d in self.feature_list]
+
+    fig = plt.figure()
+    ax = fig.gca(projection='3d')
+    ax.scatter(f1, f2, f3, s=5)
+
+    if axis:
+      ax.set_xlim(axis[0], axis[1])
+      ax.set_ylim(axis[2], axis[3])
+      ax.set_zlim(axis[4], axis[5])
+
     plt.show()
