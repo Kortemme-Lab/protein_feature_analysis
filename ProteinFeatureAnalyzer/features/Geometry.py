@@ -117,5 +117,10 @@ def get_residue_stub_matrix(residue):
 
   return np.matrix([x, y, z]).T, ca
 
+def rotation_matrix_to_euler_angles(m):
+  '''Return the euler angles corresponding to a rotation matrix.'''
+  theta_x = np.arctan2(m[2][1], m[2][2])
+  theta_y = np.arctan2(-m[2][0], np.sqrt(m[2][1]**2 + m[2][2]**2))
+  theta_z = np.arctan2(m[1][0], m[0][0])
 
-
+  return theta_x, theta_y, theta_z

@@ -49,6 +49,8 @@ class BackboneMicroEnvironmentFeature(Feature):
         shift_global = res2['CA'].get_coord() - res1['CA'].get_coord()
         feature_dict['shift'] = np.matmul(np.array(s_matrix.T), np.array(shift_global))
 
+        # Get the relative orientation of the second residue
+
         self.feature_list.append(feature_dict)
 
     #print(self.feature_list)
