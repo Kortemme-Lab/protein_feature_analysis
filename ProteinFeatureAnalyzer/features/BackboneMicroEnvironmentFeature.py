@@ -1,5 +1,6 @@
 import os
 
+import numpy as np
 import matplotlib
 matplotlib.use('TkAgg') 
 import matplotlib.pyplot as plt
@@ -25,9 +26,32 @@ class BackboneMicroEnvironmentFeature(Feature):
 
   def extract_from_one_file(self, pdb_file):
     structure = self.structure_from_pdb_file(pdb_file)
+  
+    for model in structure:
+      nearest_nb_list = Geometry.get_nearest_nonbonded_residues(model)
    
-    nearest_nb_list = Geometry.get_nearest_nonbonded_residues(structure)
-    self.plot_nearst_nonbonded_list(nearest_nb_list)
+      for res1, res2 in nearest_nb_list:
+        feature_dict ={}
+        
+        # Get the torsions
+        
+        try:
+          feature_dict['phi1'] = Geometry.get_phi(res1.get_parent(), res1) 
+          feature_dict['psi1'] = Geometry.get_psi(res1.get_parent(), res1) 
+          feature_dict['phi2'] = Geometry.get_phi(res2.get_parent(), res1) 
+          feature_dict['psi2'] = Geometry.get_psi(res2.get_parent(), res1) 
+        except:
+          continue
+
+        # Get the relative position of the second residue 
+
+        s_matrix, origin = Geometry.get_residue_stub_matrix(res1)
+        shift_global = res2['CA'].get_coord() - res1['CA'].get_coord()
+        feature_dict['shift'] = np.matmul(np.array(s_matrix.T), np.array(shift_global))
+
+        self.feature_list.append(feature_dict)
+
+    #print(self.feature_list)
 
   def visualize(self):
     pass
@@ -45,4 +69,22 @@ class BackboneMicroEnvironmentFeature(Feature):
     fig = plt.figure()
     ax = fig.gca(projection='3d')
     ax.quiver(X, Y, Z, U, V, W)
+    plt.show()
+
+  def plot_shifts(self):
+    '''Plot the distribution of the translational shifts from the 
+    CA atom of the first residue to the CA atom of the second residue.
+    '''
+
+    # Data points
+
+    X = [d['shift'][0] for d in self.feature_list]
+    Y = [d['shift'][1] for d in self.feature_list]
+    Z = [d['shift'][2] for d in self.feature_list]
+
+    # Postions of N and ca
+
+    fig =plt.figure()
+    ax = fig.gca(projection='3d')
+    ax.scatter(X, Y, Z, c='green')
     plt.show()

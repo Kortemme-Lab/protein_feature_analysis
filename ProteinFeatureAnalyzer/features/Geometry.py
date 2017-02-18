@@ -51,7 +51,7 @@ def get_distance_matrix(atom_list):
   return scipy.spatial.distance.squareform(scipy.spatial.distance.pdist(
       np.array([a.get_coord() for a in atom_list]), 'euclidean'))
 
-def get_nearest_nonbonded_residues(structure):
+def get_nearest_nonbonded_residues(model):
   '''Return a list of 2-tuples. Each the first element of each tuple is a
   residue and the second element is its nearest nonbonded residue.'''
  
@@ -59,7 +59,7 @@ def get_nearest_nonbonded_residues(structure):
 
   ca_list = []
   
-  for residue in structure.get_residues():
+  for residue in model.get_residues():
     flag = residue.get_id()[0]
     if flag == 'W' or flag.startswith('H_'): continue
     
@@ -84,12 +84,38 @@ def get_nearest_nonbonded_residues(structure):
     for j in range(1, 4):
       res2 = ca_list[indices[j]].get_parent() 
 
-      if res1.get_id()[1] + 1 == res2.get_id()[1] \
-         or res1.get_id()[1] - 1 == res2.get_id()[1] : # Bonded residues
+      if res1.get_parent().get_id() == res2.get_parent().get_id() \
+         and (res1.get_id()[1] + 1 == res2.get_id()[1] \
+         or res1.get_id()[1] - 1 == res2.get_id()[1]) : # Bonded residues
            continue
     
     nearest_nb_list.append((res1, res2))   
 
   return nearest_nb_list
+
+def normalize(v):
+  '''Normalize a numpy array.'''
+  norm=np.linalg.norm(v)
+  if norm==0: 
+     return v
+  return v/norm
+
+def get_residue_stub_matrix(residue):
+  '''Constructure a coordinate frame on a residue. The origin is on the CA atom; 
+  the x-axis is from CA to N; the z-axis is the cross product of the x-axis and the
+  CA-C vector; the y-axis is thus defined by requiring the frame to be right handed.
+  Return a 3x3 matrix and a vector that transforms coordinates in the local frame to 
+  coordinates in the global frame.
+  '''
+  n = residue['N'].get_coord()
+  ca = residue['CA'].get_coord()
+  c = residue['C'].get_coord()
+
+  x = normalize(n - ca)
+  z = normalize(np.cross(x, c - ca))
+  y = np.cross(z, x)
+
+  return np.matrix([x, y, z]).T, ca
+
 
 
