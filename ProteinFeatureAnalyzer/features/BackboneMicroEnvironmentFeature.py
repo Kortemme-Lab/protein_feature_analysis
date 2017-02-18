@@ -1,6 +1,7 @@
 import os
 
 import numpy as np
+import pandas as pd
 import matplotlib
 matplotlib.use('TkAgg') 
 import matplotlib.pyplot as plt
@@ -59,6 +60,23 @@ class BackboneMicroEnvironmentFeature(Feature):
         self.feature_list.append(feature_dict)
 
     #print(self.feature_list)
+
+  def save(self, data_path):
+    '''Save the data into a csv file.'''
+    data = [ (d['phi1'], d['psi1'], d['phi2'], d['psi2'], d['shift'][0], d['shift'][1], d['shift'][2],
+            d['theta_x'], d['theta_y'], d['theta_z']) 
+            for d in self.feature_list ]
+    df = pd.DataFrame(data)
+    
+    self.append_to_csv(df, os.path.join(data_path, 'bb_micro_env_features.csv'))
+
+  def load(self, data_path):
+    '''Load data from a csv file.'''
+    df = pd.read_csv(os.path.join(data_path, 'bb_micro_env_features.csv'), header=None)
+    
+    for index, row in df.iterrows():
+      self.feature_list.append({'phi1':row[0], 'psi1':row[1], 'phi2':row[2], 'psi2':row[3],
+          'shift':np.array([row[4], row[5], row[6]]), 'theta_x':row[7], 'theta_y':row[8], 'theta_z':row[9] })
 
   def visualize(self):
     pass
