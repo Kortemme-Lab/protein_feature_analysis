@@ -13,4 +13,5 @@ if __name__ == '__main__':
   #feature.save(data_path)
   #feature.load(data_path)
   #feature.visualize()
-  feature.plot_shifts()
+  #feature.plot_shifts()
+  feature.plot_shift_length_histogram()

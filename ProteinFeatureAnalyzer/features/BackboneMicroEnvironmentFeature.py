@@ -82,9 +82,23 @@ class BackboneMicroEnvironmentFeature(Feature):
     Y = [d['shift'][1] for d in self.feature_list]
     Z = [d['shift'][2] for d in self.feature_list]
 
-    # Postions of N and ca
+    # Postions of N and C
+
+    n_ca_c_angle = 110.86 * np.pi / 180
 
     fig =plt.figure()
     ax = fig.gca(projection='3d')
     ax.scatter(X, Y, Z, c='green')
+    ax.quiver([0], [0], [0], [1.32869], [0], [0], color='blue')
+    ax.quiver([0], [0], [0], [1.52326 * np.cos(n_ca_c_angle)], [1.52326 * np.sin(n_ca_c_angle)], [0], color='red')
+
+    plt.show()
+
+  def plot_shift_length_histogram(self):
+    '''Plot a histogram of the lengths of translational shifts.'''
+
+    lengths = [np.linalg.norm(d['shift']) for d in self.feature_list]
+    hist, bin_edges = np.histogram(lengths, bins=0.5 * np.arange(20))
+
+    plt.bar(bin_edges[0:-1] - 0.25, hist, width=0.5, edgecolor='black')
     plt.show()
