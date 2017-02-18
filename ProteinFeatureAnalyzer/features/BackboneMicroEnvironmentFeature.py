@@ -51,6 +51,11 @@ class BackboneMicroEnvironmentFeature(Feature):
 
         # Get the relative orientation of the second residue
 
+        s_matrix2, origin2 = Geometry.get_residue_stub_matrix(res2)
+        rot_matrix = np.dot(s_matrix.T, s_matrix2) # Rotation matrix in the frame of the first residue
+        feature_dict['theta_x'], feature_dict['theta_y'], feature_dict['theta_z'] = \
+                Geometry.rotation_matrix_to_euler_angles(np.array(rot_matrix))
+
         self.feature_list.append(feature_dict)
 
     #print(self.feature_list)
@@ -103,4 +108,17 @@ class BackboneMicroEnvironmentFeature(Feature):
     hist, bin_edges = np.histogram(lengths, bins=0.5 * np.arange(20))
 
     plt.bar(bin_edges[0:-1] - 0.25, hist, width=0.5, edgecolor='black')
+    plt.show()
+
+  def scatter_plot_two_features(self, feature1_l, feature2_l, axis=None):
+    '''Make a scatter plot of two features. feature1_l and feature2_l
+    are lambda expressions for pick a feature.
+    '''
+
+    f1 = [feature1_l(d) for d in self.feature_list]
+    f2 = [feature2_l(d) for d in self.feature_list]
+
+    plt.scatter(f1, f2)
+    if axis:
+      plt.axis(axis)
     plt.show()
