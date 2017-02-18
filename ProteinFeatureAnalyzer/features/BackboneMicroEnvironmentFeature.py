@@ -39,8 +39,8 @@ class BackboneMicroEnvironmentFeature(Feature):
         try:
           feature_dict['phi1'] = Geometry.get_phi(res1.get_parent(), res1) 
           feature_dict['psi1'] = Geometry.get_psi(res1.get_parent(), res1) 
-          feature_dict['phi2'] = Geometry.get_phi(res2.get_parent(), res1) 
-          feature_dict['psi2'] = Geometry.get_psi(res2.get_parent(), res1) 
+          feature_dict['phi2'] = Geometry.get_phi(res2.get_parent(), res2) 
+          feature_dict['psi2'] = Geometry.get_psi(res2.get_parent(), res2) 
         except:
           continue
 
