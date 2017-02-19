@@ -93,15 +93,20 @@ class RamachandranFeature(Feature):
     # Train the classifier 
 
     if clf_type == "OneClassSVM":
-      self.clf = svm.OneClassSVM(nu=0.05, kernel="rbf", gamma=0.1)
+      self.clf = svm.OneClassSVM(nu=0.05, kernel="rbf", gamma='auto')
     elif clf_type == "IsolationForest": 
       self.clf = IsolationForest(max_samples=200,
 			contamination=0.05, random_state=np.random.RandomState(42))
     
     self.clf.fit(training_data)
-    
+   
+    # Print Training results
+
     predictions = self.clf.predict(training_data)
     print("{0}/{1} training error.".format(len(predictions[-1 == predictions]), len(training_data)))
+    
+    if clf_type == "OneClassSVM":
+      print("{0} support vectors found.".format(len(self.clf.support_)))
 
   def predict(self, input_data):
     '''Make a prediction for the input data with the machine learning classifier.
