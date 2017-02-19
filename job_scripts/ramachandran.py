@@ -12,4 +12,6 @@ if __name__ == '__main__':
   #feature.extract(input_path)
   #feature.save(data_path)
   feature.load(data_path)
+  feature.learn()
+  #feature.learn("IsolationForest")
   feature.visualize()

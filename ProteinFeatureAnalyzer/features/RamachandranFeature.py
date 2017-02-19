@@ -7,6 +7,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import Bio.PDB as PDB
 from sklearn import svm
+from sklearn.ensemble import IsolationForest
 
 from .Feature import Feature
 from . import geometry
@@ -43,7 +44,27 @@ class RamachandranFeature(Feature):
     phis = [ d['phi'] for d in self.feature_list ]
     psis = [ d['psi'] for d in self.feature_list ]
 
-    plt.scatter(phis, psis)
+    # Draw the decision boundary from the machine learning classifier
+    
+    if self.clf:
+      xx, yy = np.meshgrid(np.linspace(-np.pi, np.pi, 200), np.linspace(-np.pi, np.pi, 200))
+      transformed_data = [ machine_learning.angle_to_cos_sin(d[0]) + machine_learning.angle_to_cos_sin(d[1])
+		for d in np.c_[xx.ravel(), yy.ravel()] ]
+
+      Z = self.clf.decision_function(transformed_data)
+      Z = Z.reshape(xx.shape)
+
+      Z_pred = self.clf.predict(transformed_data)
+      Z_pred = Z_pred.reshape(xx.shape)
+      
+      #plt.contour(xx, yy, Z, levels=[0], linewidths=2, colors='darkred')
+      plt.contourf(xx, yy, Z, levels=np.linspace(Z.min(), Z.max(), 7), cmap=plt.cm.Blues_r)
+      #plt.contourf(xx, yy, Z, levels=np.linspace(0, Z.max()), colors='orange')
+      plt.contourf(xx, yy, Z_pred, levels=[0.9, 1.1], colors='orange')
+
+    # Draw the data
+
+    plt.scatter(phis, psis, c='green', s=5)
 
     plt.axis([- np.pi, np.pi, - np.pi, np.pi])
     plt.show()
@@ -62,6 +83,31 @@ class RamachandranFeature(Feature):
     for index, row in df.iterrows():
       self.feature_list.append({'phi':row[0], 'psi':row[1]})
 
-  def learn_one_class_svm(self):
-    '''Learn the distribution with an one class SVM.'''
-    pass
+  def learn(self, clf_type="OneClassSVM"):
+    '''Learn the distribution with a machine learning classifier'''
+    # Prepare the training data
+    
+    training_data = [machine_learning.angle_to_cos_sin(d['phi']) + machine_learning.angle_to_cos_sin(d['psi'])
+            for d in self.feature_list]
+    
+    # Train the classifier 
+
+    if clf_type == "OneClassSVM":
+      self.clf = svm.OneClassSVM(nu=0.05, kernel="rbf", gamma=0.1)
+    elif clf_type == "IsolationForest": 
+      self.clf = IsolationForest(max_samples=200,
+			contamination=0.05, random_state=np.random.RandomState(42))
+    
+    self.clf.fit(training_data)
+    
+    predictions = self.clf.predict(training_data)
+    print("{0}/{1} training error.".format(len(predictions[-1 == predictions]), len(training_data)))
+
+  def predict(self, input_data):
+    '''Make a prediction for the input data with the machine learning classifier.
+    input_data is a list of phi, psi angles.
+    '''
+    transformed_data = [machine_learning.angle_to_cos_sin(d[0]) + machine_learning.angle_to_cos_sin(d[1])
+            for d in input_data]
+    return self.clf.predict(transformed_data)
+
