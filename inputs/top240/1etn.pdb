@@ -1,0 +1,969 @@
+HEADER    ENTEROTOXIN                             15-MAR-94   1ETN              
+TITLE     MOLECULAR STRUCTURE OF THE TOXIC DOMAIN OF HEAT-STABLE ENTEROTOXIN    
+TITLE    2 PRODUCED BY A PATHOGENIC STRAIN OF ESCHERICHIA COLI                  
+COMPND    MOL_ID: 1;                                                            
+COMPND   2 MOLECULE: 5-BETA-MERCAPTOPROPIONATE HEAT-STABLE ENTEROTOXIN;         
+COMPND   3 CHAIN: A;                                                            
+COMPND   4 SYNONYM: (MPR==5==)STP(5-17);                                        
+COMPND   5 ENGINEERED: YES                                                      
+SOURCE    MOL_ID: 1;                                                            
+SOURCE   2 ORGANISM_SCIENTIFIC: ESCHERICHIA COLI;                               
+SOURCE   3 ORGANISM_TAXID: 562;                                                 
+SOURCE   4 STRAIN: 18D                                                          
+KEYWDS    ENTEROTOXIN                                                           
+EXPDTA    X-RAY DIFFRACTION                                                     
+AUTHOR    T.SATO,Y.SHIMONISHI                                                   
+REVDAT   4   19-JUN-13 1ETN    1       VERSN                                    
+REVDAT   3   24-FEB-09 1ETN    1       VERSN                                    
+REVDAT   2   01-APR-03 1ETN    1       JRNL                                     
+REVDAT   1   29-JAN-96 1ETN    0                                                
+JRNL        AUTH   H.OZAKI,T.SATO,H.KUBOTA,Y.HATA,Y.KATSUBE,Y.SHIMONISHI        
+JRNL        TITL   MOLECULAR STRUCTURE OF THE TOXIN DOMAIN OF HEAT-STABLE       
+JRNL        TITL 2 ENTEROTOXIN PRODUCED BY A PATHOGENIC STRAIN OF ESCHERICHIA   
+JRNL        TITL 3 COLI. A PUTATIVE BINDING SITE FOR A BINDING PROTEIN ON RAT   
+JRNL        TITL 4 INTESTINAL EPITHELIAL CELL MEMBRANES.                        
+JRNL        REF    J.BIOL.CHEM.                  V. 266  5934 1991              
+JRNL        REFN                   ISSN 0021-9258                               
+JRNL        PMID   2005130                                                      
+REMARK   1                                                                      
+REMARK   1 REFERENCE 1                                                          
+REMARK   1  AUTH   T.SATO,H.OZAKI,Y.HATA,Y.KITAGAWA,Y.KATSUBE,Y.SHIMONISHI      
+REMARK   1  TITL   STRUCTURAL CHARACTERISTICS FOR BIOLOGICAL ACTIVITY OF        
+REMARK   1  TITL 2 HEAT-STABLE ENTEROTOXIN PRODUCED BY ENTEROTOXIGENIC          
+REMARK   1  TITL 3 ESCHERICHIA COLI: X-RAY CRYSTALLOGRAPHY OF WEAKLY TOXIC AND  
+REMARK   1  TITL 4 NONTOXIC ANALOGS                                             
+REMARK   1  REF    BIOCHEMISTRY                  V.  33  8641 1994              
+REMARK   1  REFN                   ISSN 0006-2960                               
+REMARK   1 REFERENCE 2                                                          
+REMARK   1  AUTH   T.SATO,H.ITO,Y.TAKEDA,Y.SHIMONISHI                           
+REMARK   1  TITL   SEMI-PREPARATIVE PURIFICATION AND CRYSTALLIZATION OF         
+REMARK   1  TITL 2 SYNTHETIC ANALOGS OF HEAT-STABLE ENTEROTOXIN OF              
+REMARK   1  TITL 3 ENTEROTOXIGENIC ESCHERICHIA COLI                             
+REMARK   1  REF    BULL.CHEM.SOC.JPN.            V.  65   938 1992              
+REMARK   1  REFN                   ISSN 0009-2673                               
+REMARK   1 REFERENCE 3                                                          
+REMARK   1  AUTH   S.YAMASAKI,T.SATO,Y.HIDAKA,H.OZAKI,H.ITO,T.HIRAYAMA,         
+REMARK   1  AUTH 2 Y.TAKEDA,T.SUGIMURA,A.TAI,Y.SHIMONISHI                       
+REMARK   1  TITL   STRUCTURE-ACTIVITY RELATIONSHIP OF ESCHERICHIA COLI          
+REMARK   1  TITL 2 HEAT-STABLE ENTEROTOXIN: ROLE OF ALA RESIDUE AT POSITION 14  
+REMARK   1  TITL 3 IN TOXIN-RECEPTOR INTERACTION                                
+REMARK   1  REF    BULL.CHEM.SOC.JPN.            V.  63  2063 1990              
+REMARK   1  REFN                   ISSN 0009-2673                               
+REMARK   1 REFERENCE 4                                                          
+REMARK   1  AUTH   S.YOSHIMURA,H.IKEMURA,H.WATANABE,H.AIMOTO,Y.SHIMONISHI,      
+REMARK   1  AUTH 2 S.HARA,T.TAKEDA,T.MIWATANI,Y.TAKEDA                          
+REMARK   1  TITL   ESSENTIAL STRUCTURE FOR FULL ENTEROTOXIGENIC ACTIVITY OF     
+REMARK   1  TITL 2 HEAT-STABLE ENTEROTOXIN PRODUCED BY ENTEROTOXIGENIC          
+REMARK   1  TITL 3 ESCHERICHIA COLI                                             
+REMARK   1  REF    FEBS LETT.                    V. 181   138 1985              
+REMARK   1  REFN                   ISSN 0014-5793                               
+REMARK   2                                                                      
+REMARK   2 RESOLUTION.    0.89 ANGSTROMS.                                       
+REMARK   3                                                                      
+REMARK   3 REFINEMENT.                                                          
+REMARK   3   PROGRAM     : FMLS/VP                                              
+REMARK   3                                                                      
+REMARK   3  DATA USED IN REFINEMENT.                                            
+REMARK   3   RESOLUTION RANGE HIGH (ANGSTROMS) : 0.89                           
+REMARK   3   RESOLUTION RANGE LOW  (ANGSTROMS) : 10.90                          
+REMARK   3   DATA CUTOFF            (SIGMA(F)) : 3.000                          
+REMARK   3   DATA CUTOFF HIGH         (ABS(F)) : NULL                           
+REMARK   3   DATA CUTOFF LOW          (ABS(F)) : NULL                           
+REMARK   3   COMPLETENESS (WORKING+TEST)   (%) : 71.4                           
+REMARK   3   NUMBER OF REFLECTIONS             : 6246                           
+REMARK   3                                                                      
+REMARK   3  FIT TO DATA USED IN REFINEMENT.                                     
+REMARK   3   CROSS-VALIDATION METHOD          : NULL                            
+REMARK   3   FREE R VALUE TEST SET SELECTION  : NULL                            
+REMARK   3   R VALUE            (WORKING SET) : 0.088                           
+REMARK   3   FREE R VALUE                     : NULL                            
+REMARK   3   FREE R VALUE TEST SET SIZE   (%) : NULL                            
+REMARK   3   FREE R VALUE TEST SET COUNT      : NULL                            
+REMARK   3   ESTIMATED ERROR OF FREE R VALUE  : NULL                            
+REMARK   3                                                                      
+REMARK   3  FIT IN THE HIGHEST RESOLUTION BIN.                                  
+REMARK   3   TOTAL NUMBER OF BINS USED           : NULL                         
+REMARK   3   BIN RESOLUTION RANGE HIGH       (A) : NULL                         
+REMARK   3   BIN RESOLUTION RANGE LOW        (A) : NULL                         
+REMARK   3   BIN COMPLETENESS (WORKING+TEST) (%) : NULL                         
+REMARK   3   REFLECTIONS IN BIN    (WORKING SET) : NULL                         
+REMARK   3   BIN R VALUE           (WORKING SET) : NULL                         
+REMARK   3   BIN FREE R VALUE                    : NULL                         
+REMARK   3   BIN FREE R VALUE TEST SET SIZE  (%) : NULL                         
+REMARK   3   BIN FREE R VALUE TEST SET COUNT     : NULL                         
+REMARK   3   ESTIMATED ERROR OF BIN FREE R VALUE : NULL                         
+REMARK   3                                                                      
+REMARK   3  NUMBER OF NON-HYDROGEN ATOMS USED IN REFINEMENT.                    
+REMARK   3   PROTEIN ATOMS            : 82                                      
+REMARK   3   NUCLEIC ACID ATOMS       : 0                                       
+REMARK   3   HETEROGEN ATOMS          : 0                                       
+REMARK   3   SOLVENT ATOMS            : 13                                      
+REMARK   3                                                                      
+REMARK   3  B VALUES.                                                           
+REMARK   3   FROM WILSON PLOT           (A**2) : NULL                           
+REMARK   3   MEAN B VALUE      (OVERALL, A**2) : NULL                           
+REMARK   3   OVERALL ANISOTROPIC B VALUE.                                       
+REMARK   3    B11 (A**2) : NULL                                                 
+REMARK   3    B22 (A**2) : NULL                                                 
+REMARK   3    B33 (A**2) : NULL                                                 
+REMARK   3    B12 (A**2) : NULL                                                 
+REMARK   3    B13 (A**2) : NULL                                                 
+REMARK   3    B23 (A**2) : NULL                                                 
+REMARK   3                                                                      
+REMARK   3  ESTIMATED COORDINATE ERROR.                                         
+REMARK   3   ESD FROM LUZZATI PLOT        (A) : NULL                            
+REMARK   3   ESD FROM SIGMAA              (A) : NULL                            
+REMARK   3   LOW RESOLUTION CUTOFF        (A) : NULL                            
+REMARK   3                                                                      
+REMARK   3  CROSS-VALIDATED ESTIMATED COORDINATE ERROR.                         
+REMARK   3   ESD FROM C-V LUZZATI PLOT    (A) : NULL                            
+REMARK   3   ESD FROM C-V SIGMAA          (A) : NULL                            
+REMARK   3                                                                      
+REMARK   3  RMS DEVIATIONS FROM IDEAL VALUES.                                   
+REMARK   3   BOND LENGTHS                 (A) : NULL                            
+REMARK   3   BOND ANGLES            (DEGREES) : NULL                            
+REMARK   3   DIHEDRAL ANGLES        (DEGREES) : NULL                            
+REMARK   3   IMPROPER ANGLES        (DEGREES) : NULL                            
+REMARK   3                                                                      
+REMARK   3  ISOTROPIC THERMAL MODEL : NULL                                      
+REMARK   3                                                                      
+REMARK   3  ISOTROPIC THERMAL FACTOR RESTRAINTS.    RMS    SIGMA                
+REMARK   3   MAIN-CHAIN BOND              (A**2) : NULL  ; NULL                 
+REMARK   3   MAIN-CHAIN ANGLE             (A**2) : NULL  ; NULL                 
+REMARK   3   SIDE-CHAIN BOND              (A**2) : NULL  ; NULL                 
+REMARK   3   SIDE-CHAIN ANGLE             (A**2) : NULL  ; NULL                 
+REMARK   3                                                                      
+REMARK   3  NCS MODEL : NULL                                                    
+REMARK   3                                                                      
+REMARK   3  NCS RESTRAINTS.                         RMS   SIGMA/WEIGHT          
+REMARK   3   GROUP  1  POSITIONAL            (A) : NULL  ; NULL                 
+REMARK   3   GROUP  1  B-FACTOR           (A**2) : NULL  ; NULL                 
+REMARK   3                                                                      
+REMARK   3  PARAMETER FILE  1  : NULL                                           
+REMARK   3  TOPOLOGY FILE  1   : NULL                                           
+REMARK   3                                                                      
+REMARK   3  OTHER REFINEMENT REMARKS: NULL                                      
+REMARK   4                                                                      
+REMARK   4 1ETN COMPLIES WITH FORMAT V. 3.30, 13-JUL-11                         
+REMARK 100                                                                      
+REMARK 100 THIS ENTRY HAS BEEN PROCESSED BY BNL.                                
+REMARK 200                                                                      
+REMARK 200 EXPERIMENTAL DETAILS                                                 
+REMARK 200  EXPERIMENT TYPE                : X-RAY DIFFRACTION                  
+REMARK 200  DATE OF DATA COLLECTION        : NULL                               
+REMARK 200  TEMPERATURE           (KELVIN) : NULL                               
+REMARK 200  PH                             : NULL                               
+REMARK 200  NUMBER OF CRYSTALS USED        : NULL                               
+REMARK 200                                                                      
+REMARK 200  SYNCHROTRON              (Y/N) : NULL                               
+REMARK 200  RADIATION SOURCE               : NULL                               
+REMARK 200  BEAMLINE                       : NULL                               
+REMARK 200  X-RAY GENERATOR MODEL          : NULL                               
+REMARK 200  MONOCHROMATIC OR LAUE    (M/L) : NULL                               
+REMARK 200  WAVELENGTH OR RANGE        (A) : NULL                               
+REMARK 200  MONOCHROMATOR                  : NULL                               
+REMARK 200  OPTICS                         : NULL                               
+REMARK 200                                                                      
+REMARK 200  DETECTOR TYPE                  : NULL                               
+REMARK 200  DETECTOR MANUFACTURER          : NULL                               
+REMARK 200  INTENSITY-INTEGRATION SOFTWARE : NULL                               
+REMARK 200  DATA SCALING SOFTWARE          : NULL                               
+REMARK 200                                                                      
+REMARK 200  NUMBER OF UNIQUE REFLECTIONS   : NULL                               
+REMARK 200  RESOLUTION RANGE HIGH      (A) : NULL                               
+REMARK 200  RESOLUTION RANGE LOW       (A) : NULL                               
+REMARK 200  REJECTION CRITERIA  (SIGMA(I)) : NULL                               
+REMARK 200                                                                      
+REMARK 200 OVERALL.                                                             
+REMARK 200  COMPLETENESS FOR RANGE     (%) : NULL                               
+REMARK 200  DATA REDUNDANCY                : NULL                               
+REMARK 200  R MERGE                    (I) : NULL                               
+REMARK 200  R SYM                      (I) : NULL                               
+REMARK 200  <I/SIGMA(I)> FOR THE DATA SET  : NULL                               
+REMARK 200                                                                      
+REMARK 200 IN THE HIGHEST RESOLUTION SHELL.                                     
+REMARK 200  HIGHEST RESOLUTION SHELL, RANGE HIGH (A) : NULL                     
+REMARK 200  HIGHEST RESOLUTION SHELL, RANGE LOW  (A) : NULL                     
+REMARK 200  COMPLETENESS FOR SHELL     (%) : NULL                               
+REMARK 200  DATA REDUNDANCY IN SHELL       : NULL                               
+REMARK 200  R MERGE FOR SHELL          (I) : NULL                               
+REMARK 200  R SYM FOR SHELL            (I) : NULL                               
+REMARK 200  <I/SIGMA(I)> FOR SHELL         : NULL                               
+REMARK 200                                                                      
+REMARK 200 DIFFRACTION PROTOCOL: NULL                                           
+REMARK 200 METHOD USED TO DETERMINE THE STRUCTURE: NULL                         
+REMARK 200 SOFTWARE USED: NULL                                                  
+REMARK 200 STARTING MODEL: NULL                                                 
+REMARK 200                                                                      
+REMARK 200 REMARK: NULL                                                         
+REMARK 280                                                                      
+REMARK 280 CRYSTAL                                                              
+REMARK 280 SOLVENT CONTENT, VS   (%): NULL                                      
+REMARK 280 MATTHEWS COEFFICIENT, VM (ANGSTROMS**3/DA): NULL                     
+REMARK 280                                                                      
+REMARK 280 CRYSTALLIZATION CONDITIONS: NULL                                     
+REMARK 290                                                                      
+REMARK 290 CRYSTALLOGRAPHIC SYMMETRY                                            
+REMARK 290 SYMMETRY OPERATORS FOR SPACE GROUP: P 21 21 21                       
+REMARK 290                                                                      
+REMARK 290      SYMOP   SYMMETRY                                                
+REMARK 290     NNNMMM   OPERATOR                                                
+REMARK 290       1555   X,Y,Z                                                   
+REMARK 290       2555   -X+1/2,-Y,Z+1/2                                         
+REMARK 290       3555   -X,Y+1/2,-Z+1/2                                         
+REMARK 290       4555   X+1/2,-Y+1/2,-Z                                         
+REMARK 290                                                                      
+REMARK 290     WHERE NNN -> OPERATOR NUMBER                                     
+REMARK 290           MMM -> TRANSLATION VECTOR                                  
+REMARK 290                                                                      
+REMARK 290 CRYSTALLOGRAPHIC SYMMETRY TRANSFORMATIONS                            
+REMARK 290 THE FOLLOWING TRANSFORMATIONS OPERATE ON THE ATOM/HETATM             
+REMARK 290 RECORDS IN THIS ENTRY TO PRODUCE CRYSTALLOGRAPHICALLY                
+REMARK 290 RELATED MOLECULES.                                                   
+REMARK 290   SMTRY1   1  1.000000  0.000000  0.000000        0.00000            
+REMARK 290   SMTRY2   1  0.000000  1.000000  0.000000        0.00000            
+REMARK 290   SMTRY3   1  0.000000  0.000000  1.000000        0.00000            
+REMARK 290   SMTRY1   2 -1.000000  0.000000  0.000000       10.50500            
+REMARK 290   SMTRY2   2  0.000000 -1.000000  0.000000        0.00000            
+REMARK 290   SMTRY3   2  0.000000  0.000000  1.000000        6.39050            
+REMARK 290   SMTRY1   3 -1.000000  0.000000  0.000000        0.00000            
+REMARK 290   SMTRY2   3  0.000000  1.000000  0.000000       13.81050            
+REMARK 290   SMTRY3   3  0.000000  0.000000 -1.000000        6.39050            
+REMARK 290   SMTRY1   4  1.000000  0.000000  0.000000       10.50500            
+REMARK 290   SMTRY2   4  0.000000 -1.000000  0.000000       13.81050            
+REMARK 290   SMTRY3   4  0.000000  0.000000 -1.000000        0.00000            
+REMARK 290                                                                      
+REMARK 290 REMARK: NULL                                                         
+REMARK 300                                                                      
+REMARK 300 BIOMOLECULE: 1                                                       
+REMARK 300 SEE REMARK 350 FOR THE AUTHOR PROVIDED AND/OR PROGRAM                
+REMARK 300 GENERATED ASSEMBLY INFORMATION FOR THE STRUCTURE IN                  
+REMARK 300 THIS ENTRY. THE REMARK MAY ALSO PROVIDE INFORMATION ON               
+REMARK 300 BURIED SURFACE AREA.                                                 
+REMARK 350                                                                      
+REMARK 350 COORDINATES FOR A COMPLETE MULTIMER REPRESENTING THE KNOWN           
+REMARK 350 BIOLOGICALLY SIGNIFICANT OLIGOMERIZATION STATE OF THE                
+REMARK 350 MOLECULE CAN BE GENERATED BY APPLYING BIOMT TRANSFORMATIONS          
+REMARK 350 GIVEN BELOW.  BOTH NON-CRYSTALLOGRAPHIC AND                          
+REMARK 350 CRYSTALLOGRAPHIC OPERATIONS ARE GIVEN.                               
+REMARK 350                                                                      
+REMARK 350 BIOMOLECULE: 1                                                       
+REMARK 350 AUTHOR DETERMINED BIOLOGICAL UNIT: MONOMERIC                         
+REMARK 350 APPLY THE FOLLOWING TO CHAINS: A                                     
+REMARK 350   BIOMT1   1  1.000000  0.000000  0.000000        0.00000            
+REMARK 350   BIOMT2   1  0.000000  1.000000  0.000000        0.00000            
+REMARK 350   BIOMT3   1  0.000000  0.000000  1.000000        0.00000            
+REMARK 500                                                                      
+REMARK 500 GEOMETRY AND STEREOCHEMISTRY                                         
+REMARK 500 SUBTOPIC: COVALENT BOND LENGTHS                                      
+REMARK 500                                                                      
+REMARK 500 THE STEREOCHEMICAL PARAMETERS OF THE FOLLOWING RESIDUES              
+REMARK 500 HAVE VALUES WHICH DEVIATE FROM EXPECTED VALUES BY MORE               
+REMARK 500 THAN 6*RMSD (M=MODEL NUMBER; RES=RESIDUE NAME; C=CHAIN               
+REMARK 500 IDENTIFIER; SSEQ=SEQUENCE NUMBER; I=INSERTION CODE).                 
+REMARK 500                                                                      
+REMARK 500 STANDARD TABLE:                                                      
+REMARK 500 FORMAT: (10X,I3,1X,2(A3,1X,A1,I4,A1,1X,A4,3X),1X,F6.3)               
+REMARK 500                                                                      
+REMARK 500 EXPECTED VALUES PROTEIN: ENGH AND HUBER, 1999                        
+REMARK 500 EXPECTED VALUES NUCLEIC ACID: CLOWNEY ET AL 1996                     
+REMARK 500                                                                      
+REMARK 500  M RES CSSEQI ATM1   RES CSSEQI ATM2   DEVIATION                     
+REMARK 500    GLU A   7   CD    GLU A   7   OE2    -0.070                       
+REMARK 500                                                                      
+REMARK 500 REMARK: NULL                                                         
+REMARK 800                                                                      
+REMARK 800 SITE                                                                 
+REMARK 800 SITE_IDENTIFIER: S1                                                  
+REMARK 800 EVIDENCE_CODE: AUTHOR                                                
+REMARK 800 SITE_DESCRIPTION: THE RECEPTOR BINDING SITE DEDUCED FROM CHEMICAL    
+REMARK 800  MUTATION STUDY                                                      
+REMARK 800                                                                      
+REMARK 800 SITE_IDENTIFIER: S2                                                  
+REMARK 800 EVIDENCE_CODE: AUTHOR                                                
+REMARK 800 SITE_DESCRIPTION: PUTATIVE CATION BINDING SITE SUGGESTED FROM        
+REMARK 800  CONFORMATIONAL SIMILARITIES TO IONOPHORE PEPTIDES.                  
+REMARK 999                                                                      
+REMARK 999 SEQUENCE                                                             
+REMARK 999 THE SEQUENCE IS BASED ON SEQUENCE FROM ENTEROTOXIGENIC               
+REMARK 999 (ESCHERICHIA COLI STRAIN 18D).  THE THIRTEEN RESIDUE                 
+REMARK 999 PEPTIDE CORRESPONDS TO RESIDUES FROM 5 TO 17.                        
+DBREF  1ETN A    6    17  UNP    P01559   HST1_ECOLI      60     71             
+SEQRES   1 A   13  MPR CYS GLU LEU CYS CYS ASN PRO ALA CYS ALA GLY CYS          
+HET    MPR  A   5       9                                                       
+HETNAM     MPR 2-MERCAPTO-PROPION ALDEHYDE                                      
+FORMUL   1  MPR    C3 H6 O S                                                    
+FORMUL   2  HOH   *13(H2 O)                                                     
+HELIX    1  H1 MPR A    5  CYS A    9  5N-TERMINAL SEGMENT                 5    
+SSBOND   1 CYS A    6    CYS A   14                          1555   1555  2.03  
+SSBOND   2 CYS A    9    CYS A   17                          1555   1555  2.02  
+LINK         C1  MPR A   5                 N   CYS A   6     1555   1555  1.35  
+LINK         S3  MPR A   5                 SG  CYS A  10     1555   1555  2.03  
+SITE     1  S1  3 ASN A  11  PRO A  12  ALA A  13                               
+SITE     1  S2  6 PRO A  12  ALA A  13  CYS A  14  ALA A  15                    
+SITE     2  S2  6 GLY A  16  CYS A  17                                          
+CRYST1   21.010   27.621   12.781  90.00  90.00  90.00 P 21 21 21    4          
+ORIGX1      1.000000  0.000000  0.000000        0.00000                         
+ORIGX2      0.000000  1.000000  0.000000        0.00000                         
+ORIGX3      0.000000  0.000000  1.000000        0.00000                         
+SCALE1      0.047596  0.000000  0.000000        0.00000                         
+SCALE2      0.000000  0.036204  0.000000        0.00000                         
+SCALE3      0.000000  0.000000  0.078241        0.00000                         
+HETATM    1  C1  MPR A   5       5.806   3.753  -0.877  1.00  0.04           C  
+SIGATM    1  C1  MPR A   5       0.012   0.010   0.013  0.00  0.00           C  
+ANISOU    1  C1  MPR A   5      475    281    537    -22    -61    109       C  
+SIGUIJ    1  C1  MPR A   5        3      1     10      4     10      6       C  
+HETATM    2  O   MPR A   5       6.480   3.537   0.121  1.00  0.05           O  
+SIGATM    2  O   MPR A   5       0.008   0.008   0.009  0.00  0.00           O  
+ANISOU    2  O   MPR A   5      478    604    480      9   -166    163       O  
+SIGUIJ    2  O   MPR A   5        2      1      6      3      6      5       O  
+HETATM    3  C2  MPR A   5       6.239   3.406  -2.252  1.00  0.05           C  
+SIGATM    3  C2  MPR A   5       0.012   0.014   0.014  0.00  0.00           C  
+ANISOU    3  C2  MPR A   5      390    545    557    -19    160    -27       C  
+SIGUIJ    3  C2  MPR A   5        3      2     10      4      9      6       C  
+HETATM    4  C3  MPR A   5       7.726   3.789  -2.579  1.00  0.07           C  
+SIGATM    4  C3  MPR A   5       0.015   0.016   0.018  0.00  0.00           C  
+ANISOU    4  C3  MPR A   5      631    813    675    -62    134   -363       C  
+SIGUIJ    4  C3  MPR A   5        4      3     13      5     13     10       C  
+HETATM    5  S3  MPR A   5       7.926   5.570  -2.862  1.00  0.09           S  
+SIGATM    5  S3  MPR A   5       0.005   0.005   0.004  0.00  0.00           S  
+ANISOU    5  S3  MPR A   5     1067   1009    502   -893    276     93       S  
+SIGUIJ    5  S3  MPR A   5        2      1      3      2      4      3       S  
+HETATM    6  H21 MPR A   5       5.596   3.896  -2.969  1.00  0.05           H  
+SIGATM    6  H21 MPR A   5       0.149   0.148   0.162  0.00  0.05           H  
+ANISOU    6  H21 MPR A   5      507    507    507      0      0      0       H  
+SIGUIJ    6  H21 MPR A   5      450    450    450      0      0      0       H  
+HETATM    7  H22 MPR A   5       6.127   2.324  -2.391  1.00  0.05           H  
+SIGATM    7  H22 MPR A   5       0.137   0.151   0.148  0.00  0.04           H  
+ANISOU    7  H22 MPR A   5      515    515    515      0      0      0       H  
+SIGUIJ    7  H22 MPR A   5      439    439    439      0      0      0       H  
+HETATM    8  H31 MPR A   5       8.363   3.478  -1.751  1.00  0.07           H  
+SIGATM    8  H31 MPR A   5       0.169   0.159   0.179  0.00  0.05           H  
+ANISOU    8  H31 MPR A   5      664    664    664      0      0      0       H  
+SIGUIJ    8  H31 MPR A   5      540    540    540      0      0      0       H  
+HETATM    9  H32 MPR A   5       8.060   3.249  -3.463  1.00  0.06           H  
+SIGATM    9  H32 MPR A   5       0.164   0.159   0.176  0.00  0.05           H  
+ANISOU    9  H32 MPR A   5      647    647    647      0      0      0       H  
+SIGUIJ    9  H32 MPR A   5      501    501    501      0      0      0       H  
+ATOM     10  N   CYS A   6       4.535   4.190  -0.757  1.00  0.05           N  
+SIGATM   10  N   CYS A   6       0.010   0.010   0.010  0.00  0.00           N  
+ANISOU   10  N   CYS A   6      441    580    402     48    -72    -88       N  
+SIGUIJ   10  N   CYS A   6        3      2      8      3      8      6       N  
+ATOM     11  CA  CYS A   6       3.942   4.366   0.546  1.00  0.05           C  
+SIGATM   11  CA  CYS A   6       0.012   0.011   0.014  0.00  0.00           C  
+ANISOU   11  CA  CYS A   6      434    407    567     92    -23   -186       C  
+SIGUIJ   11  CA  CYS A   6        3      2     10      4     10      6       C  
+ATOM     12  C   CYS A   6       3.876   3.131   1.341  1.00  0.05           C  
+SIGATM   12  C   CYS A   6       0.011   0.012   0.014  0.00  0.00           C  
+ANISOU   12  C   CYS A   6      306    534    564     96    137     67       C  
+SIGUIJ   12  C   CYS A   6        3      2     11      4      9      6       C  
+ATOM     13  O   CYS A   6       3.944   3.200   2.599  1.00  0.06           O  
+SIGATM   13  O   CYS A   6       0.009   0.009   0.010  0.00  0.00           O  
+ANISOU   13  O   CYS A   6      607    653    529     89     25    -31       O  
+SIGUIJ   13  O   CYS A   6        2      1      8      3      6      5       O  
+ATOM     14  CB  CYS A   6       2.536   4.972   0.383  1.00  0.06           C  
+SIGATM   14  CB  CYS A   6       0.014   0.013   0.017  0.00  0.00           C  
+ANISOU   14  CB  CYS A   6      573    589    625    122    298    -96       C  
+SIGUIJ   14  CB  CYS A   6        4      2     12      4     12      8       C  
+ATOM     15  SG  CYS A   6       2.495   6.784   0.123  1.00  0.08           S  
+SIGATM   15  SG  CYS A   6       0.004   0.004   0.004  0.00  0.00           S  
+ANISOU   15  SG  CYS A   6      955    684    679    760    104    332       S  
+SIGUIJ   15  SG  CYS A   6        1      1      3      1      4      2       S  
+ATOM     16  H   CYS A   6       3.983   4.367  -1.566  1.00  0.05           H  
+SIGATM   16  H   CYS A   6       0.151   0.137   0.156  0.00  0.04           H  
+ANISOU   16  H   CYS A   6      458    458    458      0      0      0       H  
+SIGUIJ   16  H   CYS A   6      449    449    449      0      0      0       H  
+ATOM     17  HA  CYS A   6       4.591   5.042   1.090  1.00  0.04           H  
+SIGATM   17  HA  CYS A   6       0.133   0.135   0.143  0.00  0.04           H  
+ANISOU   17  HA  CYS A   6      406    406    406      0      0      0       H  
+SIGUIJ   17  HA  CYS A   6      393    393    393      0      0      0       H  
+ATOM     18  HB2 CYS A   6       2.048   4.490  -0.455  1.00  0.05           H  
+SIGATM   18  HB2 CYS A   6       0.150   0.145   0.174  0.00  0.05           H  
+ANISOU   18  HB2 CYS A   6      538    538    538      0      0      0       H  
+SIGUIJ   18  HB2 CYS A   6      468    468    468      0      0      0       H  
+ATOM     19  HB3 CYS A   6       1.968   4.744   1.284  1.00  0.05           H  
+SIGATM   19  HB3 CYS A   6       0.153   0.138   0.159  0.00  0.04           H  
+ANISOU   19  HB3 CYS A   6      495    495    495      0      0      0       H  
+SIGUIJ   19  HB3 CYS A   6      444    444    444      0      0      0       H  
+ATOM     20  N   GLU A   7       3.759   1.947   0.738  1.00  0.05           N  
+SIGATM   20  N   GLU A   7       0.010   0.009   0.012  0.00  0.00           N  
+ANISOU   20  N   GLU A   7      484    354    544   -137     26    -25       N  
+SIGUIJ   20  N   GLU A   7        3      1      9      3      8      5       N  
+ATOM     21  CA  GLU A   7       3.841   0.728   1.490  1.00  0.06           C  
+SIGATM   21  CA  GLU A   7       0.015   0.012   0.015  0.00  0.00           C  
+ANISOU   21  CA  GLU A   7      650    490    573   -168    114    122       C  
+SIGUIJ   21  CA  GLU A   7        4      2     11      5     12      6       C  
+ATOM     22  C   GLU A   7       5.165   0.492   2.201  1.00  0.06           C  
+SIGATM   22  C   GLU A   7       0.015   0.011   0.015  0.00  0.00           C  
+ANISOU   22  C   GLU A   7      748    293    660    141    302    336       C  
+SIGUIJ   22  C   GLU A   7        4      2     11      4     12      6       C  
+ATOM     23  O   GLU A   7       5.269  -0.331   3.062  1.00  0.08           O  
+SIGATM   23  O   GLU A   7       0.011   0.010   0.013  0.00  0.00           O  
+ANISOU   23  O   GLU A   7      675    699   1163    -71    111    886       O  
+SIGUIJ   23  O   GLU A   7        3      2     12      4     10      8       O  
+ATOM     24  CB  GLU A   7       3.579  -0.480   0.489  1.00  0.08           C  
+SIGATM   24  CB  GLU A   7       0.019   0.015   0.020  0.00  0.00           C  
+ANISOU   24  CB  GLU A   7      955    497    910   -387    -70    -96       C  
+SIGUIJ   24  CB  GLU A   7        6      2     16      6     17     10       C  
+ATOM     25  CG  GLU A   7       2.120  -0.425  -0.124  1.00  0.09           C  
+SIGATM   25  CG  GLU A   7       0.020   0.023   0.022  0.00  0.00           C  
+ANISOU   25  CG  GLU A   7      947   1079    813   -793   -249    377       C  
+SIGUIJ   25  CG  GLU A   7        6      4     17      8     17     13       C  
+ATOM     26  CD  GLU A   7       1.148  -1.006   0.852  1.00  0.11           C  
+SIGATM   26  CD  GLU A   7       0.024   0.024   0.026  0.00  0.00           C  
+ANISOU   26  CD  GLU A   7     1071    944   1280    310    609    250       C  
+SIGUIJ   26  CD  GLU A   7        6      4     23      9     22     16       C  
+ATOM     27  OE1 GLU A   7       1.138  -2.193   1.143  1.00  0.14           O  
+SIGATM   27  OE1 GLU A   7       0.014   0.017   0.019  0.00  0.00           O  
+ANISOU   27  OE1 GLU A   7      994   1350   1859   -261    337   1423       O  
+SIGUIJ   27  OE1 GLU A   7        4      3     21      6     16     13       O  
+ATOM     28  OE2 GLU A   7       0.379  -0.289   1.392  1.00  0.23           O  
+SIGATM   28  OE2 GLU A   7       0.028   0.020   0.030  0.00  0.00           O  
+ANISOU   28  OE2 GLU A   7     2715   1241   2918     72   2887    879       O  
+SIGUIJ   28  OE2 GLU A   7       13      4     39     11     40     19       O  
+ATOM     29  H   GLU A   7       3.597   1.901  -0.258  1.00  0.04           H  
+SIGATM   29  H   GLU A   7       0.144   0.141   0.161  0.00  0.04           H  
+ANISOU   29  H   GLU A   7      433    433    433      0      0      0       H  
+SIGUIJ   29  H   GLU A   7      435    435    435      0      0      0       H  
+ATOM     30  HA  GLU A   7       3.109   0.817   2.281  1.00  0.05           H  
+SIGATM   30  HA  GLU A   7       0.151   0.146   0.159  0.00  0.05           H  
+ANISOU   30  HA  GLU A   7      521    521    521      0      0      0       H  
+SIGUIJ   30  HA  GLU A   7      454    454    454      0      0      0       H  
+ATOM     31  HB2 GLU A   7       4.316  -0.437  -0.316  1.00  0.07           H  
+SIGATM   31  HB2 GLU A   7       0.178   0.160   0.191  0.00  0.05           H  
+ANISOU   31  HB2 GLU A   7      663    663    663      0      0      0       H  
+SIGUIJ   31  HB2 GLU A   7      549    549    549      0      0      0       H  
+ATOM     32  HB3 GLU A   7       3.732  -1.416   1.008  1.00  0.07           H  
+SIGATM   32  HB3 GLU A   7       0.155   0.172   0.175  0.00  0.05           H  
+ANISOU   32  HB3 GLU A   7      667    667    667      0      0      0       H  
+SIGUIJ   32  HB3 GLU A   7      525    525    525      0      0      0       H  
+ATOM     33  HG2 GLU A   7       1.838   0.611  -0.330  1.00  0.09           H  
+SIGATM   33  HG2 GLU A   7       0.189   0.209   0.207  0.00  0.07           H  
+ANISOU   33  HG2 GLU A   7      920    920    920      0      0      0       H  
+SIGUIJ   33  HG2 GLU A   7      687    687    687      0      0      0       H  
+ATOM     34  HG3 GLU A   7       2.067  -0.975  -1.063  1.00  0.09           H  
+SIGATM   34  HG3 GLU A   7       0.203   0.198   0.219  0.00  0.07           H  
+ANISOU   34  HG3 GLU A   7      922    922    922      0      0      0       H  
+SIGUIJ   34  HG3 GLU A   7      707    707    707      0      0      0       H  
+ATOM     35  N   LEU A   8       6.173   1.213   1.740  1.00  0.05           N  
+SIGATM   35  N   LEU A   8       0.011   0.010   0.012  0.00  0.00           N  
+ANISOU   35  N   LEU A   8      566    364    600     23   -172   -165       N  
+SIGUIJ   35  N   LEU A   8        3      1      9      3      9      6       N  
+ATOM     36  CA  LEU A   8       7.520   1.190   2.217  1.00  0.05           C  
+SIGATM   36  CA  LEU A   8       0.013   0.013   0.013  0.00  0.00           C  
+ANISOU   36  CA  LEU A   8      487    562    501     60   -119    185       C  
+SIGUIJ   36  CA  LEU A   8        3      2     10      4     10      6       C  
+ATOM     37  C   LEU A   8       7.824   2.445   3.063  1.00  0.05           C  
+SIGATM   37  C   LEU A   8       0.013   0.012   0.014  0.00  0.00           C  
+ANISOU   37  C   LEU A   8      435    507    657     71   -225    108       C  
+SIGUIJ   37  C   LEU A   8        3      2     11      4     10      6       C  
+ATOM     38  O   LEU A   8       8.962   2.731   3.412  1.00  0.07           O  
+SIGATM   38  O   LEU A   8       0.009   0.009   0.011  0.00  0.00           O  
+ANISOU   38  O   LEU A   8      508    708    924    247   -282   -250       O  
+SIGUIJ   38  O   LEU A   8        3      2     10      3      8      6       O  
+ATOM     39  CB  LEU A   8       8.571   1.085   1.085  1.00  0.07           C  
+SIGATM   39  CB  LEU A   8       0.019   0.017   0.018  0.00  0.00           C  
+ANISOU   39  CB  LEU A   8      763    719    760    175     49    -97       C  
+SIGUIJ   39  CB  LEU A   8        5      3     13      6     15     10       C  
+ATOM     40  CG  LEU A   8       8.340  -0.050   0.070  1.00  0.12           C  
+SIGATM   40  CG  LEU A   8       0.028   0.021   0.027  0.00  0.00           C  
+ANISOU   40  CG  LEU A   8     1373    979   1158    593    895   -599       C  
+SIGUIJ   40  CG  LEU A   8        9      4     22      9     26     15       C  
+ATOM     41  CD1 LEU A   8       9.274   0.000  -1.094  1.00  0.14           C  
+SIGATM   41  CD1 LEU A   8       0.035   0.033   0.040  0.00  0.00           C  
+ANISOU   41  CD1 LEU A   8     1247   1332   1632     -4   1381   -826       C  
+SIGUIJ   41  CD1 LEU A   8       10      6     35     13     34     25       C  
+ATOM     42  CD2 LEU A   8       8.325  -1.315   0.620  1.00  0.21           C  
+SIGATM   42  CD2 LEU A   8       0.075   0.029   0.042  0.00  0.00           C  
+ANISOU   42  CD2 LEU A   8     3897    779   1515    302   2615   -259       C  
+SIGUIJ   42  CD2 LEU A   8       35      4     39     19     72     20       C  
+ATOM     43  H   LEU A   8       5.974   1.828   0.973  1.00  0.04           H  
+SIGATM   43  H   LEU A   8       0.137   0.142   0.151  0.00  0.04           H  
+ANISOU   43  H   LEU A   8      393    393    393      0      0      0       H  
+SIGUIJ   43  H   LEU A   8      401    401    401      0      0      0       H  
+ATOM     44  HA  LEU A   8       7.620   0.299   2.817  1.00  0.05           H  
+SIGATM   44  HA  LEU A   8       0.145   0.138   0.152  0.00  0.04           H  
+ANISOU   44  HA  LEU A   8      474    474    474      0      0      0       H  
+SIGUIJ   44  HA  LEU A   8      417    417    417      0      0      0       H  
+ATOM     45  HB2 LEU A   8       8.607   2.043   0.557  1.00  0.06           H  
+SIGATM   45  HB2 LEU A   8       0.148   0.160   0.170  0.00  0.05           H  
+ANISOU   45  HB2 LEU A   8      580    580    580      0      0      0       H  
+SIGUIJ   45  HB2 LEU A   8      476    476    476      0      0      0       H  
+ATOM     46  HB3 LEU A   8       9.558   0.933   1.526  1.00  0.06           H  
+SIGATM   46  HB3 LEU A   8       0.168   0.155   0.171  0.00  0.05           H  
+ANISOU   46  HB3 LEU A   8      588    588    588      0      0      0       H  
+SIGUIJ   46  HB3 LEU A   8      515    515    515      0      0      0       H  
+ATOM     47  HG  LEU A   8       7.318   0.122  -0.323  1.00  0.12           H  
+SIGATM   47  HG  LEU A   8       0.268   0.235   0.263  0.00  0.10           H  
+ANISOU   47  HG  LEU A   8     1242   1242   1242      0      0      0       H  
+SIGUIJ   47  HG  LEU A   8      984    984    984      0      0      0       H  
+ATOM     48 HD11 LEU A   8      10.203   0.383  -0.694  1.00  0.13           H  
+SIGATM   48 HD11 LEU A   8       0.266   0.240   0.267  0.00  0.10           H  
+ANISOU   48 HD11 LEU A   8     1258   1258   1258      0      0      0       H  
+SIGUIJ   48 HD11 LEU A   8     1039   1039   1039      0      0      0       H  
+ATOM     49 HD12 LEU A   8       9.401  -0.660  -1.941  1.00  0.13           H  
+SIGATM   49 HD12 LEU A   8       0.240   0.258   0.277  0.00  0.09           H  
+ANISOU   49 HD12 LEU A   8     1300   1300   1300      0      0      0       H  
+SIGUIJ   49 HD12 LEU A   8      943    943    943      0      0      0       H  
+ATOM     50 HD13 LEU A   8       8.891   0.675  -1.828  1.00  0.13           H  
+SIGATM   50 HD13 LEU A   8       0.272   0.277   0.282  0.00  0.13           H  
+ANISOU   50 HD13 LEU A   8     1339   1339   1339      0      0      0       H  
+SIGUIJ   50 HD13 LEU A   8     1257   1257   1257      0      0      0       H  
+ATOM     51 HD21 LEU A   8       9.193  -1.363   1.238  1.00  0.14           H  
+SIGATM   51 HD21 LEU A   8       0.293   0.324   0.320  0.00  0.17           H  
+ANISOU   51 HD21 LEU A   8     1390   1390   1390      0      0      0       H  
+SIGUIJ   51 HD21 LEU A   8     1669   1669   1669      0      0      0       H  
+ATOM     52 HD22 LEU A   8       7.433  -1.524   1.217  1.00  0.13           H  
+SIGATM   52 HD22 LEU A   8       0.270   0.258   0.302  0.00  0.11           H  
+ANISOU   52 HD22 LEU A   8     1336   1336   1336      0      0      0       H  
+SIGUIJ   52 HD22 LEU A   8     1082   1082   1082      0      0      0       H  
+ATOM     53 HD23 LEU A   8       8.400  -2.091  -0.137  1.00  0.13           H  
+SIGATM   53 HD23 LEU A   8       0.228   0.232   0.259  0.00  0.08           H  
+ANISOU   53 HD23 LEU A   8     1307   1307   1307      0      0      0       H  
+SIGUIJ   53 HD23 LEU A   8      844    844    844      0      0      0       H  
+ATOM     54  N   CYS A   9       6.818   3.260   3.344  1.00  0.04           N  
+SIGATM   54  N   CYS A   9       0.010   0.009   0.010  0.00  0.00           N  
+ANISOU   54  N   CYS A   9      366    435    507    143    -18     25       N  
+SIGUIJ   54  N   CYS A   9        2      1      8      3      6      5       N  
+ATOM     55  CA  CYS A   9       6.943   4.575   4.020  1.00  0.05           C  
+SIGATM   55  CA  CYS A   9       0.012   0.012   0.013  0.00  0.00           C  
+ANISOU   55  CA  CYS A   9      325    564    532     25    -96      5       C  
+SIGUIJ   55  CA  CYS A   9        3      2     11      4      9      6       C  
+ATOM     56  C   CYS A   9       7.998   5.431   3.387  1.00  0.05           C  
+SIGATM   56  C   CYS A   9       0.012   0.013   0.013  0.00  0.00           C  
+ANISOU   56  C   CYS A   9      407    623    460    166   -229   -173       C  
+SIGUIJ   56  C   CYS A   9        3      2      9      4      9      6       C  
+ATOM     57  O   CYS A   9       8.747   6.125   3.999  1.00  0.07           O  
+SIGATM   57  O   CYS A   9       0.009   0.010   0.010  0.00  0.00           O  
+ANISOU   57  O   CYS A   9      601    803    582   -641   -154   -408       O  
+SIGUIJ   57  O   CYS A   9        2      2      6      4      6      6       O  
+ATOM     58  CB  CYS A   9       7.245   4.444   5.513  1.00  0.06           C  
+SIGATM   58  CB  CYS A   9       0.015   0.015   0.015  0.00  0.00           C  
+ANISOU   58  CB  CYS A   9      609    631    605    -55    113   -207       C  
+SIGUIJ   58  CB  CYS A   9        4      2     12      5     11      8       C  
+ATOM     59  SG  CYS A   9       5.771   3.927   6.483  1.00  0.06           S  
+SIGATM   59  SG  CYS A   9       0.004   0.004   0.004  0.00  0.00           S  
+ANISOU   59  SG  CYS A   9      686    615    544     93    174    176       S  
+SIGUIJ   59  SG  CYS A   9        1      1      3      1      3      2       S  
+ATOM     60  H   CYS A   9       5.851   3.233   3.096  1.00  0.04           H  
+SIGATM   60  H   CYS A   9       0.152   0.135   0.145  0.00  0.04           H  
+ANISOU   60  H   CYS A   9      415    415    415      0      0      0       H  
+SIGUIJ   60  H   CYS A   9      417    417    417      0      0      0       H  
+ATOM     61  HA  CYS A   9       5.978   5.043   3.904  1.00  0.04           H  
+SIGATM   61  HA  CYS A   9       0.134   0.129   0.141  0.00  0.04           H  
+ANISOU   61  HA  CYS A   9      406    406    406      0      0      0       H  
+SIGUIJ   61  HA  CYS A   9      388    388    388      0      0      0       H  
+ATOM     62  HB2 CYS A   9       8.035   3.737   5.637  1.00  0.06           H  
+SIGATM   62  HB2 CYS A   9       0.158   0.147   0.159  0.00  0.05           H  
+ANISOU   62  HB2 CYS A   9      586    586    586      0      0      0       H  
+SIGUIJ   62  HB2 CYS A   9      486    486    486      0      0      0       H  
+ATOM     63  HB3 CYS A   9       7.575   5.412   5.882  1.00  0.06           H  
+SIGATM   63  HB3 CYS A   9       0.146   0.158   0.156  0.00  0.05           H  
+ANISOU   63  HB3 CYS A   9      567    567    567      0      0      0       H  
+SIGUIJ   63  HB3 CYS A   9      455    455    455      0      0      0       H  
+ATOM     64  N   CYS A  10       7.896   5.559   2.006  1.00  0.05           N  
+SIGATM   64  N   CYS A  10       0.010   0.010   0.012  0.00  0.00           N  
+ANISOU   64  N   CYS A  10      348    558    628    132    185    -89       N  
+SIGUIJ   64  N   CYS A  10        2      2      9      3      8      6       N  
+ATOM     65  CA  CYS A  10       8.946   6.375   1.341  1.00  0.06           C  
+SIGATM   65  CA  CYS A  10       0.014   0.013   0.014  0.00  0.00           C  
+ANISOU   65  CA  CYS A  10      566    541    565    -12    274    256       C  
+SIGUIJ   65  CA  CYS A  10        4      2     11      5     11      8       C  
+ATOM     66  C   CYS A  10       8.739   7.871   1.478  1.00  0.06           C  
+SIGATM   66  C   CYS A  10       0.014   0.013   0.014  0.00  0.00           C  
+ANISOU   66  C   CYS A  10      617    609    461      1    -27   -103       C  
+SIGUIJ   66  C   CYS A  10        4      2     10      5     11      6       C  
+ATOM     67  O   CYS A  10       9.623   8.612   1.073  1.00  0.08           O  
+SIGATM   67  O   CYS A  10       0.010   0.009   0.012  0.00  0.00           O  
+ANISOU   67  O   CYS A  10      714    560   1021   -394    490      5       O  
+SIGUIJ   67  O   CYS A  10        3      1     10      3      9      6       O  
+ATOM     68  CB  CYS A  10       9.046   5.960  -0.137  1.00  0.07           C  
+SIGATM   68  CB  CYS A  10       0.016   0.016   0.016  0.00  0.00           C  
+ANISOU   68  CB  CYS A  10      717    750    583   -204    284   -353       C  
+SIGUIJ   68  CB  CYS A  10        4      2     12      5     12      9       C  
+ATOM     69  SG  CYS A  10       7.518   6.439  -1.076  1.00  0.06           S  
+SIGATM   69  SG  CYS A  10       0.004   0.004   0.004  0.00  0.00           S  
+ANISOU   69  SG  CYS A  10      631    613    567   -188    -22     82       S  
+SIGUIJ   69  SG  CYS A  10        1      1      3      1      3      2       S  
+ATOM     70  H   CYS A  10       7.153   5.116   1.485  1.00  0.05           H  
+SIGATM   70  H   CYS A  10       0.153   0.140   0.150  0.00  0.05           H  
+ANISOU   70  H   CYS A  10      466    466    466      0      0      0       H  
+SIGUIJ   70  H   CYS A  10      459    459    459      0      0      0       H  
+ATOM     71  HA  CYS A  10       9.898   6.189   1.847  1.00  0.05           H  
+SIGATM   71  HA  CYS A  10       0.157   0.144   0.155  0.00  0.05           H  
+ANISOU   71  HA  CYS A  10      543    543    543      0      0      0       H  
+SIGUIJ   71  HA  CYS A  10      468    468    468      0      0      0       H  
+ATOM     72  HB2 CYS A  10       9.925   6.404  -0.577  1.00  0.06           H  
+SIGATM   72  HB2 CYS A  10       0.161   0.153   0.165  0.00  0.05           H  
+ANISOU   72  HB2 CYS A  10      611    611    611      0      0      0       H  
+SIGUIJ   72  HB2 CYS A  10      492    492    492      0      0      0       H  
+ATOM     73  HB3 CYS A  10       9.180   4.874  -0.177  1.00  0.06           H  
+SIGATM   73  HB3 CYS A  10       0.141   0.159   0.169  0.00  0.05           H  
+ANISOU   73  HB3 CYS A  10      587    587    587      0      0      0       H  
+SIGUIJ   73  HB3 CYS A  10      471    471    471      0      0      0       H  
+ATOM     74  N   ASN A  11       7.548   8.307   1.985  1.00  0.06           N  
+SIGATM   74  N   ASN A  11       0.011   0.011   0.013  0.00  0.00           N  
+ANISOU   74  N   ASN A  11      475    530    851    -82    217     86       N  
+SIGUIJ   74  N   ASN A  11        3      2     10      4     10      6       N  
+ATOM     75  CA  ASN A  11       7.396   9.717   2.305  1.00  0.07           C  
+SIGATM   75  CA  ASN A  11       0.015   0.014   0.016  0.00  0.00           C  
+ANISOU   75  CA  ASN A  11      588    573    790    167    293     44       C  
+SIGUIJ   75  CA  ASN A  11        4      2     13      5     12      9       C  
+ATOM     76  C   ASN A  11       6.552   9.794   3.595  1.00  0.07           C  
+SIGATM   76  C   ASN A  11       0.014   0.015   0.018  0.00  0.00           C  
+ANISOU   76  C   ASN A  11      496    694    816    259    282     13       C  
+SIGUIJ   76  C   ASN A  11        4      2     13      5     12     10       C  
+ATOM     77  O   ASN A  11       5.669   8.940   3.782  1.00  0.08           O  
+SIGATM   77  O   ASN A  11       0.010   0.011   0.012  0.00  0.00           O  
+ANISOU   77  O   ASN A  11      693    769    930   -311    560    139       O  
+SIGUIJ   77  O   ASN A  11        3      2     10      4     10      6       O  
+ATOM     78  CB  ASN A  11       6.555  10.396   1.130  1.00  0.09           C  
+SIGATM   78  CB  ASN A  11       0.024   0.018   0.020  0.00  0.00           C  
+ANISOU   78  CB  ASN A  11     1193    818    730    253    557    346       C  
+SIGUIJ   78  CB  ASN A  11        8      3     15      8     18     11       C  
+ATOM     79  CG  ASN A  11       6.431  11.852   1.313  1.00  0.09           C  
+SIGATM   79  CG  ASN A  11       0.019   0.019   0.020  0.00  0.00           C  
+ANISOU   79  CG  ASN A  11      811    942    927     66    374    190       C  
+SIGUIJ   79  CG  ASN A  11        6      3     17      6     16     12       C  
+ATOM     80  OD1 ASN A  11       5.588  12.392   2.025  1.00  0.14           O  
+SIGATM   80  OD1 ASN A  11       0.016   0.015   0.020  0.00  0.00           O  
+ANISOU   80  OD1 ASN A  11     1219   1213   1647    741    880    604       O  
+SIGUIJ   80  OD1 ASN A  11        5      3     19      6     18     12       O  
+ATOM     81  ND2 ASN A  11       7.339  12.666   0.697  1.00  0.15           N  
+SIGATM   81  ND2 ASN A  11       0.024   0.019   0.023  0.00  0.00           N  
+ANISOU   81  ND2 ASN A  11     1615   1163   1688    568   1151    369       N  
+SIGUIJ   81  ND2 ASN A  11        8      4     24      9     26     15       N  
+ATOM     82  H   ASN A  11       6.795   7.657   2.123  1.00  0.06           H  
+SIGATM   82  H   ASN A  11       0.154   0.149   0.157  0.00  0.05           H  
+ANISOU   82  H   ASN A  11      577    577    577      0      0      0       H  
+SIGUIJ   82  H   ASN A  11      486    486    486      0      0      0       H  
+ATOM     83  HA  ASN A  11       8.355  10.200   2.425  1.00  0.06           H  
+SIGATM   83  HA  ASN A  11       0.156   0.144   0.164  0.00  0.05           H  
+ANISOU   83  HA  ASN A  11      562    562    562      0      0      0       H  
+SIGUIJ   83  HA  ASN A  11      476    476    476      0      0      0       H  
+ATOM     84  HB2 ASN A  11       7.005  10.183   0.168  1.00  0.07           H  
+SIGATM   84  HB2 ASN A  11       0.166   0.159   0.188  0.00  0.05           H  
+ANISOU   84  HB2 ASN A  11      690    690    690      0      0      0       H  
+SIGUIJ   84  HB2 ASN A  11      545    545    545      0      0      0       H  
+ATOM     85  HB3 ASN A  11       5.539   9.972   1.103  1.00  0.07           H  
+SIGATM   85  HB3 ASN A  11       0.181   0.172   0.190  0.00  0.06           H  
+ANISOU   85  HB3 ASN A  11      706    706    706      0      0      0       H  
+SIGUIJ   85  HB3 ASN A  11      580    580    580      0      0      0       H  
+ATOM     86  N   PRO A  12       6.751  10.781   4.444  1.00  0.08           N  
+SIGATM   86  N   PRO A  12       0.013   0.013   0.014  0.00  0.00           N  
+ANISOU   86  N   PRO A  12      628    866    792     81    251   -392       N  
+SIGUIJ   86  N   PRO A  12        3      2     11      5     11      9       N  
+ATOM     87  CA  PRO A  12       5.993  10.881   5.695  1.00  0.10           C  
+SIGATM   87  CA  PRO A  12       0.020   0.022   0.021  0.00  0.00           C  
+ANISOU   87  CA  PRO A  12      872   1107    922    -21    -92   -737       C  
+SIGUIJ   87  CA  PRO A  12        6      4     18      8     18     13       C  
+ATOM     88  C   PRO A  12       4.536  11.000   5.537  1.00  0.11           C  
+SIGATM   88  C   PRO A  12       0.022   0.025   0.025  0.00  0.00           C  
+ANISOU   88  C   PRO A  12      870   1543    935    -49    192   -681       C  
+SIGUIJ   88  C   PRO A  12        6      5     20     10     21     17       C  
+ATOM     89  O   PRO A  12       3.803  10.770   6.457  1.00  0.21           O  
+SIGATM   89  O   PRO A  12       0.018   0.031   0.018  0.00  0.00           O  
+ANISOU   89  O   PRO A  12     1166   4335    908     75    840    732       O  
+SIGUIJ   89  O   PRO A  12        6      9     13     12     17     20       O  
+ATOM     90  CB  PRO A  12       6.592  12.079   6.387  1.00  0.15           C  
+SIGATM   90  CB  PRO A  12       0.032   0.043   0.040  0.00  0.00           C  
+ANISOU   90  CB  PRO A  12     1133   2033   1426   -617     -8  -1566       C  
+SIGUIJ   90  CB  PRO A  12        9      9     34     16     32     30       C  
+ATOM     91  CG  PRO A  12       7.961  12.085   5.889  1.00  0.27           C  
+SIGATM   91  CG  PRO A  12       0.063   0.065   0.055  0.00  0.00           C  
+ANISOU   91  CG  PRO A  12     2734   3021   2352  -4415   2197  -3768       C  
+SIGUIJ   91  CG  PRO A  12       27     17     63     41     74     61       C  
+ATOM     92  CD  PRO A  12       7.858  11.769   4.414  1.00  0.12           C  
+SIGATM   92  CD  PRO A  12       0.023   0.026   0.030  0.00  0.00           C  
+ANISOU   92  CD  PRO A  12      789   1058   1661   -511    608   -952       C  
+SIGUIJ   92  CD  PRO A  12        6      4     30      9     24     20       C  
+ATOM     93  HA  PRO A  12       6.059   9.963   6.276  1.00  0.07           H  
+SIGATM   93  HA  PRO A  12       0.176   0.179   0.185  0.00  0.06           H  
+ANISOU   93  HA  PRO A  12      706    706    706      0      0      0       H  
+SIGUIJ   93  HA  PRO A  12      580    580    580      0      0      0       H  
+ATOM     94  HB2 PRO A  12       6.081  12.983   6.132  1.00  0.11           H  
+SIGATM   94  HB2 PRO A  12       0.251   0.236   0.277  0.00  0.10           H  
+ANISOU   94  HB2 PRO A  12     1134   1134   1134      0      0      0       H  
+SIGUIJ   94  HB2 PRO A  12     1041   1041   1041      0      0      0       H  
+ATOM     95  HB3 PRO A  12       6.586  11.967   7.456  1.00  0.11           H  
+SIGATM   95  HB3 PRO A  12       0.240   0.237   0.266  0.00  0.09           H  
+ANISOU   95  HB3 PRO A  12     1138   1138   1138      0      0      0       H  
+SIGUIJ   95  HB3 PRO A  12      927    927    927      0      0      0       H  
+ATOM     96  HG2 PRO A  12       8.431  13.035   6.043  1.00  0.17           H  
+SIGATM   96  HG2 PRO A  12       0.299   0.298   0.322  0.00  0.11           H  
+ANISOU   96  HG2 PRO A  12     1736   1736   1736      0      0      0       H  
+SIGUIJ   96  HG2 PRO A  12     1117   1117   1117      0      0      0       H  
+ATOM     97  HG3 PRO A  12       8.543  11.346   6.383  1.00  0.19           H  
+SIGATM   97  HG3 PRO A  12       0.407   0.350   0.438  0.00  0.22           H  
+ANISOU   97  HG3 PRO A  12     1885   1885   1885      0      0      0       H  
+SIGUIJ   97  HG3 PRO A  12     2187   2187   2187      0      0      0       H  
+ATOM     98  HD2 PRO A  12       7.629  12.643   3.866  1.00  0.11           H  
+SIGATM   98  HD2 PRO A  12       0.225   0.232   0.230  0.00  0.09           H  
+ANISOU   98  HD2 PRO A  12     1051   1051   1051      0      0      0       H  
+SIGUIJ   98  HD2 PRO A  12      873    873    873      0      0      0       H  
+ATOM     99  HD3 PRO A  12       8.765  11.335   4.035  1.00  0.10           H  
+SIGATM   99  HD3 PRO A  12       0.225   0.205   0.219  0.00  0.07           H  
+ANISOU   99  HD3 PRO A  12     1006   1006   1006      0      0      0       H  
+SIGUIJ   99  HD3 PRO A  12      747    747    747      0      0      0       H  
+ATOM    100  N   ALA A  13       4.054  11.569   4.327  1.00  0.08           N  
+SIGATM  100  N   ALA A  13       0.013   0.013   0.019  0.00  0.00           N  
+ANISOU  100  N   ALA A  13      640    643   1041    289    -79   -566       N  
+SIGUIJ  100  N   ALA A  13        4      2     15      4     13      9       N  
+ATOM    101  CA  ALA A  13       2.614  11.758   4.111  1.00  0.08           C  
+SIGATM  101  CA  ALA A  13       0.016   0.014   0.022  0.00  0.00           C  
+ANISOU  101  CA  ALA A  13      709    452   1250    205    153   -482       C  
+SIGUIJ  101  CA  ALA A  13        4      2     19      5     16     10       C  
+ATOM    102  C   ALA A  13       1.854  10.479   3.852  1.00  0.08           C  
+SIGATM  102  C   ALA A  13       0.014   0.015   0.019  0.00  0.00           C  
+ANISOU  102  C   ALA A  13      463    820   1046     48    385   -454       C  
+SIGUIJ  102  C   ALA A  13        4      3     16      5     13     11       C  
+ATOM    103  O   ALA A  13       0.648  10.459   3.874  1.00  0.11           O  
+SIGATM  103  O   ALA A  13       0.010   0.012   0.017  0.00  0.00           O  
+ANISOU  103  O   ALA A  13      501   1073   1773    425   -230   -970       O  
+SIGUIJ  103  O   ALA A  13        3      2     17      4     12     11       O  
+ATOM    104  CB  ALA A  13       2.371  12.707   2.945  1.00  0.12           C  
+SIGATM  104  CB  ALA A  13       0.025   0.023   0.037  0.00  0.00           C  
+ANISOU  104  CB  ALA A  13      827    842   2018    153   -168    271       C  
+SIGUIJ  104  CB  ALA A  13        6      4     38      8     26     20       C  
+ATOM    105  H   ALA A  13       4.594  11.840   3.526  1.00  0.07           H  
+SIGATM  105  H   ALA A  13       0.179   0.174   0.192  0.00  0.06           H  
+ANISOU  105  H   ALA A  13      650    650    650      0      0      0       H  
+SIGUIJ  105  H   ALA A  13      615    615    615      0      0      0       H  
+ATOM    106  HA  ALA A  13       2.248  12.153   5.051  1.00  0.07           H  
+SIGATM  106  HA  ALA A  13       0.172   0.176   0.192  0.00  0.06           H  
+ANISOU  106  HA  ALA A  13      718    718    718      0      0      0       H  
+SIGUIJ  106  HA  ALA A  13      567    567    567      0      0      0       H  
+ATOM    107  HB1 ALA A  13       2.930  13.603   3.155  1.00  0.07           H  
+SIGATM  107  HB1 ALA A  13       0.173   0.178   0.174  0.00  0.06           H  
+ANISOU  107  HB1 ALA A  13      728    728    728      0      0      0       H  
+SIGUIJ  107  HB1 ALA A  13      572    572    572      0      0      0       H  
+ATOM    108  HB2 ALA A  13       2.657  12.286   1.988  1.00  0.07           H  
+SIGATM  108  HB2 ALA A  13       0.188   0.188   0.198  0.00  0.07           H  
+ANISOU  108  HB2 ALA A  13      715    715    715      0      0      0       H  
+SIGUIJ  108  HB2 ALA A  13      666    666    666      0      0      0       H  
+ATOM    109  HB3 ALA A  13       1.316  12.949   2.951  1.00  0.07           H  
+SIGATM  109  HB3 ALA A  13       0.192   0.169   0.186  0.00  0.06           H  
+ANISOU  109  HB3 ALA A  13      715    715    715      0      0      0       H  
+SIGUIJ  109  HB3 ALA A  13      564    564    564      0      0      0       H  
+ATOM    110  N   CYS A  14       2.566   9.366   3.675  1.00  0.06           N  
+SIGATM  110  N   CYS A  14       0.013   0.011   0.013  0.00  0.00           N  
+ANISOU  110  N   CYS A  14      641    555    707    195   -126   -141       N  
+SIGUIJ  110  N   CYS A  14        3      2     10      4     11      6       N  
+ATOM    111  CA  CYS A  14       1.925   8.118   3.465  1.00  0.06           C  
+SIGATM  111  CA  CYS A  14       0.014   0.013   0.015  0.00  0.00           C  
+ANISOU  111  CA  CYS A  14      672    569    527     27   -197   -232       C  
+SIGUIJ  111  CA  CYS A  14        4      2     10      5     12      8       C  
+ATOM    112  C   CYS A  14       1.272   7.642   4.798  1.00  0.05           C  
+SIGATM  112  C   CYS A  14       0.012   0.013   0.016  0.00  0.00           C  
+ANISOU  112  C   CYS A  14      365    611    632    284   -153      2       C  
+SIGUIJ  112  C   CYS A  14        3      2     12      4     10      8       C  
+ATOM    113  O   CYS A  14       1.784   7.909   5.886  1.00  0.08           O  
+SIGATM  113  O   CYS A  14       0.010   0.011   0.011  0.00  0.00           O  
+ANISOU  113  O   CYS A  14      640   1018    610   -211     -6    143       O  
+SIGUIJ  113  O   CYS A  14        3      2      8      4      9      6       O  
+ATOM    114  CB  CYS A  14       2.978   7.116   3.089  1.00  0.07           C  
+SIGATM  114  CB  CYS A  14       0.016   0.013   0.016  0.00  0.00           C  
+ANISOU  114  CB  CYS A  14      725    462    784     47    105    151       C  
+SIGUIJ  114  CB  CYS A  14        4      2     13      5     13      8       C  
+ATOM    115  SG  CYS A  14       3.811   7.459   1.517  1.00  0.07           S  
+SIGATM  115  SG  CYS A  14       0.004   0.003   0.004  0.00  0.00           S  
+ANISOU  115  SG  CYS A  14      842    435    834      0    680    -36       S  
+SIGUIJ  115  SG  CYS A  14        1      0      3      1      4      2       S  
+ATOM    116  H   CYS A  14       3.562   9.226   3.717  1.00  0.05           H  
+SIGATM  116  H   CYS A  14       0.160   0.153   0.167  0.00  0.05           H  
+ANISOU  116  H   CYS A  14      543    543    543      0      0      0       H  
+SIGUIJ  116  H   CYS A  14      487    487    487      0      0      0       H  
+ATOM    117  HA  CYS A  14       1.194   8.245   2.681  1.00  0.05           H  
+SIGATM  117  HA  CYS A  14       0.143   0.143   0.158  0.00  0.04           H  
+ANISOU  117  HA  CYS A  14      478    478    478      0      0      0       H  
+SIGUIJ  117  HA  CYS A  14      426    426    426      0      0      0       H  
+ATOM    118  HB2 CYS A  14       3.698   7.060   3.881  1.00  0.05           H  
+SIGATM  118  HB2 CYS A  14       0.150   0.145   0.157  0.00  0.05           H  
+ANISOU  118  HB2 CYS A  14      526    526    526      0      0      0       H  
+SIGUIJ  118  HB2 CYS A  14      478    478    478      0      0      0       H  
+ATOM    119  HB3 CYS A  14       2.486   6.155   3.017  1.00  0.05           H  
+SIGATM  119  HB3 CYS A  14       0.140   0.147   0.145  0.00  0.04           H  
+ANISOU  119  HB3 CYS A  14      504    504    504      0      0      0       H  
+SIGUIJ  119  HB3 CYS A  14      436    436    436      0      0      0       H  
+ATOM    120  N   ALA A  15       0.155   6.908   4.689  1.00  0.06           N  
+SIGATM  120  N   ALA A  15       0.010   0.011   0.014  0.00  0.00           N  
+ANISOU  120  N   ALA A  15      362    749    644     -9    -44    124       N  
+SIGUIJ  120  N   ALA A  15        3      2     10      4      9      6       N  
+ATOM    121  CA  ALA A  15      -0.566   6.514   5.866  1.00  0.06           C  
+SIGATM  121  CA  ALA A  15       0.011   0.014   0.015  0.00  0.00           C  
+ANISOU  121  CA  ALA A  15      323    592    745     98    143    187       C  
+SIGUIJ  121  CA  ALA A  15        3      2     12      4     10      8       C  
+ATOM    122  C   ALA A  15       0.319   5.607   6.739  1.00  0.07           C  
+SIGATM  122  C   ALA A  15       0.012   0.016   0.017  0.00  0.00           C  
+ANISOU  122  C   ALA A  15      307    974    712    296    201   -225       C  
+SIGUIJ  122  C   ALA A  15        3      3     13      5     11     10       C  
+ATOM    123  O   ALA A  15       0.950   4.662   6.278  1.00  0.07           O  
+SIGATM  123  O   ALA A  15       0.009   0.010   0.011  0.00  0.00           O  
+ANISOU  123  O   ALA A  15      668    877    693    763    103     79       O  
+SIGUIJ  123  O   ALA A  15        3      2      8      4      9      6       O  
+ATOM    124  CB  ALA A  15      -1.848   5.735   5.538  1.00  0.10           C  
+SIGATM  124  CB  ALA A  15       0.018   0.027   0.022  0.00  0.00           C  
+ANISOU  124  CB  ALA A  15      576   1643    806    286   -240    377       C  
+SIGUIJ  124  CB  ALA A  15        5      5     18      8     15     16       C  
+ATOM    125  H   ALA A  15      -0.181   6.615   3.792  1.00  0.05           H  
+SIGATM  125  H   ALA A  15       0.153   0.151   0.172  0.00  0.05           H  
+ANISOU  125  H   ALA A  15      528    528    528      0      0      0       H  
+SIGUIJ  125  H   ALA A  15      486    486    486      0      0      0       H  
+ATOM    126  HA  ALA A  15      -0.810   7.435   6.394  1.00  0.04           H  
+SIGATM  126  HA  ALA A  15       0.131   0.142   0.143  0.00  0.04           H  
+ANISOU  126  HA  ALA A  15      439    439    439      0      0      0       H  
+SIGUIJ  126  HA  ALA A  15      402    402    402      0      0      0       H  
+ATOM    127  HB1 ALA A  15      -1.749   5.622   4.469  1.00  0.05           H  
+SIGATM  127  HB1 ALA A  15       0.143   0.142   0.168  0.00  0.04           H  
+ANISOU  127  HB1 ALA A  15      450    450    450      0      0      0       H  
+SIGUIJ  127  HB1 ALA A  15      442    442    442      0      0      0       H  
+ATOM    128  HB2 ALA A  15      -1.919   4.723   5.952  1.00  0.05           H  
+SIGATM  128  HB2 ALA A  15       0.140   0.151   0.165  0.00  0.05           H  
+ANISOU  128  HB2 ALA A  15      485    485    485      0      0      0       H  
+SIGUIJ  128  HB2 ALA A  15      463    463    463      0      0      0       H  
+ATOM    129  HB3 ALA A  15      -2.798   6.231   5.718  1.00  0.05           H  
+SIGATM  129  HB3 ALA A  15       0.154   0.135   0.144  0.00  0.04           H  
+ANISOU  129  HB3 ALA A  15      485    485    485      0      0      0       H  
+SIGUIJ  129  HB3 ALA A  15      420    420    420      0      0      0       H  
+ATOM    130  N   GLY A  16       0.263   5.822   8.057  1.00  0.06           N  
+SIGATM  130  N   GLY A  16       0.010   0.012   0.012  0.00  0.00           N  
+ANISOU  130  N   GLY A  16      313    902    515    516    208    221       N  
+SIGUIJ  130  N   GLY A  16        2      2      9      4      8      6       N  
+ATOM    131  CA  GLY A  16       1.013   5.005   8.932  1.00  0.05           C  
+SIGATM  131  CA  GLY A  16       0.011   0.016   0.015  0.00  0.00           C  
+ANISOU  131  CA  GLY A  16      230    811    587     78    107    127       C  
+SIGUIJ  131  CA  GLY A  16        2      3     11      4      9      9       C  
+ATOM    132  C   GLY A  16       2.489   5.327   9.002  1.00  0.05           C  
+SIGATM  132  C   GLY A  16       0.011   0.013   0.012  0.00  0.00           C  
+ANISOU  132  C   GLY A  16      380    680    391    175    -20   -107       C  
+SIGUIJ  132  C   GLY A  16        3      2      9      4      9      8       C  
+ATOM    133  O   GLY A  16       3.222   4.510   9.579  1.00  0.06           O  
+SIGATM  133  O   GLY A  16       0.009   0.010   0.009  0.00  0.00           O  
+ANISOU  133  O   GLY A  16      586    823    541    146   -350    458       O  
+SIGUIJ  133  O   GLY A  16        2      2      6      3      6      6       O  
+ATOM    134  H   GLY A  16      -0.286   6.557   8.415  1.00  0.05           H  
+SIGATM  134  H   GLY A  16       0.154   0.146   0.153  0.00  0.05           H  
+ANISOU  134  H   GLY A  16      487    487    487      0      0      0       H  
+SIGUIJ  134  H   GLY A  16      450    450    450      0      0      0       H  
+ATOM    135  HA2 GLY A  16       0.590   5.076   9.912  1.00  0.06           H  
+SIGATM  135  HA2 GLY A  16       0.152   0.147   0.183  0.00  0.05           H  
+ANISOU  135  HA2 GLY A  16      592    592    592      0      0      0       H  
+SIGUIJ  135  HA2 GLY A  16      493    493    493      0      0      0       H  
+ATOM    136  HA3 GLY A  16       0.912   3.973   8.605  1.00  0.06           H  
+SIGATM  136  HA3 GLY A  16       0.150   0.164   0.159  0.00  0.05           H  
+ANISOU  136  HA3 GLY A  16      571    571    571      0      0      0       H  
+SIGUIJ  136  HA3 GLY A  16      491    491    491      0      0      0       H  
+ATOM    137  N   CYS A  17       2.909   6.439   8.410  1.00  0.06           N  
+SIGATM  137  N   CYS A  17       0.011   0.012   0.013  0.00  0.00           N  
+ANISOU  137  N   CYS A  17      501    652    618    328    -39     61       N  
+SIGUIJ  137  N   CYS A  17        3      2      9      4      9      6       N  
+ATOM    138  CA  CYS A  17       4.319   6.719   8.287  1.00  0.06           C  
+SIGATM  138  CA  CYS A  17       0.015   0.014   0.016  0.00  0.00           C  
+ANISOU  138  CA  CYS A  17      526    683    708    228    175     31       C  
+SIGUIJ  138  CA  CYS A  17        4      2     12      5     12      9       C  
+ATOM    139  C   CYS A  17       4.711   8.043   9.027  1.00  0.08           C  
+SIGATM  139  C   CYS A  17       0.015   0.017   0.019  0.00  0.00           C  
+ANISOU  139  C   CYS A  17      454    892    958   -126   -126    -83       C  
+SIGUIJ  139  C   CYS A  17        3      3     16      5     13     11       C  
+ATOM    140  O   CYS A  17       5.844   8.450   8.824  1.00  0.12           O  
+SIGATM  140  O   CYS A  17       0.013   0.013   0.016  0.00  0.00           O  
+ANISOU  140  O   CYS A  17      871   1144   1483   -544    280   -648       O  
+SIGUIJ  140  O   CYS A  17        4      3     16      5     13     11       O  
+ATOM    141  CB  CYS A  17       4.740   6.788   6.820  1.00  0.06           C  
+SIGATM  141  CB  CYS A  17       0.014   0.014   0.017  0.00  0.00           C  
+ANISOU  141  CB  CYS A  17      479    560    904    -52    137    -19       C  
+SIGUIJ  141  CB  CYS A  17        3      2     13      4     13      9       C  
+ATOM    142  SG  CYS A  17       4.367   5.270   5.934  1.00  0.07           S  
+SIGATM  142  SG  CYS A  17       0.003   0.004   0.004  0.00  0.00           S  
+ANISOU  142  SG  CYS A  17      376    851    750     78      6   -172       S  
+SIGUIJ  142  SG  CYS A  17        1      1      3      1      3      2       S  
+ATOM    143  OXT CYS A  17       3.903   8.569   9.773  1.00  0.14           O  
+SIGATM  143  OXT CYS A  17       0.013   0.017   0.018  0.00  0.00           O  
+ANISOU  143  OXT CYS A  17      853   1579   1744   -439    768  -1657       O  
+SIGUIJ  143  OXT CYS A  17        4      3     19      6     15     13       O  
+ATOM    144  H   CYS A  17       2.537   6.908   7.601  1.00  0.06           H  
+SIGATM  144  H   CYS A  17       0.155   0.151   0.159  0.00  0.05           H  
+ANISOU  144  H   CYS A  17      582    582    582      0      0      0       H  
+SIGUIJ  144  H   CYS A  17      502    502    502      0      0      0       H  
+ATOM    145  HA  CYS A  17       5.389   6.646   8.436  1.00  0.06           H  
+SIGATM  145  HA  CYS A  17       0.156   0.149   0.164  0.00  0.05           H  
+ANISOU  145  HA  CYS A  17      558    558    558      0      0      0       H  
+SIGUIJ  145  HA  CYS A  17      468    468    468      0      0      0       H  
+ATOM    146  HB2 CYS A  17       4.209   7.608   6.339  1.00  0.06           H  
+SIGATM  146  HB2 CYS A  17       0.153   0.153   0.158  0.00  0.05           H  
+ANISOU  146  HB2 CYS A  17      562    562    562      0      0      0       H  
+SIGUIJ  146  HB2 CYS A  17      458    458    458      0      0      0       H  
+ATOM    147  HB3 CYS A  17       5.802   6.981   6.761  1.00  0.06           H  
+SIGATM  147  HB3 CYS A  17       0.149   0.144   0.157  0.00  0.05           H  
+ANISOU  147  HB3 CYS A  17      559    559    559      0      0      0       H  
+SIGUIJ  147  HB3 CYS A  17      453    453    453      0      0      0       H  
+TER     148      CYS A  17                                                      
+HETATM  149  O   HOH A  18       7.387  -1.797   4.231  1.00  0.08           O  
+SIGATM  149  O   HOH A  18       0.011   0.010   0.011  0.00  0.00           O  
+ANISOU  149  O   HOH A  18      939    732    778   -389    143    410       O  
+SIGUIJ  149  O   HOH A  18        3      2      9      4     10      6       O  
+HETATM  150  O   HOH A  19      -0.789   2.241   2.683  1.00  0.27           O  
+SIGATM  150  O   HOH A  19       0.029   0.032   0.031  0.00  0.00           O  
+ANISOU  150  O   HOH A  19     2672   2885   2438  -1283  -1065     19       O  
+SIGUIJ  150  O   HOH A  19       13      8     34     17     39     30       O  
+HETATM  151  O   HOH A  20      11.269   0.970   3.409  1.00  0.21           O  
+SIGATM  151  O   HOH A  20       0.017   0.017   0.031  0.00  0.00           O  
+ANISOU  151  O   HOH A  20     1289   1317   3744   -138  -1821    556       O  
+SIGUIJ  151  O   HOH A  20        6      3     43      6     29     21       O  
+HETATM  152  O   HOH A  21       9.999  11.207   0.044  1.00  0.20           O  
+SIGATM  152  O   HOH A  21       0.024   0.017   0.023  0.00  0.00           O  
+ANISOU  152  O   HOH A  21     2692   1252   2045  -1372   1462   -908       O  
+SIGUIJ  152  O   HOH A  21       10      3     25     10     30     16       O  
+HETATM  153  O   HOH A  22       5.509  14.862   3.821  1.00  0.49           O  
+SIGATM  153  O   HOH A  22       0.039   0.038   0.079  0.00  0.00           O  
+ANISOU  153  O   HOH A  22     2899   2678   9021   1619   1888    120       O  
+SIGUIJ  153  O   HOH A  22       16      9    155     23     95     73       O  
+HETATM  154  O   HOH A  23       3.082  12.209   8.442  1.00  0.36           O  
+SIGATM  154  O   HOH A  23       0.038   0.029   0.049  0.00  0.00           O  
+ANISOU  154  O   HOH A  23     3279   2259   5308   -178   4373  -2306       O  
+SIGUIJ  154  O   HOH A  23       18      6     81     18     69     41       O  
+HETATM  155  O   HOH A  24       0.873  10.082   7.662  1.00  0.22           O  
+SIGATM  155  O   HOH A  24       0.023   0.023   0.023  0.00  0.00           O  
+ANISOU  155  O   HOH A  24     2113   2382   2019   2081   -489  -1683       O  
+SIGUIJ  155  O   HOH A  24        9      6     27     12     27     22       O  
+HETATM  156  O   HOH A  25      -0.378   5.353   2.264  1.00  0.12           O  
+SIGATM  156  O   HOH A  25       0.015   0.014   0.014  0.00  0.00           O  
+ANISOU  156  O   HOH A  25     1264   1366   1018    724   -105    325       O  
+SIGUIJ  156  O   HOH A  25        5      3     13      6     13     10       O  
+HETATM  157  O   HOH A  26       1.375   3.651   3.786  1.00  0.10           O  
+SIGATM  157  O   HOH A  26       0.011   0.013   0.012  0.00  0.00           O  
+ANISOU  157  O   HOH A  26      798   1400    741    103     43   -343       O  
+SIGUIJ  157  O   HOH A  26        3      3     10      5     10      9       O  
+HETATM  158  O   HOH A  27       7.036  10.477  10.064  1.00  0.21           O  
+SIGATM  158  O   HOH A  27       0.025   0.022   0.025  0.00  0.00           O  
+ANISOU  158  O   HOH A  27     2390   1964   2079   -829    445  -1911       O  
+SIGUIJ  158  O   HOH A  27       10      5     25     12     29     20       O  
+HETATM  159  O   HOH A  28       1.111   9.016  10.384  1.00  0.29           O  
+SIGATM  159  O   HOH A  28       0.018   0.033   0.034  0.00  0.00           O  
+ANISOU  159  O   HOH A  28     1033   4040   3504    -85    723   4373       O  
+SIGUIJ  159  O   HOH A  28        5     10     48     12     27     39       O  
+HETATM  160  O   HOH A  29       3.234  10.642  12.011  1.00  0.95           O  
+SIGATM  160  O   HOH A  29       0.123   0.037   0.073  0.00  0.01           O  
+ANISOU  160  O   HOH A  29    20147   1749   6718   -612 -15681   -969       O  
+SIGUIJ  160  O   HOH A  29      126      6    128     55    226     53       O  
+HETATM  161  O   HOH A  30      10.733  12.231   2.430  1.00  0.14           O  
+SIGATM  161  O   HOH A  30       0.016   0.016   0.018  0.00  0.00           O  
+ANISOU  161  O   HOH A  30     1233   1552   1470     30    557    181       O  
+SIGUIJ  161  O   HOH A  30        5      3     18      6     17     13       O  
+CONECT    1    2    3   10                                                      
+CONECT    2    1                                                                
+CONECT    3    1    4    6    7                                                 
+CONECT    4    3    5    8    9                                                 
+CONECT    5    4   69                                                           
+CONECT    6    3                                                                
+CONECT    7    3                                                                
+CONECT    8    4                                                                
+CONECT    9    4                                                                
+CONECT   10    1                                                                
+CONECT   15  115                                                                
+CONECT   59  142                                                                
+CONECT   69    5                                                                
+CONECT  115   15                                                                
+CONECT  142   59                                                                
+MASTER      263    0    1    1    0    2    3    6   95    1   15    1          
+END                                                                             
