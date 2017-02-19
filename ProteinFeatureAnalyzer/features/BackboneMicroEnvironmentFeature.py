@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d
 
 from .Feature import Feature
-from . import Geometry
+from . import geometry
 
 
 class BackboneMicroEnvironmentFeature(Feature):
@@ -29,7 +29,7 @@ class BackboneMicroEnvironmentFeature(Feature):
     structure = self.structure_from_pdb_file(pdb_file)
   
     for model in structure:
-      nearest_nb_list = Geometry.get_nearest_nonbonded_residues(model)
+      nearest_nb_list = geometry.get_nearest_nonbonded_residues(model)
    
       for res1, res2 in nearest_nb_list:
         feature_dict ={}
@@ -37,25 +37,25 @@ class BackboneMicroEnvironmentFeature(Feature):
         # Get the torsions
         
         try:
-          feature_dict['phi1'] = Geometry.get_phi(res1.get_parent(), res1) 
-          feature_dict['psi1'] = Geometry.get_psi(res1.get_parent(), res1) 
-          feature_dict['phi2'] = Geometry.get_phi(res2.get_parent(), res2) 
-          feature_dict['psi2'] = Geometry.get_psi(res2.get_parent(), res2) 
+          feature_dict['phi1'] = geometry.get_phi(res1.get_parent(), res1) 
+          feature_dict['psi1'] = geometry.get_psi(res1.get_parent(), res1) 
+          feature_dict['phi2'] = geometry.get_phi(res2.get_parent(), res2) 
+          feature_dict['psi2'] = geometry.get_psi(res2.get_parent(), res2) 
         except:
           continue
 
         # Get the relative position of the second residue 
 
-        s_matrix, origin = Geometry.get_residue_stub_matrix(res1)
+        s_matrix, origin = geometry.get_residue_stub_matrix(res1)
         shift_global = res2['CA'].get_coord() - res1['CA'].get_coord()
         feature_dict['shift'] = np.matmul(np.array(s_matrix.T), np.array(shift_global))
 
         # Get the relative orientation of the second residue
 
-        s_matrix2, origin2 = Geometry.get_residue_stub_matrix(res2)
+        s_matrix2, origin2 = geometry.get_residue_stub_matrix(res2)
         rot_matrix = np.dot(s_matrix.T, s_matrix2) # Rotation matrix in the frame of the first residue
         feature_dict['theta_x'], feature_dict['theta_y'], feature_dict['theta_z'] = \
-                Geometry.rotation_matrix_to_euler_angles(np.array(rot_matrix))
+                geometry.rotation_matrix_to_euler_angles(np.array(rot_matrix))
 
         self.feature_list.append(feature_dict)
 

@@ -18,7 +18,8 @@ setup(
         'biopython',
         'docopt',
         'pandas',
-        'flufl.lock'
+        'flufl.lock',
+        'sklearn',
     ],
     entry_points={
         'console_scripts': [

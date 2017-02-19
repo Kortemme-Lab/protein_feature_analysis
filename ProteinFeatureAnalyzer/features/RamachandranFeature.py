@@ -6,10 +6,11 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import Bio.PDB as PDB
+from sklearn import svm
 
 from .Feature import Feature
-from . import Geometry
-
+from . import geometry
+from . import machine_learning
 
 class RamachandranFeature(Feature):
   '''Analyze the phi/psi torsion distributions of proteins.'''
@@ -31,8 +32,8 @@ class RamachandranFeature(Feature):
       for chain in model:
         for residue in chain:
           try:
-            feature_dict = {'phi' : Geometry.get_phi(chain, residue),
-                            'psi' : Geometry.get_psi(chain, residue)}
+            feature_dict = {'phi' : geometry.get_phi(chain, residue),
+                            'psi' : geometry.get_psi(chain, residue)}
             self.feature_list.append(feature_dict)
           except:
             pass
@@ -60,3 +61,7 @@ class RamachandranFeature(Feature):
     
     for index, row in df.iterrows():
       self.feature_list.append({'phi':row[0], 'psi':row[1]})
+
+  def learn_one_class_svm(self):
+    '''Learn the distribution with an one class SVM.'''
+    pass
