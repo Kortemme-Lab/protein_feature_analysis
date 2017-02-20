@@ -66,6 +66,13 @@ class RamachandranFeature(Feature):
 
     plt.scatter(phis, psis, c='green', s=5)
 
+    # Plot the support vectors if the classifier is SVM
+
+    if isinstance(self.clf, svm.OneClassSVM):
+      s_phis = [ machine_learning.cos_sin_to_angle(v[0], v[1]) for v in self.clf.support_vectors_ ]
+      s_psis = [ machine_learning.cos_sin_to_angle(v[2], v[3]) for v in self.clf.support_vectors_ ]
+      plt.scatter(s_phis, s_psis, c='red')
+
     plt.axis([- np.pi, np.pi, - np.pi, np.pi])
     plt.show()
 
