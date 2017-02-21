@@ -124,3 +124,24 @@ def rotation_matrix_to_euler_angles(m):
   theta_z = np.arctan2(m[1][0], m[0][0])
 
   return theta_x, theta_y, theta_z
+
+def euler_angles_to_rotation_matrix(theta_x, theta_y, theta_z):
+  '''Return the rotation matrix corresponding to 3 Euler angles.'''
+  cx = np.cos(theta_x)
+  sx = np.sin(theta_x)
+  cy = np.cos(theta_y)
+  sy = np.sin(theta_y)
+  cz = np.cos(theta_z)
+  sz = np.sin(theta_z)
+  
+  X = np.array([[  1,   0,   0],
+                [  0,  cx, -sx],
+                [  0,  sx,  cx]])
+  Y = np.array([[ cy,   0,  sy],
+                [  0,   1,   0],
+                [-sy,   0,  cy]])
+  Z = np.array([[ cz, -sz,   0],
+                [ sz,  cz,   0],
+                [  0,   0,   1]])
+
+  return np.matmul(Z, np.matmul(Y, X))

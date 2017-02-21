@@ -20,6 +20,7 @@ setup(
         'pandas',
         'flufl.lock',
         'sklearn',
+        'pytest',
     ],
     entry_points={
         'console_scripts': [
