@@ -3,6 +3,7 @@ import os
 import numpy as np
 import pandas as pd
 from sklearn import svm
+from sklearn.ensemble import IsolationForest
 import matplotlib
 matplotlib.use('TkAgg') 
 import matplotlib.pyplot as plt
@@ -126,6 +127,11 @@ class BackboneMicroEnvironmentFeature(Feature):
         if len(predictions[-1 == predictions]) < least_error:
           least_error = len(predictions[-1 == predictions])
           self.clf = clf
+    
+    elif clf_type == "IsolationForest": 
+      self.clf = IsolationForest(max_samples=2000,
+			contamination=0.01, random_state=np.random.RandomState(42))
+      self.clf.fit(training_data)
    
     # Print Training results
     

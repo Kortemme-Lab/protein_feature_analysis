@@ -126,8 +126,8 @@ class RamachandranFeature(Feature):
           self.clf = clf
     
     elif clf_type == "IsolationForest": 
-      self.clf = IsolationForest(max_samples=200,
-			contamination=0.05, random_state=np.random.RandomState(42))
+      self.clf = IsolationForest(max_samples=2000,
+			contamination=0.01, random_state=np.random.RandomState(42))
       self.clf.fit(training_data)
    
     # Print Training results
