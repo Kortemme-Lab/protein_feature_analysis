@@ -145,3 +145,32 @@ def euler_angles_to_rotation_matrix(theta_x, theta_y, theta_z):
                 [  0,   0,   1]])
 
   return np.matmul(Z, np.matmul(Y, X))
+
+def random_unit_vector(dim=3):
+  '''Generate a random unit vector following the
+  uniform distribution on the (dim - 1) dimension sphere.
+  '''
+  while True:
+    v = np.random.normal(size=dim)
+    if np.linalg.norm(v) > 0: break
+  
+  return normalize(v)
+
+def random_rotation_matrix():
+  '''Generate a random rotation matrix following the
+  uniform distribution in SO(3).
+  '''
+  x = random_unit_vector()
+  t = random_unit_vector()
+  while np.linalg.norm(x - t) == 0:
+    t = random_unit_vector()
+  y = normalize(np.cross(x, t))
+  z = np.cross(x, y)
+
+  return np.array([x, y, z])
+
+def random_euler_angles():
+  '''Generate a random euler angles following the
+  uniform distribution in SO(3).
+  '''
+  return rotation_matrix_to_euler_angles(random_rotation_matrix())

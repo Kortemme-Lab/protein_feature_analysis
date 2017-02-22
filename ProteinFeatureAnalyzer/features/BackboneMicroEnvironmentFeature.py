@@ -146,6 +146,26 @@ class BackboneMicroEnvironmentFeature(Feature):
             for d in input_data]
     return self.clf.predict(transformed_data)
 
+  def calculate_space_reduction(self):
+    '''Calculate the space reduction power of the machine learning model.'''
+    NUM_SAMPLES = 10000
+
+    phis1 = np.random.uniform(-np.pi, np.pi, NUM_SAMPLES)
+    psis1 = np.random.uniform(-np.pi, np.pi, NUM_SAMPLES)
+    phis2 = np.random.uniform(-np.pi, np.pi, NUM_SAMPLES)
+    psis2 = np.random.uniform(-np.pi, np.pi, NUM_SAMPLES)
+    shifts = [None] * NUM_SAMPLES
+    txs = [None] * NUM_SAMPLES
+    tys = [None] * NUM_SAMPLES
+    tzs = [None] * NUM_SAMPLES
+    for i in range(NUM_SAMPLES):
+      shifts[i] = np.random.uniform(3.5, 6) * geometry.random_unit_vector()
+      txs[i], tys[i], tzs[i] = geometry.random_euler_angles()
+
+    samples = list(zip(phis1, psis1, phis2, psis2, shifts, txs, tys, tzs))
+    predictions = self.predict(samples)
+    print("The space is reduced by {0}.".format(len(predictions[1 == predictions]) / len(predictions)))
+
   def visualize(self):
     pass
 

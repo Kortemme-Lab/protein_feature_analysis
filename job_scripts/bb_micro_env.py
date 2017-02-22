@@ -18,6 +18,7 @@ if __name__ == '__main__':
   ######### MACHINE LEARNING #########
  
   feature.learn()
+  feature.calculate_space_reduction()
   
   ######### VISUALIZATION #########
 
