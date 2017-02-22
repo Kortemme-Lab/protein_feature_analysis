@@ -189,12 +189,41 @@ class RamachandranFeature(Feature):
     if transform_features:
       all_data = [machine_learning.angle_to_cos_sin(d['phi']) + machine_learning.angle_to_cos_sin(d['psi'])
               for d in self.feature_list]
+    n_data = len(all_data)
+    training_data = all_data[0:int(0.7 * n_data)]
+    test_data = all_data[int(0.7 * n_data):n_data]
+
+    # Make some random data
     
+    phis = np.random.uniform(-np.pi, np.pi, 10000)
+    psis = np.random.uniform(-np.pi, np.pi, 10000)
+    
+    random_data = list(zip(phis, psis))
+    if transform_features: 
+        random_data = [machine_learning.angle_to_cos_sin(d[0]) + machine_learning.angle_to_cos_sin(d[1])
+                for d in zip(phis,psis)]
+
     if de_type == "GaussianMixture":
-      self.de = mixture.BayesianGaussianMixture(n_components=20, covariance_type='full').fit(all_data)
-    
+      self.de = mixture.BayesianGaussianMixture(n_components=100, covariance_type='full').fit(training_data)
+      
+      # Evalute the cumulative distribution functions of scores of test data
+
+      test_scores = self.de.score_samples(test_data)
+      values, base = np.histogram(test_scores, bins=40)
+      cumulative = np.cumsum(values)
+
+      for i in range(40):
+        
+        # Evaluate the space compression
+
+        random_scores = self.de.score_samples(random_data)
+        compress_coe = len(random_scores[random_scores > base[i]]) / len(random_scores)
+          
+        print('{0:.3f}\t{1}\t{2:.5f}\t{3:.5f}'.format(base[i], cumulative[i], cumulative[i] / len(test_data), compress_coe))
+
+
     elif de_type == "KernelDensity":
       params = {'bandwidth': np.logspace(-1, 1, 5)}
       grid = GridSearchCV(KernelDensity(), params)
-      grid.fit(all_data) 
+      grid.fit(training_data) 
       self.de = grid.best_estimator_
