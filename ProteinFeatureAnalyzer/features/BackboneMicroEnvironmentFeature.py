@@ -97,13 +97,27 @@ class BackboneMicroEnvironmentFeature(Feature):
             + list(geometry.euler_angles_to_rotation_matrix(feature_dict['theta_x'],
                 feature_dict['theta_y'], feature_dict['theta_z']).reshape(9))
 
+  def transform_features(self, feature_list):
+    '''Transform feature representations. The arguement feature_list
+    could be a list of dictionary or a list of list.
+    '''
+    if isinstance(feature_list[0], dict):
+      return [self.feature_dict_to_machine_learning_features(d) for d in feature_list]
+    
+    else:
+      return [machine_learning.angle_to_cos_sin(d[0]) + machine_learning.angle_to_cos_sin(d[1]) \
+            + machine_learning.angle_to_cos_sin(d[2]) + machine_learning.angle_to_cos_sin(d[3]) \
+            + list(d[4]) \
+            + list(geometry.euler_angles_to_rotation_matrix(d[5], d[6], d[7]).reshape(9))
+            for d in feature_list]
+
   def learn(self, clf_type="OneClassSVM", transform_features=False):
     '''Train a machine learning classifier on the features.'''
    
     all_data = [[d['phi1'], d['psi1'], d['phi2'], d['psi2']] + list(d['shift']) + [d['theta_x'], d['theta_y'], d['theta_z']]
             for d in self.feature_list]
     if transform_features:
-      all_data = [self.feature_dict_to_machine_learning_features(d) for d in self.feature_list]
+      all_data = self.transform_features(self.feature_list)
     n_data = len(all_data)
 
     training_data = all_data[0:int(0.6 * n_data)]
@@ -153,11 +167,7 @@ class BackboneMicroEnvironmentFeature(Feature):
             for d in input_data] 
     
     if transform_features:
-      transformed_data = [machine_learning.angle_to_cos_sin(d[0]) + machine_learning.angle_to_cos_sin(d[1]) \
-            + machine_learning.angle_to_cos_sin(d[2]) + machine_learning.angle_to_cos_sin(d[3]) \
-            + list(d[4]) \
-            + list(geometry.euler_angles_to_rotation_matrix(d[5], d[6], d[7]).reshape(9))
-            for d in input_data]
+      transformed_data = self.transform_features(input_data) 
     return self.clf.predict(transformed_data)
 
   def calculate_space_reduction(self, transform_features=False):

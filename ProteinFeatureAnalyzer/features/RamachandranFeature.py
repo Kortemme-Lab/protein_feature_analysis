@@ -56,8 +56,7 @@ class RamachandranFeature(Feature):
     transformed_data = np.c_[xx.ravel(), yy.ravel()]
 
     if transform_features:
-      transformed_data = [ machine_learning.angle_to_cos_sin(d[0]) + machine_learning.angle_to_cos_sin(d[1])
-         for d in np.c_[xx.ravel(), yy.ravel()] ]
+      transformed_data = self.transform_features(transformed_data)
     
     # Draw the decision boundary from the machine learning classifier
     
@@ -114,14 +113,25 @@ class RamachandranFeature(Feature):
     for index, row in df.iterrows():
       self.feature_list.append({'phi':row[0], 'psi':row[1]})
 
+  def transform_features(self, feature_list):
+    '''Transform feature representations. The arguement feature_list
+    could be a list of dictionary or a list of list.
+    '''
+    if isinstance(feature_list[0], dict):
+      return [machine_learning.angle_to_cos_sin(d['phi']) + machine_learning.angle_to_cos_sin(d['psi'])
+              for d in feature_list]
+
+    else:
+      return [machine_learning.angle_to_cos_sin(d[0]) + machine_learning.angle_to_cos_sin(d[1])
+              for d in feature_list]
+
   def learn(self, clf_type="OneClassSVM", transform_features=True):
     '''Learn the distribution with a machine learning classifier'''
     # Prepare the training data
   
     all_data = [(d['phi'], d['psi']) for d in self.feature_list]
     if transform_features:
-      all_data = [machine_learning.angle_to_cos_sin(d['phi']) + machine_learning.angle_to_cos_sin(d['psi'])
-              for d in self.feature_list]
+      all_data = self.transform_features(all_data)
     n_data = len(all_data)
 
     training_data = all_data[0:int(0.6 * n_data)]
@@ -170,8 +180,7 @@ class RamachandranFeature(Feature):
     transformed_data = input_data
 
     if transform_features: 
-        transformed_data = [machine_learning.angle_to_cos_sin(d[0]) + machine_learning.angle_to_cos_sin(d[1])
-                for d in input_data]
+        transformed_data = self.transform_features(transformed_data)
     
     return self.clf.predict(transformed_data)
 
@@ -187,8 +196,7 @@ class RamachandranFeature(Feature):
     '''Get a density estimation of the data.'''
     all_data = [(d['phi'], d['psi']) for d in self.feature_list]
     if transform_features:
-      all_data = [machine_learning.angle_to_cos_sin(d['phi']) + machine_learning.angle_to_cos_sin(d['psi'])
-              for d in self.feature_list]
+      all_data = self.transform_features(all_data)
     n_data = len(all_data)
     training_data = all_data[0:int(0.7 * n_data)]
     test_data = all_data[int(0.7 * n_data):n_data]
@@ -200,8 +208,7 @@ class RamachandranFeature(Feature):
     
     random_data = list(zip(phis, psis))
     if transform_features: 
-        random_data = [machine_learning.angle_to_cos_sin(d[0]) + machine_learning.angle_to_cos_sin(d[1])
-                for d in zip(phis,psis)]
+        random_data = self.transform_features(random_data)
 
     if de_type == "GaussianMixture":
       self.de = mixture.BayesianGaussianMixture(n_components=100, covariance_type='full').fit(training_data)
