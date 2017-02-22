@@ -17,8 +17,8 @@ if __name__ == '__main__':
 
   ######### MACHINE LEARNING #########
  
-  #feature.learn()
-  feature.learn("IsolationForest")
+  feature.learn()
+  #feature.learn("IsolationForest")
   feature.calculate_space_reduction()
   
   ######### VISUALIZATION #########

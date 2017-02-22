@@ -97,9 +97,13 @@ class BackboneMicroEnvironmentFeature(Feature):
             + list(geometry.euler_angles_to_rotation_matrix(feature_dict['theta_x'],
                 feature_dict['theta_y'], feature_dict['theta_z']).reshape(9))
 
-  def learn(self, clf_type="OneClassSVM"):
+  def learn(self, clf_type="OneClassSVM", transform_features=False):
     '''Train a machine learning classifier on the features.'''
-    all_data = [self.feature_dict_to_machine_learning_features(d) for d in self.feature_list]
+   
+    all_data = [[d['phi1'], d['psi1'], d['phi2'], d['psi2']] + list(d['shift']) + [d['theta_x'], d['theta_y'], d['theta_z']]
+            for d in self.feature_list]
+    if transform_features:
+      all_data = [self.feature_dict_to_machine_learning_features(d) for d in self.feature_list]
     n_data = len(all_data)
 
     training_data = all_data[0:int(0.6 * n_data)]
@@ -141,11 +145,15 @@ class BackboneMicroEnvironmentFeature(Feature):
     if clf_type == "OneClassSVM":
       print("{0} support vectors found.".format(len(self.clf.support_)))
 
-  def predict(self, input_data):
+  def predict(self, input_data, transform_features=False):
     '''Make a prediction for the input data with the machine learning classifier.
     input_data is a list of (phi1, psi1, phi2, psi2, [shift], theta_x, theta_y, theta_z].
     '''
-    transformed_data = [machine_learning.angle_to_cos_sin(d[0]) + machine_learning.angle_to_cos_sin(d[1]) \
+    transformed_data = [[d[0], d[1], d[2], d[3]] + list(d[4]) + [d[5], d[6], d[7]]
+            for d in input_data] 
+    
+    if transform_features:
+      transformed_data = [machine_learning.angle_to_cos_sin(d[0]) + machine_learning.angle_to_cos_sin(d[1]) \
             + machine_learning.angle_to_cos_sin(d[2]) + machine_learning.angle_to_cos_sin(d[3]) \
             + list(d[4]) \
             + list(geometry.euler_angles_to_rotation_matrix(d[5], d[6], d[7]).reshape(9))
