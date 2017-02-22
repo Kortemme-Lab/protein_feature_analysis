@@ -13,5 +13,6 @@ if __name__ == '__main__':
   #feature.save(data_path)
   feature.load(data_path)
   feature.learn()
+  feature.calculate_space_reduction()
   #feature.learn("IsolationForest")
   feature.visualize()

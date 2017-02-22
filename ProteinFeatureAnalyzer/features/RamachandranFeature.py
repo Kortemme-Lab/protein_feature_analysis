@@ -146,3 +146,10 @@ class RamachandranFeature(Feature):
             for d in input_data]
     return self.clf.predict(transformed_data)
 
+  def calculate_space_reduction(self):
+    '''Calculate the space reduction power of the machine learning model.'''
+    phis = np.random.uniform(-np.pi, np.pi, 10000)
+    psis = np.random.uniform(-np.pi, np.pi, 10000)
+    
+    predictions = self.predict(list(zip(phis, psis)))
+    print("The space is reduced by {0}.".format(len(predictions[1 == predictions]) / len(predictions)))
