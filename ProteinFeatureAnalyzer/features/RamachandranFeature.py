@@ -18,6 +18,7 @@ class RamachandranFeature(Feature):
   
   def __init__(self):
     super().__init__()
+    self.clf = None
 
   def extract(self, input_path, total_num_threads=1, my_id=0):
     '''Extract phi, psi angles from structures in the input path.'''
@@ -118,7 +119,7 @@ class RamachandranFeature(Feature):
         print("{0}/{1} training error.".format(len(predictions[-1 == predictions]), len(training_data)))
         
         predictions = clf.predict(test_data)
-        print("{0}/{1} test error.".format(len(predictions[-1 == predictions]), len(test_data)))
+        print("{0}/{1} test error.\n".format(len(predictions[-1 == predictions]), len(test_data)))
 
         if len(predictions[-1 == predictions]) < least_error:
           least_error = len(predictions[-1 == predictions])
@@ -131,7 +132,7 @@ class RamachandranFeature(Feature):
    
     # Print Training results
     
-    predictions = clf.predict(cv_data)
+    predictions = self.clf.predict(cv_data)
     print("{0}/{1} cross validation error.".format(len(predictions[-1 == predictions]), len(cv_data)))
 
     if clf_type == "OneClassSVM":
