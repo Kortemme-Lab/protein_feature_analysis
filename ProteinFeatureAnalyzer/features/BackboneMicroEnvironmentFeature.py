@@ -2,6 +2,7 @@ import os
 
 import numpy as np
 import pandas as pd
+from sklearn import svm
 import matplotlib
 matplotlib.use('TkAgg') 
 import matplotlib.pyplot as plt
@@ -9,6 +10,7 @@ from mpl_toolkits.mplot3d import axes3d
 
 from .Feature import Feature
 from . import geometry
+from . import machine_learning
 
 
 class BackboneMicroEnvironmentFeature(Feature):
@@ -77,6 +79,41 @@ class BackboneMicroEnvironmentFeature(Feature):
     for index, row in df.iterrows():
       self.feature_list.append({'phi1':row[0], 'psi1':row[1], 'phi2':row[2], 'psi2':row[3],
           'shift':np.array([row[4], row[5], row[6]]), 'theta_x':row[7], 'theta_y':row[8], 'theta_z':row[9] })
+
+  def feature_dict_to_machine_learning_features(self, feature_dict):
+    '''Given a feature dictionary, return its corresponding features
+    for machine learning. To ensure the topologies of features, the torsion
+    angles need to be expanded to their cos() and sin(). The three euler angles
+    should be expanded to a 9-dim rotation matrix.
+    (Alas, the unit quaterions is diffeomorphic to S3, so its not homomorphic
+    to SO(3).)
+    '''
+    return machine_learning.angle_to_cos_sin(feature_dict['phi1']) \
+            + machine_learning.angle_to_cos_sin(feature_dict['psi1']) \
+            + machine_learning.angle_to_cos_sin(feature_dict['phi2']) \
+            + machine_learning.angle_to_cos_sin(feature_dict['psi2']) \
+            + list(feature_dict['shift']) \
+            + list(geometry.euler_angles_to_rotation_matrix(feature_dict['theta_x'],
+                feature_dict['theta_y'], feature_dict['theta_z']).reshape(9))
+
+  def learn(self, clf_type="OneClassSVM"):
+    '''Train a machine learning classifier on the features.'''
+    training_data = [self.feature_dict_to_machine_learning_features(d) for d in self.feature_list]
+  
+    # Train the classifier
+    
+    if clf_type == "OneClassSVM":
+      self.clf = svm.OneClassSVM(nu=0.05, kernel="rbf", gamma='auto')
+
+    self.clf.fit(training_data)
+   
+    # Print Training results
+
+    predictions = self.clf.predict(training_data)
+    print("{0}/{1} training error.".format(len(predictions[-1 == predictions]), len(training_data)))
+    
+    if clf_type == "OneClassSVM":
+      print("{0} support vectors found.".format(len(self.clf.support_)))
 
   def visualize(self):
     pass

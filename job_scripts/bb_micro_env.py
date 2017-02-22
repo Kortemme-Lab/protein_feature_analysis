@@ -14,6 +14,13 @@ if __name__ == '__main__':
   #feature.extract(input_path)
   #feature.save(data_path)
   feature.load(data_path)
+
+  ######### MACHINE LEARNING #########
+ 
+  feature.learn()
+  
+  ######### VISUALIZATION #########
+
   #feature.visualize()
   #feature.plot_shifts()
   #feature.plot_shift_length_histogram()
@@ -42,4 +49,4 @@ if __name__ == '__main__':
   #feature.scatter_plot_two_features(lambda d : d['theta_x'], lambda d : d['theta_z'], tx_r + tz_r)
   #feature.scatter_plot_two_features(lambda d : d['theta_y'], lambda d : d['theta_z'], ty_r + tz_r)
   
-  feature.scatter_plot_three_features(lambda d : d['theta_x'], lambda d : d['theta_y'], lambda d : d['theta_z'], tx_r + ty_r + tz_r)
+  #feature.scatter_plot_three_features(lambda d : d['theta_x'], lambda d : d['theta_y'], lambda d : d['theta_z'], tx_r + ty_r + tz_r)
