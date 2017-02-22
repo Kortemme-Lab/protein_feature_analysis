@@ -40,7 +40,7 @@ class RamachandranFeature(Feature):
           except:
             pass
 
-  def visualize(self):
+  def visualize(self, transform_features=False):
     '''Visualize the feature statistics.'''
     phis = [ d['phi'] for d in self.feature_list ]
     psis = [ d['psi'] for d in self.feature_list ]
@@ -49,7 +49,11 @@ class RamachandranFeature(Feature):
     
     if self.clf:
       xx, yy = np.meshgrid(np.linspace(-np.pi, np.pi, 200), np.linspace(-np.pi, np.pi, 200))
-      transformed_data = [ machine_learning.angle_to_cos_sin(d[0]) + machine_learning.angle_to_cos_sin(d[1])
+      
+      transformed_data = np.c_[xx.ravel(), yy.ravel()]
+
+      if transform_features:
+        transformed_data = [ machine_learning.angle_to_cos_sin(d[0]) + machine_learning.angle_to_cos_sin(d[1])
 		for d in np.c_[xx.ravel(), yy.ravel()] ]
 
       Z = self.clf.decision_function(transformed_data)
@@ -70,9 +74,13 @@ class RamachandranFeature(Feature):
     # Plot the support vectors if the classifier is SVM
 
     if isinstance(self.clf, svm.OneClassSVM):
-      s_phis = [ machine_learning.cos_sin_to_angle(v[0], v[1]) for v in self.clf.support_vectors_ ]
-      s_psis = [ machine_learning.cos_sin_to_angle(v[2], v[3]) for v in self.clf.support_vectors_ ]
-      plt.scatter(s_phis, s_psis, c='red')
+
+      if transform_features:  
+        s_phis = [ machine_learning.cos_sin_to_angle(v[0], v[1]) for v in self.clf.support_vectors_ ]
+        s_psis = [ machine_learning.cos_sin_to_angle(v[2], v[3]) for v in self.clf.support_vectors_ ]
+        plt.scatter(s_phis, s_psis, c='red')
+      else:
+        plt.scatter(self.clf.support_vectors_[:][0], self.clf.support_vectors_[:][1], c='red')
 
     plt.axis([- np.pi, np.pi, - np.pi, np.pi])
     plt.show()
@@ -91,12 +99,14 @@ class RamachandranFeature(Feature):
     for index, row in df.iterrows():
       self.feature_list.append({'phi':row[0], 'psi':row[1]})
 
-  def learn(self, clf_type="OneClassSVM"):
+  def learn(self, clf_type="OneClassSVM", transform_features=False):
     '''Learn the distribution with a machine learning classifier'''
     # Prepare the training data
-    
-    all_data = [machine_learning.angle_to_cos_sin(d['phi']) + machine_learning.angle_to_cos_sin(d['psi'])
-            for d in self.feature_list]
+  
+    all_data = [(d['phi'], d['psi']) for d in self.feature_list]
+    if transform_features:
+      all_data = [machine_learning.angle_to_cos_sin(d['phi']) + machine_learning.angle_to_cos_sin(d['psi'])
+              for d in self.feature_list]
     n_data = len(all_data)
 
     training_data = all_data[0:int(0.6 * n_data)]
@@ -138,12 +148,16 @@ class RamachandranFeature(Feature):
     if clf_type == "OneClassSVM":
       print("{0} support vectors found.".format(len(self.clf.support_)))
 
-  def predict(self, input_data):
+  def predict(self, input_data, transform_features=False):
     '''Make a prediction for the input data with the machine learning classifier.
     input_data is a list of phi, psi angles.
     '''
-    transformed_data = [machine_learning.angle_to_cos_sin(d[0]) + machine_learning.angle_to_cos_sin(d[1])
-            for d in input_data]
+    transformed_data = input_data
+
+    if transform_features: 
+        transformed_data = [machine_learning.angle_to_cos_sin(d[0]) + machine_learning.angle_to_cos_sin(d[1])
+                for d in input_data]
+    
     return self.clf.predict(transformed_data)
 
   def calculate_space_reduction(self):
