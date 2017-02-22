@@ -135,6 +135,17 @@ class BackboneMicroEnvironmentFeature(Feature):
     if clf_type == "OneClassSVM":
       print("{0} support vectors found.".format(len(self.clf.support_)))
 
+  def predict(self, input_data):
+    '''Make a prediction for the input data with the machine learning classifier.
+    input_data is a list of (phi1, psi1, phi2, psi2, [shift], theta_x, theta_y, theta_z].
+    '''
+    transformed_data = [machine_learning.angle_to_cos_sin(d[0]) + machine_learning.angle_to_cos_sin(d[1]) \
+            + machine_learning.angle_to_cos_sin(d[2]) + machine_learning.angle_to_cos_sin(d[3]) \
+            + list(d[4]) \
+            + list(geometry.euler_angles_to_rotation_matrix(d[5], d[6], d[7]).reshape(9))
+            for d in input_data]
+    return self.clf.predict(transformed_data)
+
   def visualize(self):
     pass
 
