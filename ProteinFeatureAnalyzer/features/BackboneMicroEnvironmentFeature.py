@@ -103,7 +103,7 @@ class BackboneMicroEnvironmentFeature(Feature):
     # Train the classifier
     
     if clf_type == "OneClassSVM":
-      self.clf = svm.OneClassSVM(nu=0.05, kernel="rbf", gamma='auto')
+      self.clf = svm.OneClassSVM(nu=0.01, kernel="rbf", gamma='auto')
 
     self.clf.fit(training_data)
    

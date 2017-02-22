@@ -94,24 +94,46 @@ class RamachandranFeature(Feature):
     '''Learn the distribution with a machine learning classifier'''
     # Prepare the training data
     
-    training_data = [machine_learning.angle_to_cos_sin(d['phi']) + machine_learning.angle_to_cos_sin(d['psi'])
+    all_data = [machine_learning.angle_to_cos_sin(d['phi']) + machine_learning.angle_to_cos_sin(d['psi'])
             for d in self.feature_list]
-    
+    n_data = len(all_data)
+
+    training_data = all_data[0:int(0.6 * n_data)]
+    test_data = all_data[int(0.6 * n_data):int(0.8 * n_data)]
+    cv_data = all_data[int(0.8 * n_data):n_data]
+
     # Train the classifier 
 
     if clf_type == "OneClassSVM":
-      self.clf = svm.OneClassSVM(nu=0.05, kernel="rbf", gamma='auto')
+      nus = [0.05, 0.02, 0.01, 0.005, 0.002, 0.001]
+      least_error = len(test_data)
+
+      for i in range(len(nus)):
+        print("nu = {0}".format(nus[i]))
+
+        clf = svm.OneClassSVM(nu=nus[i], kernel="rbf", gamma='auto')
+        clf.fit(training_data)
+        
+        predictions = clf.predict(training_data)
+        print("{0}/{1} training error.".format(len(predictions[-1 == predictions]), len(training_data)))
+        
+        predictions = clf.predict(test_data)
+        print("{0}/{1} test error.".format(len(predictions[-1 == predictions]), len(test_data)))
+
+        if len(predictions[-1 == predictions]) < least_error:
+          least_error = len(predictions[-1 == predictions])
+          self.clf = clf
+    
     elif clf_type == "IsolationForest": 
       self.clf = IsolationForest(max_samples=200,
 			contamination=0.05, random_state=np.random.RandomState(42))
-    
-    self.clf.fit(training_data)
+      self.clf.fit(training_data)
    
     # Print Training results
-
-    predictions = self.clf.predict(training_data)
-    print("{0}/{1} training error.".format(len(predictions[-1 == predictions]), len(training_data)))
     
+    predictions = clf.predict(cv_data)
+    print("{0}/{1} cross validation error.".format(len(predictions[-1 == predictions]), len(cv_data)))
+
     if clf_type == "OneClassSVM":
       print("{0} support vectors found.".format(len(self.clf.support_)))
 
