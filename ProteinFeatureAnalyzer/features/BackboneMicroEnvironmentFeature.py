@@ -98,19 +98,39 @@ class BackboneMicroEnvironmentFeature(Feature):
 
   def learn(self, clf_type="OneClassSVM"):
     '''Train a machine learning classifier on the features.'''
-    training_data = [self.feature_dict_to_machine_learning_features(d) for d in self.feature_list]
+    all_data = [self.feature_dict_to_machine_learning_features(d) for d in self.feature_list]
+    n_data = len(all_data)
+
+    training_data = all_data[0:int(0.6 * n_data)]
+    test_data = all_data[int(0.6 * n_data):int(0.8 * n_data)]
+    cv_data = all_data[int(0.8 * n_data):n_data]
   
     # Train the classifier
     
     if clf_type == "OneClassSVM":
-      self.clf = svm.OneClassSVM(nu=0.01, kernel="rbf", gamma='auto')
+      nus = [0.05, 0.02, 0.01, 0.005, 0.002, 0.001]
+      least_error = len(test_data)
 
-    self.clf.fit(training_data)
+      for i in range(len(nus)):
+        print("nu = {0}".format(nus[i]))
+
+        clf = svm.OneClassSVM(nu=nus[i], kernel="rbf", gamma='auto')
+        clf.fit(training_data)
+        
+        predictions = clf.predict(training_data)
+        print("{0}/{1} training error.".format(len(predictions[-1 == predictions]), len(training_data)))
+        
+        predictions = clf.predict(test_data)
+        print("{0}/{1} test error.\n".format(len(predictions[-1 == predictions]), len(test_data)))
+
+        if len(predictions[-1 == predictions]) < least_error:
+          least_error = len(predictions[-1 == predictions])
+          self.clf = clf
    
     # Print Training results
-
-    predictions = self.clf.predict(training_data)
-    print("{0}/{1} training error.".format(len(predictions[-1 == predictions]), len(training_data)))
+    
+    predictions = self.clf.predict(cv_data)
+    print("{0}/{1} cross validation error.".format(len(predictions[-1 == predictions]), len(cv_data)))
     
     if clf_type == "OneClassSVM":
       print("{0} support vectors found.".format(len(self.clf.support_)))
