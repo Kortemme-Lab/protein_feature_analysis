@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 from sklearn import svm
 from sklearn.ensemble import IsolationForest
+from sklearn import mixture
 import matplotlib
 matplotlib.use('TkAgg') 
 import matplotlib.pyplot as plt
@@ -170,9 +171,8 @@ class BackboneMicroEnvironmentFeature(Feature):
       transformed_data = self.transform_features(input_data) 
     return self.clf.predict(transformed_data)
 
-  def calculate_space_reduction(self, transform_features=False):
-    '''Calculate the space reduction power of the machine learning model.'''
-    NUM_SAMPLES = 10000
+  def generate_random_features(self, NUM_SAMPLES=10000):
+    '''Generate a list of random features.'''
 
     phis1 = np.random.uniform(-np.pi, np.pi, NUM_SAMPLES)
     psis1 = np.random.uniform(-np.pi, np.pi, NUM_SAMPLES)
@@ -186,9 +186,47 @@ class BackboneMicroEnvironmentFeature(Feature):
       shifts[i] = np.random.uniform(3.5, 6) * geometry.random_unit_vector()
       txs[i], tys[i], tzs[i] = geometry.random_euler_angles()
 
-    samples = list(zip(phis1, psis1, phis2, psis2, shifts, txs, tys, tzs))
-    predictions = self.predict(samples, transform_features=transform_features)
+    return list(zip(phis1, psis1, phis2, psis2, shifts, txs, tys, tzs))
+
+  def calculate_space_reduction(self, transform_features=False):
+    '''Calculate the space reduction power of the machine learning model.'''
+    predictions = self.predict(self.generate_random_features(), transform_features=transform_features)
     print("The space is reduced by {0}.".format(len(predictions[1 == predictions]) / len(predictions)))
+
+  def density_estimate(self, de_type="GaussianMixture", transform_features=True):
+    '''Get a density estimation of the data.'''
+    all_data = [[d['phi1'], d['psi1'], d['phi2'], d['psi2']] + list(d['shift']) + [d['theta_x'], d['theta_y'], d['theta_z']]
+            for d in self.feature_list]
+    if transform_features:
+      all_data = self.transform_features(self.feature_list)
+    n_data = len(all_data)
+
+    training_data = all_data[0:int(0.7 * n_data)]
+    test_data = all_data[int(0.7 * n_data):n_data]
+    
+    # Make some random data
+    
+    random_data = self.generate_random_features()
+    if transform_features: 
+        random_data = self.transform_features(random_data)
+    
+    if de_type == "GaussianMixture":
+      self.de = mixture.BayesianGaussianMixture(n_components=1000, covariance_type='full').fit(training_data)
+      
+      # Evalute the cumulative distribution functions of scores of test data
+
+      test_scores = self.de.score_samples(test_data)
+      values, base = np.histogram(test_scores, bins=40)
+      cumulative = np.cumsum(values)
+
+      for i in range(40):
+          
+        # Evaluate the space compression
+
+        random_scores = self.de.score_samples(random_data)
+        compress_coe = len(random_scores[random_scores > base[i]]) / len(random_scores)
+          
+        print('{0:.3f}\t{1}\t{2:.5f}\t{3:.5f}'.format(base[i], cumulative[i], cumulative[i] / len(test_data), compress_coe))
 
   def visualize(self):
     pass
