@@ -1,4 +1,5 @@
 import os
+import io
 from datetime import timedelta
 
 import numpy as np
@@ -18,10 +19,16 @@ class Feature:
     all_jobs = os.listdir(input_path)
     return [all_jobs[i] for i in range(len(all_jobs)) if i % total_num_threads == my_id]
 
-  def structure_from_pdb_file(self, file_path):
+  def structure_from_pdb_file(self, file_path, name=''):
     '''Read the structure stored in a PDB file.'''
     parser = PDB.PDBParser()
-    return parser.get_structure('', file_path)
+    return parser.get_structure(name, file_path)
+
+  def structure_from_pdb_string(self, pdb_string, name=''):
+    '''Read the structure stored in a PDB string.'''
+    parser = PDB.PDBParser()
+    pdb_sf = io.StringIO(pdb_string)
+    return parser.get_structure(name, pdb_sf)
 
   def append_to_csv(self, dataframe, file_name):
     '''Append a pandas dataframe to a csv file. This function is thread save.'''
