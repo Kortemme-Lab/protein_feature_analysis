@@ -10,7 +10,7 @@ if __name__ == '__main__':
 
   feature = PFA.features.StructuralHomologFeature()
   
-  feature.extract(input_path)
+  feature.extract(input_path, data_path)
   #feature.save(data_path)
   #feature.load(data_path)
   
