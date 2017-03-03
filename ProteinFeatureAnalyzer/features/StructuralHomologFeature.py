@@ -4,14 +4,16 @@ import Bio.PDB as PDB
 
 from .Feature import Feature
 from . import topology
+from . import secondary_structures
 
 
 class StructuralHomologFeature(Feature):
   '''Analyze features of structrual homologs.'''
   
-  def __init__(self):
+  def __init__(self, dssp_path):
     super().__init__()
     self.proteins = []
+    self.dssp_path = dssp_path
 
   def extract(self, input_path, output_path, total_num_threads=1, my_id=0):
     '''Extract structrual homolog features from structures in the input path.
@@ -80,4 +82,7 @@ class StructuralHomologFeature(Feature):
     Arguements:
      - protein_dict - a dictionary to store informations of a protein
     '''
-    pass
+
+    protein_dict['dssp_dict'], protein_dict['dssp_key_map'] = \
+      secondary_structures.make_dssp_dict(protein_dict['path'], self.dssp_path)
+
