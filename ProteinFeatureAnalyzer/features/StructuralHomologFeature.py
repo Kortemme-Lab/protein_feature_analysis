@@ -3,6 +3,7 @@ import os
 import Bio.PDB as PDB
 
 from .Feature import Feature
+from . import topology
 
 
 class StructuralHomologFeature(Feature):
@@ -56,12 +57,18 @@ class StructuralHomologFeature(Feature):
             pdb_lines.append(line.strip().strip('\\'))
          
           # Make a pdb file of the structure for DSSP analysis
-          
-          with open(os.path.join(scratch_path, pdb_id + '.pdb'), 'w') as pdb_f:
-            pdb_f.write('\n'.join(pdb_lines))
+         
+          structure = self.structure_from_pdb_string('\n'.join(pdb_lines), pdb_id)
 
-          self.proteins.append(
-                {'structure':self.structure_from_pdb_string('\n'.join(pdb_lines), pdb_id)} )
+          # Store structures without chain breaks
+
+          if len(topology.find_structure_chain_breaks(structure)) == 0:
+
+            self.proteins.append({'structure' : structure})
+
+            with open(os.path.join(scratch_path, pdb_id + '.pdb'), 'w') as pdb_f:
+              pdb_f.write('\n'.join(pdb_lines))
+
 
     for p in self.proteins:
       self.find_secondary_structures(p)
