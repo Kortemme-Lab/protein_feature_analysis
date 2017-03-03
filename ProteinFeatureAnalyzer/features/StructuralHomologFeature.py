@@ -63,11 +63,12 @@ class StructuralHomologFeature(Feature):
           # Store structures without chain breaks
 
           if len(topology.find_structure_chain_breaks(structure)) == 0:
+            structure_path = os.path.join(scratch_path, pdb_id + '.pdb')
 
-            self.proteins.append({'structure' : structure})
-
-            with open(os.path.join(scratch_path, pdb_id + '.pdb'), 'w') as pdb_f:
+            with open(structure_path, 'w') as pdb_f:
               pdb_f.write('\n'.join(pdb_lines))
+
+            self.proteins.append({'structure' : structure, 'path' : structure_path})
 
 
     for p in self.proteins:
