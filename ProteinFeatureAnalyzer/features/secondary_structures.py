@@ -62,6 +62,81 @@ def make_dssp_dict(pdb_path, dssp_path):
   return dssp_dict, key_map
 
 
+def pack_dssp_dict_into_ss_list(model, dssp_dict, key_map):
+  '''Pack a dssp dictionary into a list of secondary structures
+  and a list of beta sheets.
+  '''
+ 
+  # map to translate secondary structures
+
+  ss_map = {'H':'H', 'B':'B', 'E':'E', 'G':'G', 'I':'I', 'T':'T'}
+
+  def same_ss(dssp_dict, key1, key2):
+    '''Return if two residues have save secondary structures.
+    Bend are regarded as normal loops.
+    Note that for beta strands, they should be in the same sheet
+    to be considered the same.
+    '''
+    return ss_map.setdefault(dssp_dict[key1]['ss'], ' ') == ss_map.setdefault(dssp_dict[key2]['ss'], ' ') \
+            and dssp_dict[key1]['bsl'] == dssp_dict[key2]['bsl']
+
+
+  # Get the list of secondary structures
+  
+  ss_list = []
+
+  for chain in model:
+    c_id = chain.get_id()
+
+    residue_list = [r for r in chain]
+
+    start = 0
+    while start < len(residue_list):
+      start_r_id = residue_list[start].get_id()[1]
+      start_ss = dssp_dict[(c_id, start_r_id)]['ss']
+
+      # Find the stop position of the secondary structure
+
+      stop = start + 1
+      while stop < len(residue_list):
+        stop_r_id = residue_list[stop].get_id()[1]
+        
+        if not same_ss(dssp_dict, (c_id, start_r_id), (c_id, stop_r_id)):
+          break
+        stop += 1
+
+      stop -= 1
+
+      # Add the secondary structure into a list
+
+      ss_residue_list = [residue_list[i] for i in range(start, stop + 1)] 
+
+      if 'H' == start_ss:
+        ss_list.append(AlphaHelix(ss_residue_list))
+      
+      elif 'E' == start_ss or 'B' == start_ss:
+        ss_list.append(BetaStrand(ss_residue_list, dssp_dict[(c_id, start_r_id)]['bsl']))
+      
+      else:
+        ss_list.append(Loop(ss_residue_list, ss_map.setdefault(start_ss, ' ')))
+
+      start = stop + 1
+
+  # Get the list of beta sheets
+
+  sheet_list = []
+  sheet_id_set = set()
+  for ss in ss_list:
+    if isinstance(ss, BetaStrand):
+      sheet_id_set.add(ss.sheet_id)
+
+  for sheet_id in sheet_id_set:  
+    sheet_list.append(BetaSheet(sheet_id, 
+        [ss for ss in ss_list if isinstance(ss, BetaStrand) and ss.sheet_id == sheet_id]))
+
+  return ss_list, sheet_list
+
+
 class SecondaryStructure:
   '''Base class for secondary structures.'''
   def __init__(self):
@@ -70,25 +145,26 @@ class SecondaryStructure:
 
 class AlphaHelix(SecondaryStructure):
   '''Class that represents an alpha helix.'''
-  def __init__(self):
-    pass
+  def __init__(self, residue_list):
+    self.residue_list = residue_list
 
 
 class BetaStrand(SecondaryStructure):
   '''Class that represents a beta strand.'''
-  def __init__(self):
-    pass
-
+  def __init__(self, residue_list, sheet_id):
+    self.residue_list = residue_list
+    self.sheet_id = sheet_id
 
 class BetaSheet(SecondaryStructure):
   '''Class that represents a beta sheet.'''
-  def __init__(self):
-    pass
-
+  def __init__(self, sheet_id, strand_list):
+    self.sheet_id = sheet_id
+    self.strand_list = strand_list
 
 class Loop(SecondaryStructure):
   '''Class that represents a loop.'''
-  def __init__(self):
-    pass
+  def __init__(self, residue_list, ss_type):
+    self.residue_list = residue_list
+    self.type = ss_type
 
 

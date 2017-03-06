@@ -56,7 +56,11 @@ class StructuralHomologFeature(Feature):
               pdb_id = line.strip()[5:12]
               break
 
-            pdb_lines.append(line.strip().strip('\\'))
+            pdb_line = line.strip().strip('\\')
+            if len(pdb_line) > 17:
+              pdb_line = pdb_line[0:16] + ' ' + pdb_line[17:] # Remove all altLoc flags
+            
+            pdb_lines.append(pdb_line) # Remove all altLoc flags
          
           # Make a pdb file of the structure for DSSP analysis
          
@@ -82,7 +86,10 @@ class StructuralHomologFeature(Feature):
     Arguements:
      - protein_dict - a dictionary to store informations of a protein
     '''
-
     protein_dict['dssp_dict'], protein_dict['dssp_key_map'] = \
       secondary_structures.make_dssp_dict(protein_dict['path'], self.dssp_path)
+
+    protein_dict['ss_list'], protein_dict['sheet_list'] = \
+      secondary_structures.pack_dssp_dict_into_ss_list(protein_dict['structure'][0],
+            protein_dict['dssp_dict'], protein_dict['dssp_key_map'])
 
