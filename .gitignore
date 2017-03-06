@@ -5,3 +5,4 @@ venv
 ProteinFeatureAnalyzer.egg-info
 .cache
 dssp-2.0.4-linux-i386
+inputs/cath/*.pml
