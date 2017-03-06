@@ -138,7 +138,7 @@ class StructuralHomologFeature(Feature):
   def visualize_ss_composition_features(self, vis_type='num_alpha_helix'):
     '''Visualize the secondary structure compositions.'''
     data = [d[vis_type] for d in self.ss_composition_features]
-    hist, bin_edges = np.histogram(data, bins=np.arange(20))
+    hist, bin_edges = np.histogram(data, bins=np.arange(max(data)))
 
     plt.bar(bin_edges[0:-1], hist, width=1, edgecolor='black')
     plt.show()
