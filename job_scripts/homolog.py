@@ -5,6 +5,7 @@ import sys
 import ProteinFeatureAnalyzer as PFA
 
 if __name__ == '__main__':
+  
   data_path = sys.argv[1]
   input_path = sys.argv[2]
   
@@ -18,8 +19,8 @@ if __name__ == '__main__':
 
   feature = PFA.features.StructuralHomologFeature(dssp_path)
   
-  #feature.extract(input_path, data_path, num_jobs, job_id)
+  feature.extract(input_path, data_path, num_jobs, job_id)
 
-  #feature.save_ss_composition_features(data_path)
-  feature.load_ss_composition_features(data_path)
+  feature.save_ss_composition_features(data_path)
+  #feature.load_ss_composition_features(data_path)
   
