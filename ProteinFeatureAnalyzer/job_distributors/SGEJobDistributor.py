@@ -27,8 +27,8 @@ class SGEJobDistributor(JobDistributor):
                     '-e', job_output_path,
                     './job_scripts/run_job.sh',
                     self.script_name,
-                    data_set_path]
-                    + self.script_arguments
+                    data_set_path] \
+                    + self.script_arguments \
                     + [num_jobs]
     
     subprocess.check_call(qsub_command) 
