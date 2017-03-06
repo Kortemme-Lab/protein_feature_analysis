@@ -13,7 +13,7 @@ class StructuralHomologFeature(Feature):
   
   def __init__(self, dssp_path):
     super().__init__()
-    self.proteins = []
+    self.superfamilies = []
     self.dssp_path = dssp_path
 
   def extract(self, input_path, output_path, total_num_threads=1, my_id=0):
@@ -21,6 +21,7 @@ class StructuralHomologFeature(Feature):
     The input data should be stored in .pml files of superposed homologous 
     superfamilies from the CATH database.
     '''
+
     for f in self.list_my_jobs(input_path, total_num_threads, my_id):
       if f.endswith('.pml'):
       
@@ -38,8 +39,8 @@ class StructuralHomologFeature(Feature):
     '''Extract structrual homolog features from a .pml file of superposed
     homologous superfamilies from the CATH database.
     '''
-    self.proteins = []
-    
+    self.superfamilies.append([])
+
     with open(pml_file, 'r') as f:
       while True:
         line = f.readline()
@@ -75,10 +76,10 @@ class StructuralHomologFeature(Feature):
             with open(structure_path, 'w') as pdb_f:
               pdb_f.write('\n'.join(pdb_lines))
 
-            self.proteins.append({'structure' : structure, 'path' : structure_path})
+            self.superfamilies[-1].append({'structure' : structure, 'path' : structure_path})
 
 
-    for p in self.proteins:
+    for p in self.superfamilies[-1]:
       self.find_secondary_structures(p)
 
   def find_secondary_structures(self, protein_dict):
@@ -101,16 +102,17 @@ class StructuralHomologFeature(Feature):
     '''Calculate the secondary structure compositions.'''
     self.ss_composition_features = []
 
-    for p in self.proteins:
-      d = {}
-      d['num_alpha_helix'] = len([ss for ss in p['ss_list'] if isinstance(ss, secondary_structures.AlphaHelix)]) 
-      d['num_strand'] = len([ss for ss in p['ss_list'] if isinstance(ss, secondary_structures.BetaStrand)]) 
-      d['num_3-10_helix'] = len([ss for ss in p['ss_list'] if isinstance(ss, secondary_structures.Loop) and ss.type == 'G']) 
-      d['num_PI_helix'] = len([ss for ss in p['ss_list'] if isinstance(ss, secondary_structures.Loop) and ss.type == 'I']) 
-      d['num_turn'] = len([ss for ss in p['ss_list'] if isinstance(ss, secondary_structures.Loop) and ss.type == 'T'])
-      d['num_sheet'] = len(p['sheet_list'])
+    for sf in self.superfamilies:
+      for p in sf:
+        d = {}
+        d['num_alpha_helix'] = len([ss for ss in p['ss_list'] if isinstance(ss, secondary_structures.AlphaHelix)]) 
+        d['num_strand'] = len([ss for ss in p['ss_list'] if isinstance(ss, secondary_structures.BetaStrand)]) 
+        d['num_3-10_helix'] = len([ss for ss in p['ss_list'] if isinstance(ss, secondary_structures.Loop) and ss.type == 'G']) 
+        d['num_PI_helix'] = len([ss for ss in p['ss_list'] if isinstance(ss, secondary_structures.Loop) and ss.type == 'I']) 
+        d['num_turn'] = len([ss for ss in p['ss_list'] if isinstance(ss, secondary_structures.Loop) and ss.type == 'T'])
+        d['num_sheet'] = len(p['sheet_list'])
  
-      self.ss_composition_features.append(d)
+        self.ss_composition_features.append(d)
 
   def save_ss_composition_features(self, data_path):
     '''Save the secondary structure compositions.'''
