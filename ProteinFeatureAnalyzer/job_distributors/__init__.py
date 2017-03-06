@@ -1,1 +1,3 @@
 from .SequentialJobDistributor import SequentialJobDistributor
+
+from .SGEJobDistributor import SGEJobDistributor
