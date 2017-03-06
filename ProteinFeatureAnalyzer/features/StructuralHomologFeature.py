@@ -1,5 +1,9 @@
 import os
 
+import numpy as np
+import matplotlib
+matplotlib.use('TkAgg') 
+import matplotlib.pyplot as plt
 import pandas as pd
 import Bio.PDB as PDB
 
@@ -129,4 +133,12 @@ class StructuralHomologFeature(Feature):
     for index, row in df.iterrows():
       self.ss_composition_features.append({'num_3-10_helix':row[0], 'num_PI_helix':row[1],
           'num_alpha_helix':row[2], 'num_sheet':row[3], 'num_strand':row[4], 'num_turn':row[5]})
-  
+ 
+  def visualize_ss_composition_features(self, vis_type='num_alpha_helix'):
+    '''Visualize the secondary structure compositions.'''
+    data = [d[vis_type] for d in self.ss_composition_features]
+    hist, bin_edges = np.histogram(data, bins=np.arange(20))
+
+    plt.bar(bin_edges[0:-1], hist, width=1, edgecolor='black')
+    plt.show()
+
