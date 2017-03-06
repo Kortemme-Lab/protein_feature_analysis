@@ -115,6 +115,7 @@ class StructuralHomologFeature(Feature):
         d['num_PI_helix'] = len([ss for ss in p['ss_list'] if isinstance(ss, secondary_structures.Loop) and ss.type == 'I']) 
         d['num_turn'] = len([ss for ss in p['ss_list'] if isinstance(ss, secondary_structures.Loop) and ss.type == 'T'])
         d['num_sheet'] = len(p['sheet_list'])
+        d['pdb_id'] = p['structure'].get_id()
  
         self.ss_composition_features.append(d)
 
@@ -132,7 +133,7 @@ class StructuralHomologFeature(Feature):
     self.ss_composition_features = []
     for index, row in df.iterrows():
       self.ss_composition_features.append({'num_3-10_helix':row[0], 'num_PI_helix':row[1],
-          'num_alpha_helix':row[2], 'num_sheet':row[3], 'num_strand':row[4], 'num_turn':row[5]})
+          'num_alpha_helix':row[2], 'num_sheet':row[3], 'num_strand':row[4], 'num_turn':row[5], 'pdb_id':row[6]})
  
   def visualize_ss_composition_features(self, vis_type='num_alpha_helix'):
     '''Visualize the secondary structure compositions.'''
