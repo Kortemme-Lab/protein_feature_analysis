@@ -29,7 +29,7 @@ class StructuralHomologFeature(Feature):
 
         scratch_path = os.path.join(output_path, f[0:-4])
         if not os.path.exists(scratch_path):
-          os.mkdir(scratch_path, exist_ok=True)
+          os.mkdir(scratch_path)
 
         # Extract features from one file  
 
