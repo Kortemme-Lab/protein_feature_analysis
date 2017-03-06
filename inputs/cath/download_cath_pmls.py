@@ -24,7 +24,7 @@ if __name__ == '__main__':
 
   # Download the pml files
 
-  for sf_id in superfamily_ids[0:3]:
+  for sf_id in superfamily_ids:
     subprocess.call(['wget',
         'http://www.cathdb.info/version/v4_1_0/superfamily/{0}/superposition/pymol'.format(sf_id),
         '-O', 'cath-superfamily-superposition-{0}.pml'.format(sf_id)])
