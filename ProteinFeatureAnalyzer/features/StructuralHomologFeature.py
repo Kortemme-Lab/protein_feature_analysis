@@ -1,5 +1,6 @@
 import os
 
+import pandas as pd
 import Bio.PDB as PDB
 
 from .Feature import Feature
@@ -93,3 +94,37 @@ class StructuralHomologFeature(Feature):
       secondary_structures.pack_dssp_dict_into_ss_list(protein_dict['structure'][0],
             protein_dict['dssp_dict'], protein_dict['dssp_key_map'])
 
+
+  ############## Functions for calculating, saving, loading and visualizing features #################
+
+  def calc_ss_composition_features(self):
+    '''Calculate the secondary structure compositions.'''
+    self.ss_composition_features = []
+
+    for p in self.proteins:
+      d = {}
+      d['num_alpha_helix'] = len([ss for ss in p['ss_list'] if isinstance(ss, secondary_structures.AlphaHelix)]) 
+      d['num_strand'] = len([ss for ss in p['ss_list'] if isinstance(ss, secondary_structures.BetaStrand)]) 
+      d['num_3-10_helix'] = len([ss for ss in p['ss_list'] if isinstance(ss, secondary_structures.Loop) and ss.type == 'G']) 
+      d['num_PI_helix'] = len([ss for ss in p['ss_list'] if isinstance(ss, secondary_structures.Loop) and ss.type == 'I']) 
+      d['num_turn'] = len([ss for ss in p['ss_list'] if isinstance(ss, secondary_structures.Loop) and ss.type == 'T'])
+      d['num_sheet'] = len(p['sheet_list'])
+ 
+      self.ss_composition_features.append(d)
+
+  def save_ss_composition_features(self, data_path):
+    '''Save the secondary structure compositions.'''
+    self.calc_ss_composition_features()
+    df = pd.DataFrame(data=self.ss_composition_features)
+    
+    self.append_to_csv(df, os.path.join(data_path, 'ss_composition_features.csv'))
+
+  def load_ss_composition_features(self, data_path):
+    '''Load the secondary structure compositions.'''
+    df = pd.read_csv(os.path.join(data_path, 'ss_composition_features.csv'), header=None)
+   
+    self.ss_composition_features = []
+    for index, row in df.iterrows():
+      self.ss_composition_features.append({'num_3-10_helix':row[0], 'num_PI_helix':row[1],
+          'num_alpha_helix':row[2], 'num_sheet':row[3], 'num_strand':row[4], 'num_turn':row[5]})
+  

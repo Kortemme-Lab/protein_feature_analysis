@@ -13,6 +13,7 @@ if __name__ == '__main__':
   feature = PFA.features.StructuralHomologFeature(dssp_path)
   
   feature.extract(input_path, data_path)
-  #feature.save(data_path)
-  #feature.load(data_path)
+
+  #feature.save_ss_composition_features(data_path)
+  feature.load_ss_composition_features(data_path)
   
