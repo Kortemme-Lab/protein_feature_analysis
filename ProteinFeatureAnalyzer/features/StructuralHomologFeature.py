@@ -193,6 +193,8 @@ class StructuralHomologFeature(Feature):
               self.ss_sizes_features.append({'ss':'loop', 'type':l_type,
                   'size' : l_len})
 
+              i = j + 1
+
   def save_ss_sizes_features(self, data_path):
     '''Save sizes of secondary structures.'''
     self.calc_ss_sizes_features()
