@@ -149,3 +149,71 @@ class StructuralHomologFeature(Feature):
     plt.bar(bin_edges[0:-1], hist, width=1, edgecolor='black')
     plt.show()
 
+  def calc_ss_sizes_features(self):
+    '''Calculate sizes of secondary structures.'''
+    self.ss_sizes_features = []
+
+    for sf in self.superfamilies:
+      for p in sf:
+          
+          for i in range(len(p['ss_list'])):
+
+            if isinstance(p['ss_list'][i], secondary_structures.AlphaHelix):
+              self.ss_sizes_features.append({'ss':'alpha_helix', 'type':'-',
+                  'size' : len(p['ss_list'][i].residue_list)})
+
+            elif isinstance(p['ss_list'][i], secondary_structures.BetaStrand):
+              self.ss_sizes_features.append({'ss':'beta_strand', 'type':'-',
+                  'size' : len(p['ss_list'][i].residue_list)})
+
+            elif isinstance(p['ss_list'][i], secondary_structures.Loop):
+              l_len = len(p['ss_list'][i].residue_list)
+               
+              j = i
+              while j + 1 < len(p['ss_list']) and isinstance(p['ss_list'][j + 1], secondary_structures.Loop):
+                j += 1
+                l_len += len(p['ss_list'][j].residue_list)
+
+              l_type = '-'
+              if i == 0 or j == len(p['ss_list']) - 1:
+                pass
+              elif isinstance(p['ss_list'][i - 1], secondary_structures.AlphaHelix) \
+                   and isinstance(p['ss_list'][j + 1], secondary_structures.AlphaHelix):
+                l_type = 'alpha-alpha'
+              elif isinstance(p['ss_list'][i - 1], secondary_structures.AlphaHelix) \
+                   and isinstance(p['ss_list'][j + 1], secondary_structures.BetaStrand):
+                l_type = 'alpha-beta'
+              elif isinstance(p['ss_list'][i - 1], secondary_structures.BetaStrand) \
+                   and isinstance(p['ss_list'][j + 1], secondary_structures.AlphaHelix):
+                l_type = 'beta-alpha'
+              elif isinstance(p['ss_list'][i - 1], secondary_structures.BetaStrand) \
+                   and isinstance(p['ss_list'][j + 1], secondary_structures.BetaStrand):
+                l_type = 'beta-beta'
+
+              self.ss_sizes_features.append({'ss':'loop', 'type':l_type,
+                  'size' : l_len})
+
+  def save_ss_sizes_features(self, data_path):
+    '''Save sizes of secondary structures.'''
+    self.calc_ss_sizes_features()
+    df = pd.DataFrame(data=self.ss_sizes_features)
+    
+    self.append_to_csv(df, os.path.join(data_path, 'ss_sizes_features.csv'))
+
+  def load_ss_sizes_features(self, data_path):
+    '''Load sizes of secondary structures.'''
+    df = pd.read_csv(os.path.join(data_path, 'ss_sizes_features.csv'), header=None)
+   
+    self.ss_sizes_features = []
+    for index, row in df.iterrows():
+      self.ss_sizes_features.append({'size':row[0], 'ss':row[1],
+          'type':row[2]})
+ 
+  def visualize_ss_sizes_features(self, ss='alpha_helix', s_type='-'):
+    '''Visualize sizes of secondary structures.'''
+    data = [d['size'] for d in self.ss_sizes_features if d['ss'] == ss and d['type'] == s_type]
+    hist, bin_edges = np.histogram(data, bins=np.arange(max(data)))
+
+    plt.bar(bin_edges[0:-1], hist, width=1, edgecolor='black')
+    plt.show()
+
