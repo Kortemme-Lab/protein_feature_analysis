@@ -14,7 +14,10 @@ class SGEJobDistributor(JobDistributor):
           architecture='linux-x64'):
     data_set_path = self.create_new_data_set(self.data_set_name)
     job_output_path = os.path.join(data_set_path, "job_outputs")
-    os.mkdir(job_output_path)
+    
+    if not os.path.exists(job_output_path):
+      os.mkdir(job_output_path)
+
     qsub_command = ['qsub',
                     '-cwd',
                     '-N', self.script_name.split('/')[-1],
