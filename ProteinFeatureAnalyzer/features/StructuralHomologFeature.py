@@ -77,8 +77,9 @@ class StructuralHomologFeature(Feature):
           if len(topology.find_structure_chain_breaks(structure)) == 0:
             structure_path = os.path.join(scratch_path, pdb_id + '.pdb')
 
-            with open(structure_path, 'w') as pdb_f:
-              pdb_f.write('\n'.join(pdb_lines))
+            io = PDB.PDBIO()
+            io.set_structure(structure)
+            io.save(structure_path)
 
             self.superfamilies[-1].append({'structure' : structure, 'path' : structure_path})
 
