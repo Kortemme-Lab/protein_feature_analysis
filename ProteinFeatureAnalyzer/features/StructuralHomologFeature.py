@@ -44,6 +44,7 @@ class StructuralHomologFeature(Feature):
     homologous superfamilies from the CATH database.
     '''
     self.superfamilies.append([])
+    candidate_proteins = []
 
     with open(pml_file, 'r') as f:
       while True:
@@ -81,11 +82,15 @@ class StructuralHomologFeature(Feature):
             io.set_structure(structure)
             io.save(structure_path)
 
-            self.superfamilies[-1].append({'structure' : structure, 'path' : structure_path})
+            candidate_proteins.append({'structure' : structure, 'path' : structure_path})
 
 
-    for p in self.superfamilies[-1]:
-      self.find_secondary_structures(p)
+    for p in candidate_proteins:
+      try:  
+        self.find_secondary_structures(p)
+      except:
+        continue
+      self.superfamilies[-1].append(p) # Add a protein to a superfamily if there's no exception
 
   def find_secondary_structures(self, protein_dict):
     '''Find secondary structures of a protein.
