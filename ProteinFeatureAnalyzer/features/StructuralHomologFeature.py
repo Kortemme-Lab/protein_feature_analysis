@@ -273,7 +273,7 @@ class StructuralHomologFeature(Feature):
     plt.xlabel(v_type)
     
     if fig_save_path:
-      plt.savefig(os.path.join(fig_save_path, ss + '-' + s_type + '.png'))
+      plt.savefig(os.path.join(fig_save_path, 'alpha_helix_parameters' + '-' + v_type + '.png'))
     else:
       plt.show()
 
