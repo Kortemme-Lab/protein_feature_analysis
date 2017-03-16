@@ -1,5 +1,6 @@
 import subprocess
 
+import numpy as np
 import Bio.PDB as PDB
 
 
@@ -148,6 +149,34 @@ class AlphaHelix(SecondaryStructure):
   def __init__(self, residue_list):
     self.residue_list = residue_list
 
+  def parameterize(self):
+    '''Get the Ca representation of the helix and get the bond lengths,
+    bond angles and torsions of the Ca representation. There will be n-1 bonds,
+    n-2 angles and n-3 torsions.
+    '''
+    cas = [r['CA'] for r in self.residue_list]
+    cas_v = [a.get_vector() for a in cas]
+    
+    self.bond_lengths = []
+    self.bond_angles = []
+    self.bond_torsions = []
+    
+    # Get bond lengths
+    
+    for i in range(len(cas) - 1):
+      self.bond_lengths.append(cas[i + 1] - cas[i])
+
+    # Get bond angles
+
+    for i in range(1, len(cas) - 1):
+      self.bond_angles.append(np.degrees(PDB.calc_angle(cas_v[i - 1],
+          cas_v[i], cas_v[i + 1])))
+
+    # Get torsions
+
+    for i in range(1, len(cas) - 2):
+      self.bond_torsions.append(np.degrees(PDB.calc_dihedral(cas_v[i - 1],
+          cas_v[i], cas_v[i + 1], cas_v[i + 2])))
 
 class BetaStrand(SecondaryStructure):
   '''Class that represents a beta strand.'''

@@ -211,11 +211,70 @@ class StructuralHomologFeature(Feature):
       self.ss_sizes_features.append({'size':row[0], 'ss':row[1],
           'type':row[2]})
  
-  def visualize_ss_sizes_features(self, ss='alpha_helix', s_type='-'):
+  def visualize_ss_sizes_features(self, ss='alpha_helix', s_type='-', fig_save_path=None):
     '''Visualize sizes of secondary structures.'''
     data = [d['size'] for d in self.ss_sizes_features if d['ss'] == ss and d['type'] == s_type]
     hist, bin_edges = np.histogram(data, bins=np.arange(max(data)))
 
     plt.bar(bin_edges[0:-1], hist, width=1, edgecolor='black')
-    plt.show()
+    plt.ylabel('Number of structures')
+    plt.xlabel('Length of ' + ss + ' - ' + s_type)
+    
+    if fig_save_path:
+      plt.savefig(os.path.join(fig_save_path, ss + '-' + s_type + '.png'))
+    else:
+      plt.show()
 
+  def calc_alpha_helix_parameterization_features(self):
+    '''Cacluate the bond lengths, angles and torsions of Ca representations
+    of alpha helices.
+    '''
+
+    self.alpha_helix_parameterization_features = []
+    
+    for sf in self.superfamilies:
+      for p in sf:
+        for ss in p['ss_list']:
+          if isinstance(ss, secondary_structures.AlphaHelix):
+            ss.parameterize()
+            
+            for l in ss.bond_lengths:
+              self.alpha_helix_parameterization_features.append({'type':'length', 'value':l})
+
+            for a in ss.bond_angles:
+              self.alpha_helix_parameterization_features.append({'type':'angle', 'value':a})
+
+            for t in ss.bond_torsions:
+              self.alpha_helix_parameterization_features.append({'type':'torsion', 'value':t})
+
+  def save_alpha_helix_parameterization_features(self, data_path):
+    '''Save alpha helix parameterization features.'''
+    self.calc_alpha_helix_parameterization_features()
+    df = pd.DataFrame(data=self.alpha_helix_parameterization_features)
+    
+    self.append_to_csv(df, os.path.join(data_path, 'alpha_helix_parameterization_features.csv'))
+
+  def load_alpha_helix_parameterization_features(self, data_path):
+    '''Load alpha helix parameterization features'''
+    df = pd.read_csv(os.path.join(data_path, 'alpha_helix_parameterization_features.csv'), header=None)
+   
+    self.alpha_helix_parameterization_features = []
+    for index, row in df.iterrows():
+      self.alpha_helix_parameterization_features.append({'type':row[0], 'value':row[1]})
+
+  def visualize_alpha_helix_parameterization_features(self, v_type='length', fig_save_path=None):
+    '''Visualize alpha helix parameterization features.'''
+    data = [d['value'] for d in self.alpha_helix_parameterization_features if d['type'] == v_type]
+    step = (max(data) - min(data)) / 100
+    hist, bin_edges = np.histogram(data, bins=np.arange(min(data), max(data), step))
+
+    plt.bar(bin_edges[0:-1], hist, width=step, edgecolor='black')
+    plt.ylabel('Number of structures')
+    plt.xlabel(v_type)
+    
+    if fig_save_path:
+      plt.savefig(os.path.join(fig_save_path, ss + '-' + s_type + '.png'))
+    else:
+      plt.show()
+
+ 
