@@ -1,4 +1,5 @@
 import os
+import shutil
 import subprocess
 
 from .JobDistributor import JobDistributor
@@ -15,8 +16,10 @@ class SGEJobDistributor(JobDistributor):
     data_set_path = self.create_new_data_set(self.data_set_name)
     job_output_path = os.path.join(data_set_path, "job_outputs")
     
-    if not os.path.exists(job_output_path):
-      os.mkdir(job_output_path)
+    if os.path.exists(job_output_path): # Clear the job output path
+      shutil.rmtree(job_output_path)
+
+    os.mkdir(job_output_path)
 
     qsub_command = ['qsub',
                     '-cwd',
