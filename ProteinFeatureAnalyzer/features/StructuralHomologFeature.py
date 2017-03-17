@@ -238,14 +238,9 @@ class StructuralHomologFeature(Feature):
           if isinstance(ss, secondary_structures.AlphaHelix):
             ss.parameterize()
             
-            for l in ss.bond_lengths:
-              self.alpha_helix_parameterization_features.append({'type':'length', 'value':l})
-
-            for a in ss.bond_angles:
-              self.alpha_helix_parameterization_features.append({'type':'angle', 'value':a})
-
-            for t in ss.bond_torsions:
-              self.alpha_helix_parameterization_features.append({'type':'torsion', 'value':t})
+            for i in range(len(ss.bond_torsions)):
+              self.alpha_helix_parameterization_features.append({'length':ss.bond_lengths[i + 1],
+                  'angle':ss.bond_angles[i], 'torsion':ss.bond_torsions[i]})
 
   def save_alpha_helix_parameterization_features(self, data_path):
     '''Save alpha helix parameterization features.'''
@@ -260,11 +255,12 @@ class StructuralHomologFeature(Feature):
    
     self.alpha_helix_parameterization_features = []
     for index, row in df.iterrows():
-      self.alpha_helix_parameterization_features.append({'type':row[0], 'value':row[1]})
+      self.alpha_helix_parameterization_features.append({'length':row[1],
+          'angle':row[0], 'torsion':row[2]})
 
   def visualize_alpha_helix_parameterization_features(self, v_type='length', fig_save_path=None):
     '''Visualize alpha helix parameterization features.'''
-    data = [d['value'] for d in self.alpha_helix_parameterization_features if d['type'] == v_type]
+    data = [d[v_type] for d in self.alpha_helix_parameterization_features]
     step = (max(data) - min(data)) / 100
     hist, bin_edges = np.histogram(data, bins=np.arange(min(data), max(data), step))
 
