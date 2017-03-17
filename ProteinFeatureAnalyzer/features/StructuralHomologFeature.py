@@ -266,9 +266,9 @@ class StructuralHomologFeature(Feature):
     if v_type == 'a_t': 
        x = [d['angle'] for d in self.alpha_helix_parameterization_features] 
        y = [d['torsion'] for d in self.alpha_helix_parameterization_features] 
-       heatmap, xedges, yedges = np.histogram2d(x, y, bins=(64,64))
+       heatmap, xedges, yedges = np.histogram2d(x, y, bins=(128,128))
        extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
-       plt.imshow(heatmap, extent=extent, aspect='auto')
+       plt.imshow(np.transpose(heatmap), extent=extent, aspect='auto', origin='lower')
 
     # Plot histograms of single parameters
 
