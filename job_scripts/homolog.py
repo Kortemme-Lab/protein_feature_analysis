@@ -30,5 +30,5 @@ if __name__ == '__main__':
   #feature.load_ss_sizes_features(data_path)
   #feature.visualize_ss_sizes_features(ss='loop', s_type='beta-beta', fig_save_path=data_path)
   feature.load_alpha_helix_parameterization_features(data_path)
-  feature.visualize_alpha_helix_parameterization_features(v_type='a_t')
+  feature.visualize_alpha_helix_parameterization_features(v_type='t_t', position_shift=4)
   

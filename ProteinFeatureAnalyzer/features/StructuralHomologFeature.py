@@ -258,23 +258,30 @@ class StructuralHomologFeature(Feature):
       self.alpha_helix_parameterization_features.append({'lengths':json.loads(row[1]),
           'angles':json.loads(row[0]), 'torsions':json.loads(row[2])})
 
-  def visualize_alpha_helix_parameterization_features(self, v_type='lengths', fig_save_path=None):
+  def visualize_alpha_helix_parameterization_features(self, v_type='lengths', fig_save_path=None, position_shift=0):
     '''Visualize alpha helix parameterization features.'''
     
-    # Plot the heat map of angles and torsions
+    # Plot heat maps
 
-    if v_type == 'a_t': 
+    if v_type == 'a_t' or v_type == 't_t': 
       x = []
-      for feature_dict in self.alpha_helix_parameterization_features:
-        x += feature_dict['angles'][:-1]
-
       y = []
-      for feature_dict in self.alpha_helix_parameterization_features:
-        y += feature_dict['torsions']
+
+      if v_type == 'a_t': # Angles and torsions
+        for feature_dict in self.alpha_helix_parameterization_features:
+          x += feature_dict['angles'][:-1]
+          y += feature_dict['torsions']
+
+      if v_type == 't_t': # Torsions and torsions on the next i postion
+        for feature_dict in self.alpha_helix_parameterization_features:
+          t_len = len(feature_dict['torsions'])
+          if position_shift > t_len: continue
+          x += feature_dict['torsions'][:t_len - position_shift]
+          y += feature_dict['torsions'][position_shift:]
 
       heatmap, xedges, yedges = np.histogram2d(x, y, bins=(128,128))
       extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
-      plt.imshow(np.transpose(heatmap), extent=extent, aspect='auto', origin='lower')
+      plt.imshow(np.transpose(heatmap), extent=extent, origin='lower')
 
     # Plot histograms of single parameters
 
