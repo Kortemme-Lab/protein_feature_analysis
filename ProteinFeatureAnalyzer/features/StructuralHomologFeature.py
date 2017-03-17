@@ -272,13 +272,19 @@ class StructuralHomologFeature(Feature):
           x += feature_dict['angles'][:-1]
           y += feature_dict['torsions']
 
-      if v_type == 't_t': # Torsions and torsions on the next i postion
+      elif v_type == 't_t': # Torsions and torsions on the next i postion
         for feature_dict in self.alpha_helix_parameterization_features:
           t_len = len(feature_dict['torsions'])
           if position_shift > t_len: continue
           x += feature_dict['torsions'][:t_len - position_shift]
           y += feature_dict['torsions'][position_shift:]
 
+      # Calculate correlation coefficients
+
+      print("The correlation coefficient is:\n", np.corrcoef(x, y))
+
+      # Draw a heat map 
+    
       heatmap, xedges, yedges = np.histogram2d(x, y, bins=(128,128))
       extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
       plt.imshow(np.transpose(heatmap), extent=extent, origin='lower')
