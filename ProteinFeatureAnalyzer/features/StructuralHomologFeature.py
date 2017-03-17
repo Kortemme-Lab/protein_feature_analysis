@@ -260,14 +260,29 @@ class StructuralHomologFeature(Feature):
 
   def visualize_alpha_helix_parameterization_features(self, v_type='length', fig_save_path=None):
     '''Visualize alpha helix parameterization features.'''
-    data = [d[v_type] for d in self.alpha_helix_parameterization_features]
-    step = (max(data) - min(data)) / 100
-    hist, bin_edges = np.histogram(data, bins=np.arange(min(data), max(data), step))
-
-    plt.bar(bin_edges[0:-1], hist, width=step, edgecolor='black')
-    plt.ylabel('Number of structures')
-    plt.xlabel(v_type)
     
+    # Plot the heat map of angles and torsions
+
+    if v_type == 'a_t': 
+       x = [d['angle'] for d in self.alpha_helix_parameterization_features] 
+       y = [d['torsion'] for d in self.alpha_helix_parameterization_features] 
+       heatmap, xedges, yedges = np.histogram2d(x, y, bins=(64,64))
+       extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
+       plt.imshow(heatmap, extent=extent, aspect='auto')
+
+    # Plot histograms of single parameters
+
+    else:
+      data = [d[v_type] for d in self.alpha_helix_parameterization_features]
+      step = (max(data) - min(data)) / 100
+      hist, bin_edges = np.histogram(data, bins=np.arange(min(data), max(data), step))
+
+      plt.bar(bin_edges[0:-1], hist, width=step, edgecolor='black')
+      plt.ylabel('Number of structures')
+      plt.xlabel(v_type)
+
+    # Show or save the plot
+
     if fig_save_path:
       plt.savefig(os.path.join(fig_save_path, 'alpha_helix_parameters' + '-' + v_type + '.png'))
     else:
