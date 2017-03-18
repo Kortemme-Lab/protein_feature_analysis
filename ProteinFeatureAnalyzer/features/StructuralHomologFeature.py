@@ -296,6 +296,12 @@ class StructuralHomologFeature(Feature):
       for feature_dict in self.alpha_helix_parameterization_features:
         data += feature_dict[v_type]
 
+      # Calculate mean and standard deviation
+
+      print("mean = {0}, std = {1}".format(np.mean(data), np.std(data)))
+      
+      # Make histograms
+    
       step = (max(data) - min(data)) / 100
       hist, bin_edges = np.histogram(data, bins=np.arange(min(data), max(data), step))
 
