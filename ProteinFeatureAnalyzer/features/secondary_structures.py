@@ -191,6 +191,7 @@ class BetaSheet(SecondaryStructure):
     self.sheet_id = sheet_id
     self.strand_list = strand_list
     self.init_sheet_network(dssp_dict)
+    self.determine_sheet_type()
 
   def init_sheet_network(self, dssp_dict):
     '''Initialize a network that represents the beta sheet.'''
@@ -236,6 +237,51 @@ class BetaSheet(SecondaryStructure):
       if bp2 > 0:
         node['bps'].append(bp2)
 
+  def determine_sheet_type(self):
+    '''Determine if the sheet is parallel, antiparallel or mixed.'''
+    num_parallel = 0
+    num_antiparallel = 0
+
+    i = 0
+    while i < len(self.sheet_network):
+      
+      # Find the start of this strand
+
+      strand_start = i
+
+      while self.sheet_network[strand_start]['prev']:
+        strand_start -= 1
+
+      while self.sheet_network[i]['next']:
+        i += 1
+      i += 1
+
+      # If the strand only has one residue, take add a antiparallel strand
+
+      if self.sheet_network[strand_start]['next'] == None:
+        num_antiparallel += 1
+        continue
+
+      # Determine if the partner strands are parallel to this strand
+
+      for j in self.sheet_network[strand_start]['bps']:
+
+        # Its an parallel ladder if j + 1 is paired with strand_start + 1
+
+        if j + 1 < len(self.sheet_network) \
+           and  strand_start + 1 in self.sheet_network[j + 1]['bps']:
+          num_parallel += 1
+
+        else:
+          num_antiparallel += 1
+
+    if num_parallel == 0:
+      self.type = 'antiparallel'
+    elif num_antiparallel == 0:
+      self.type = 'parallel'
+    else:
+      self.type = 'mixed'
+      
 class Loop(SecondaryStructure):
   '''Class that represents a loop.'''
   def __init__(self, residue_list, ss_type):
