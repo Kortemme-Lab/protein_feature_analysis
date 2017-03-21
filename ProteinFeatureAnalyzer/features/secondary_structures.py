@@ -233,9 +233,9 @@ class BetaSheet(SecondaryStructure):
       bp2 = dssp_dict[res_id]['bp2']
 
       if bp1 > 0:
-        node['bps'].append(bp1)
+        node['bps'].append(id_map[bp1])
       if bp2 > 0:
-        node['bps'].append(bp2)
+        node['bps'].append(id_map[bp2])
 
   def determine_sheet_type(self):
     '''Determine if the sheet is parallel, antiparallel or mixed.'''
@@ -268,7 +268,7 @@ class BetaSheet(SecondaryStructure):
 
         # Its an parallel ladder if j + 1 is paired with strand_start + 1
 
-        if j + 1 < len(self.sheet_network) \
+        if self.sheet_network[j]['next'] != None \
            and  strand_start + 1 in self.sheet_network[j + 1]['bps']:
           num_parallel += 1
 
