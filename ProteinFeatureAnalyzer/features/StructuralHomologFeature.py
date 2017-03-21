@@ -156,7 +156,9 @@ class StructuralHomologFeature(Feature):
 
     for sf in self.superfamilies:
       for p in sf:
-          
+         
+          # Linear structures
+
           for i in range(len(p['ss_list'])):
 
             if isinstance(p['ss_list'][i], secondary_structures.AlphaHelix):
@@ -195,6 +197,13 @@ class StructuralHomologFeature(Feature):
                   'size' : l_len})
 
               i = j + 1
+
+          # Beta sheets
+
+          for sheet in p['sheet_list']:
+
+            self.ss_sizes_features.append({'ss':'beta_sheet', 'type':sheet.type,
+                'size':len(sheet.strand_list)})
 
   def save_ss_sizes_features(self, data_path):
     '''Save sizes of secondary structures.'''
