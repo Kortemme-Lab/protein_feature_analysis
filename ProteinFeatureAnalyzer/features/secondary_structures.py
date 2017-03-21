@@ -133,7 +133,8 @@ def pack_dssp_dict_into_ss_list(model, dssp_dict, key_map):
 
   for sheet_id in sheet_id_set:  
     sheet_list.append(BetaSheet(sheet_id, 
-        [ss for ss in ss_list if isinstance(ss, BetaStrand) and ss.sheet_id == sheet_id]))
+        [ss for ss in ss_list if isinstance(ss, BetaStrand) and ss.sheet_id == sheet_id],
+        dssp_dict))
 
   return ss_list, sheet_list
 
@@ -186,9 +187,54 @@ class BetaStrand(SecondaryStructure):
 
 class BetaSheet(SecondaryStructure):
   '''Class that represents a beta sheet.'''
-  def __init__(self, sheet_id, strand_list):
+  def __init__(self, sheet_id, strand_list, dssp_dict):
     self.sheet_id = sheet_id
     self.strand_list = strand_list
+    self.init_sheet_network(dssp_dict)
+
+  def init_sheet_network(self, dssp_dict):
+    '''Initialize a network that represents the beta sheet.'''
+    self.sheet_network = []
+
+    # Initialize a none-connected network
+
+    for strand in self.strand_list:
+      for r in strand.residue_list:
+        self.sheet_network.append({'residue':r, 'prev':None, 'next':None, 'bps':[]})
+
+    # Initialize connections within strands
+
+    for i in range(len(self.sheet_network) - 1):
+      node1 = self.sheet_network[i]
+      node2 = self.sheet_network[i + 1]
+
+      if node1['residue'].get_parent().get_id() != node2['residue'].get_parent().get_id():
+        continue
+
+      if node1['residue'].get_id()[1] + 1 == node2['residue'].get_id()[1]:
+        node1['next'] = i + 1
+        node2['prev'] = i
+
+    # Initialize a map from the DSSP sequential numbers to indices of the sheet_network
+
+    id_map = {}
+
+    for i, node in enumerate(self.sheet_network):
+      seq_num = dssp_dict[(node['residue'].get_parent().get_id(),
+                           node['residue'].get_id()[1])]['seq_num']
+      id_map[seq_num] = i
+
+    # Initialize connections between strands
+   
+    for node in self.sheet_network:
+      res_id = (node['residue'].get_parent().get_id(), node['residue'].get_id()[1])
+      bp1 = dssp_dict[res_id]['bp1']
+      bp2 = dssp_dict[res_id]['bp2']
+
+      if bp1 > 0:
+        node['bps'].append(bp1)
+      if bp2 > 0:
+        node['bps'].append(bp2)
 
 class Loop(SecondaryStructure):
   '''Class that represents a loop.'''
