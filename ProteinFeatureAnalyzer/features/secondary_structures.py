@@ -3,6 +3,8 @@ import subprocess
 import numpy as np
 import Bio.PDB as PDB
 
+from . import geometry
+
 
 def make_dssp_dict(pdb_path, dssp_path):
   '''Make a dictionary that stores the DSSP information of a
@@ -249,9 +251,6 @@ class BetaSheet(SecondaryStructure):
 
       strand_start = i
 
-      while self.sheet_network[strand_start]['prev']:
-        strand_start -= 1
-
       while self.sheet_network[i]['next']:
         i += 1
       i += 1
@@ -281,7 +280,73 @@ class BetaSheet(SecondaryStructure):
       self.type = 'parallel'
     else:
       self.type = 'mixed'
+
+  def parameterize(self):
+    '''Parameterize the BetaSheet.
+    The parameters are the 'bond' lengths, angles and torsions between Ca of each strand,
+    as well as the vectors from each Ca to its beta pateners. The parameters are saved in
+    the sheet_network.
+    '''
+    # Format the sheet_network
+
+    for node in self.sheet_network:
+      node['length'] = None
+      node['angle'] = None
+      node['torsion'] = None
+      node['bp_vectors'] = []
+
+    # Get the parameters
+    
+    i = 0
+    while i < len(self.sheet_network):
       
+      # Find the start and end of this strand
+
+      strand_start = i
+      strand_end = i
+
+      while self.sheet_network[strand_end]['next']:
+        strand_end += 1
+
+      # Get bond lengths
+
+      for j in range(strand_start, strand_end):
+        self.sheet_network[j]['length'] = self.sheet_network[j + 1]['residue']['CA'] \
+                - self.sheet_network[j]['residue']['CA']
+
+      # Get bond angles
+
+      for j in range(strand_start + 1, strand_end):
+        self.sheet_network[j]['angle'] = np.degrees(PDB.calc_angle( 
+                self.sheet_network[j - 1]['residue']['CA'].get_vector(),
+                self.sheet_network[j]['residue']['CA'].get_vector(),
+                self.sheet_network[j + 1]['residue']['CA'].get_vector()))
+
+      # Get bond torsions
+
+      for j in range(strand_start + 1, strand_end - 1):
+        self.sheet_network[j]['torsion'] = np.degrees(PDB.calc_dihedral(
+            self.sheet_network[j - 1]['residue']['CA'].get_vector(),
+            self.sheet_network[j]['residue']['CA'].get_vector(),
+            self.sheet_network[j + 1]['residue']['CA'].get_vector(),
+            self.sheet_network[j + 2]['residue']['CA'].get_vector()))
+
+      # Get the bp vectors
+
+      for j in range(strand_start + 1, strand_end):
+        stub = geometry.get_stub_matrix(self.sheet_network[j + 1]['residue']['CA'].get_coord(),
+                self.sheet_network[j]['residue']['CA'].get_coord(),
+                self.sheet_network[j - 1]['residue']['CA'].get_coord())
+
+        for k in self.sheet_network[j]['bps']:
+          bp_v_global = self.sheet_network[k]['residue']['CA'].get_coord() \
+                  - self.sheet_network[j]['residue']['CA'].get_coord()
+
+          self.sheet_network[j]['bp_vectors'].append(list(np.dot(np.array(stub.T), bp_v_global)))
+
+      i = strand_end + 1
+
+
 class Loop(SecondaryStructure):
   '''Class that represents a loop.'''
   def __init__(self, residue_list, ss_type):

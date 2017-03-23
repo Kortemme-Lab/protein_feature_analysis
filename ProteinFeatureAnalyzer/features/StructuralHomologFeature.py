@@ -325,4 +325,53 @@ class StructuralHomologFeature(Feature):
     else:
       plt.show()
 
- 
+  def calc_beta_sheet_parameterization_features(self):
+    '''Calculate parameterization features of beta sheets.'''
+    self.beta_sheet_parameterization_features = []
+    
+    for sf in self.superfamilies:
+      for p in sf:
+        for sheet in p['sheet_list']:
+          sheet.parameterize()
+          network = []
+          
+          for node in sheet.sheet_network:
+            n_prev = node['prev'] if node['prev'] else -1
+            n_next = node['next'] if node['next'] else -1
+            n_length = node['length'] if node['length'] else -1
+            n_angle = node['angle'] if node['angle'] else 1000
+            n_torsion = node['torsion'] if node['torsion'] else 1000
+              
+            network.append([n_prev, n_next,
+                node['bps'], n_length, n_angle, n_torsion, node['bp_vectors']])
+
+          self.beta_sheet_parameterization_features.append({'sheet_network':network})
+
+  def save_beta_sheet_parameterization_features(self, data_path):
+    '''Save beta sheet parameterization features.'''
+    self.calc_beta_sheet_parameterization_features()
+    df = pd.DataFrame(data=self.beta_sheet_parameterization_features)
+    
+    self.append_to_csv(df, os.path.join(data_path, 'beta_sheet_parameterization_features.csv'))
+
+  def load_beta_sheet_parameterization_features(self, data_path):
+    '''Load beta sheet parameterization features'''
+    df = pd.read_csv(os.path.join(data_path, 'beta_sheet_parameterization_features.csv'), header=None)
+   
+    self.beta_sheet_parameterization_features = []
+    for index, row in df.iterrows():
+      network = json.loads(row[0])
+      
+      d_network = []
+      for l in network:
+        n_prev = l[0] if l[0] > 0 else None
+        n_next = l[1] if l[1] > 0 else None
+        n_length = l[3] if l[3] > 0 else None
+        n_angle = l[4] if l[4] < 2000 else None
+        n_torsion = l[5] if l[5] < 2000 else None
+   
+        d_network.append({'prev':n_prev, 'next':n_next, 'bps':l[2], 'length':n_length,
+            'angle':n_angle, 'torsion':n_torsion, 'bp_vectors':l[6]})
+
+      self.beta_sheet_parameterization_features.append({'sheet_network':d_network})
+
