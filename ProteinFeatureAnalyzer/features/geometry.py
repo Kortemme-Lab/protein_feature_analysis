@@ -102,21 +102,21 @@ def normalize(v):
 
 def get_stub_matrix(p1, p2, p3):
   '''Get a matrix corresponding to a coordinate frame formed by 3 points.
-     The origin is on p2, the x-axis is from p2 to p1; the z-axis is the
-     cross product of x-axis and the vector p2-p3; the y-axis is the product
-     of z-axis and x-axis. The axis vectors will be the columns of the returned
+     The origin is on p2, the y-axis is from p2 to p3; the z-axis is the
+     cross product of vector p1-p2 and the y-axis; the x-axis is the product
+     of y-axis and z-axis. The axis vectors will be the columns of the returned
      matrix.
   '''
-  x = normalize(p1 - p2)
-  z = normalize(np.cross(x, p3 - p2))
-  y = np.cross(z, x)
+  y = normalize(p3 - p2)
+  z = normalize(np.cross(p1 - p2, y))
+  x = np.cross(y, z)
 
   return np.matrix([x, y, z]).T
 
 def get_residue_stub_matrix(residue):
   '''Constructure a coordinate frame on a residue. The origin is on the CA atom; 
-  the x-axis is from CA to N; the z-axis is the cross product of the x-axis and the
-  CA-C vector; the y-axis is thus defined by requiring the frame to be right handed.
+  the y-axis is from CA to C; the z-axis is the cross product of the CA-N vector and the
+  y-axis; the x-axis is thus defined by requiring the frame to be right handed.
   Return a 3x3 matrix and a vector that transforms coordinates in the local frame to 
   coordinates in the global frame.
   '''
