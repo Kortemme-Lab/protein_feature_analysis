@@ -345,7 +345,7 @@ class StructuralHomologFeature(Feature):
             network.append([n_prev, n_next,
                 node['bps'], n_length, n_angle, n_torsion, node['bp_vectors']])
 
-          self.beta_sheet_parameterization_features.append({'sheet_network':network})
+          self.beta_sheet_parameterization_features.append({'type':sheet.type, 'sheet_network':network})
 
   def save_beta_sheet_parameterization_features(self, data_path):
     '''Save beta sheet parameterization features.'''
@@ -373,5 +373,5 @@ class StructuralHomologFeature(Feature):
         d_network.append({'prev':n_prev, 'next':n_next, 'bps':l[2], 'length':n_length,
             'angle':n_angle, 'torsion':n_torsion, 'bp_vectors':l[6]})
 
-      self.beta_sheet_parameterization_features.append({'sheet_network':d_network})
+      self.beta_sheet_parameterization_features.append({'type':row[1], 'sheet_network':d_network})
 
