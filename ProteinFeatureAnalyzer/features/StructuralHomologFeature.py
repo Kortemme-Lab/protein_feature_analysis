@@ -367,11 +367,53 @@ class StructuralHomologFeature(Feature):
         n_prev = l[0] if l[0] > 0 else None
         n_next = l[1] if l[1] > 0 else None
         n_length = l[3] if l[3] > 0 else None
-        n_angle = l[4] if l[4] < 2000 else None
-        n_torsion = l[5] if l[5] < 2000 else None
+        n_angle = l[4] if l[4] < 900 else None
+        n_torsion = l[5] if l[5] < 900 else None
    
         d_network.append({'prev':n_prev, 'next':n_next, 'bps':l[2], 'length':n_length,
             'angle':n_angle, 'torsion':n_torsion, 'bp_vectors':l[6]})
 
       self.beta_sheet_parameterization_features.append({'type':row[1], 'sheet_network':d_network})
+
+  def visualize_beta_sheet_parameterization_features(self, sheet_type='antiparallel', v_type='length', fig_save_path=None):
+    '''Visualize beta sheet parameterization features.'''
+  
+    if False:
+        pass
+
+    # Plot histograms of single parameters
+
+    else:
+      data = []
+      for feature_dict in self.beta_sheet_parameterization_features:
+        if feature_dict['type'] == sheet_type:
+          data += [d[v_type] for d in feature_dict['sheet_network'] if d[v_type]]
+
+      # Ajust the range of torsions
+
+      if v_type == 'torsion':
+        for i in range(len(data)):
+          if data[i] < 0:
+            data[i] += 360
+
+      # Calculate mean and standard deviation
+      
+      print("mean = {0}, std = {1}".format(np.mean(data), np.std(data)))
+      
+      # Make histograms
+    
+      step = (max(data) - min(data)) / 100
+      hist, bin_edges = np.histogram(data, bins=np.arange(min(data), max(data), step))
+
+      plt.bar(bin_edges[0:-1], hist, width=step, edgecolor='black')
+      plt.ylabel('Number of structures')
+      plt.xlabel(v_type)
+    
+
+    # Show or save the plot
+
+    if fig_save_path:
+      plt.savefig(os.path.join(fig_save_path, 'beta_sheet_parameters' + '-' + v_type + '.png'))
+    else:
+      plt.show()
 
