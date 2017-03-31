@@ -375,50 +375,75 @@ class StructuralHomologFeature(Feature):
 
       self.beta_sheet_parameterization_features.append({'type':row[1], 'sheet_network':d_network})
 
-  def visualize_beta_sheet_parameterization_features(self, sheet_type='antiparallel', v_type='length', fig_save_path=None):
+  def visualize_beta_sheet_parameterization_features(self, sheet_type='antiparallel', v_type1='length', v_type2='', position_shift=0, fig_save_path=None):
     '''Visualize beta sheet parameterization features.'''
-  
-    if False:
-        pass
+
+    def get_data(data_type, res_dict):
+      '''Get a type of data from a residue dictionary.'''
+
+      # Get bp_vectors related data
+      
+      if data_type.startswith('bp_vectors'):
+        
+        vectors = res_dict['bp_vectors']
+        
+        if data_type.endswith('+'):
+          vectors = [v for v in vectors if v[2] > 0]
+        else:
+          vectors = [v for v in vectors if v[2] < 0]
+
+        if len(vectors) == 0:
+          return None
+
+        v = vectors[0]
+        
+        if data_type[:-1].endswith('phi'):
+          return np.arctan2(np.sqrt(v[0] ** 2 + v[1] ** 2), v[2]) 
+
+        elif data_type[:-1].endswith('theta'):
+          return np.arctan2(v[1], v[0])
+
+        elif data_type[:-1].endswith('length'):
+          return np.linalg.norm(v)
+
+      # Get internal coordinate data
+
+      else:
+        data = res_dict[data_type]
+      
+        # Ajust the range of torsions
+
+        if data_type == 'torsion' and data < 0:
+          data += 360
+
+        return res_dict[data_type]
+
+    # Plot histograms of two parameters
+
+    if v_type2 != '':
+      x = []
+      y = []
+
+      # Calculate correlation coefficients
+
+      print("The correlation coefficient is:\n", np.corrcoef(x, y))
+
+      # Draw a heat map 
+    
+      heatmap, xedges, yedges = np.histogram2d(x, y, bins=(128,128))
+      extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
+      plt.imshow(np.transpose(heatmap), extent=extent, origin='lower')
+
 
     # Plot histograms of single parameters
 
     else:
       data = []
-      
-      if v_type.startswith('bp_vectors'):
-        vectors = []
-        
-        for feature_dict in self.beta_sheet_parameterization_features:
-          if feature_dict['type'] == sheet_type:
-            for d in feature_dict['sheet_network']:
-              vectors += d['bp_vectors']
 
-        if v_type.endswith('+'):
-          vectors = [v for v in vectors if v[2] > 0]
-        else:
-          vectors = [v for v in vectors if v[2] < 0]
-
-        if v_type[:-1].endswith('phi'):
-          data = [np.arctan2(np.sqrt(v[0] ** 2 + v[1] ** 2), v[2]) for v in vectors]
-
-        elif v_type[:-1].endswith('theta'):
-          data = [np.arctan2(v[1], v[0]) for v in vectors]
-
-        elif v_type[:-1].endswith('length'):
-          data = [np.linalg.norm(v) for v in vectors]
-
-      else:
-        for feature_dict in self.beta_sheet_parameterization_features:
-          if feature_dict['type'] == sheet_type:
-            data += [d[v_type] for d in feature_dict['sheet_network'] if d[v_type]]
-
-      # Ajust the range of torsions
-
-      if v_type == 'torsion':
-        for i in range(len(data)):
-          if data[i] < 0:
-            data[i] += 360
+      for feature_dict in self.beta_sheet_parameterization_features:
+        if feature_dict['type'] == sheet_type:
+          data += [get_data(v_type1, d) 
+                  for d in feature_dict['sheet_network'] if get_data(v_type1, d)]
 
       # Calculate mean and standard deviation
       
@@ -431,13 +456,13 @@ class StructuralHomologFeature(Feature):
 
       plt.bar(bin_edges[0:-1], hist, width=step, edgecolor='black')
       plt.ylabel('Number of structures')
-      plt.xlabel(v_type)
+      plt.xlabel(v_type1)
     
 
     # Show or save the plot
 
     if fig_save_path:
-      plt.savefig(os.path.join(fig_save_path, 'beta_sheet_parameters' + '-' + v_type + '.png'))
+      plt.savefig(os.path.join(fig_save_path, 'beta_sheet_parameters' + '-' + v_type1 + '_' + v_type2 + '_' + str(position_shift) + '.png'))
     else:
       plt.show()
 

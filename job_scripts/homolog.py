@@ -33,5 +33,5 @@ if __name__ == '__main__':
   #feature.load_alpha_helix_parameterization_features(data_path)
   #feature.visualize_alpha_helix_parameterization_features(v_type='a_t', position_shift=1)
   feature.load_beta_sheet_parameterization_features(data_path)
-  feature.visualize_beta_sheet_parameterization_features(sheet_type='antiparallel', v_type='bp_vectors_theta-')
+  feature.visualize_beta_sheet_parameterization_features(sheet_type='antiparallel', v_type1='bp_vectors_theta-')
   
