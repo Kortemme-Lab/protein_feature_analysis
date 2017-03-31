@@ -385,9 +385,33 @@ class StructuralHomologFeature(Feature):
 
     else:
       data = []
-      for feature_dict in self.beta_sheet_parameterization_features:
-        if feature_dict['type'] == sheet_type:
-          data += [d[v_type] for d in feature_dict['sheet_network'] if d[v_type]]
+      
+      if v_type.startswith('bp_vectors'):
+        vectors = []
+        
+        for feature_dict in self.beta_sheet_parameterization_features:
+          if feature_dict['type'] == sheet_type:
+            for d in feature_dict['sheet_network']:
+              vectors += d['bp_vectors']
+
+        if v_type.endswith('+'):
+          vectors = [v for v in vectors if v[2] > 0]
+        else:
+          vectors = [v for v in vectors if v[2] < 0]
+
+        if v_type[:-1].endswith('phi'):
+          data = [np.arctan2(np.sqrt(v[0] ** 2 + v[1] ** 2), v[2]) for v in vectors]
+
+        elif v_type[:-1].endswith('theta'):
+          data = [np.arctan2(v[1], v[0]) for v in vectors]
+
+        elif v_type[:-1].endswith('length'):
+          data = [np.linalg.norm(v) for v in vectors]
+
+      else:
+        for feature_dict in self.beta_sheet_parameterization_features:
+          if feature_dict['type'] == sheet_type:
+            data += [d[v_type] for d in feature_dict['sheet_network'] if d[v_type]]
 
       # Ajust the range of torsions
 
