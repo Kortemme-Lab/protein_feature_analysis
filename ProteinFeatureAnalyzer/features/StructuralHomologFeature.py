@@ -401,7 +401,10 @@ class StructuralHomologFeature(Feature):
           return np.arctan2(np.sqrt(v[0] ** 2 + v[1] ** 2), v[2]) 
 
         elif data_type[:-1].endswith('theta'):
-          return np.arctan2(v[1], v[0])
+          data = np.arctan2(v[1], v[0])
+          if data < 0:
+            data += 2 * np.pi
+          return data
 
         elif data_type[:-1].endswith('length'):
           return np.linalg.norm(v)
@@ -413,16 +416,38 @@ class StructuralHomologFeature(Feature):
       
         # Ajust the range of torsions
 
-        if data_type == 'torsion' and data < 0:
+        if data and data_type == 'torsion' and data < 0:
           data += 360
 
-        return res_dict[data_type]
+        return data
 
     # Plot histograms of two parameters
 
     if v_type2 != '':
       x = []
       y = []
+
+      for feature_dict in self.beta_sheet_parameterization_features:
+        if feature_dict['type'] == sheet_type:
+            
+          net = feature_dict['sheet_network'] 
+          for res_dict1 in net:
+            
+            res_dict2 = res_dict1
+
+            for i in range(position_shift):
+              if res_dict2 and res_dict2['next']:
+                res_dict2 = net[res_dict2['next']]
+
+            if res_dict2 == None:
+              continue
+
+            data1 = get_data(v_type1, res_dict1)
+            data2 = get_data(v_type2, res_dict2)
+
+            if data1 and data2:
+              x.append(data1)
+              y.append(data2)
 
       # Calculate correlation coefficients
 
@@ -432,7 +457,7 @@ class StructuralHomologFeature(Feature):
     
       heatmap, xedges, yedges = np.histogram2d(x, y, bins=(128,128))
       extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
-      plt.imshow(np.transpose(heatmap), extent=extent, origin='lower')
+      plt.imshow(np.transpose(heatmap), extent=extent, origin='lower', aspect='auto')
 
 
     # Plot histograms of single parameters
