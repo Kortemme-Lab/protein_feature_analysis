@@ -397,10 +397,10 @@ class StructuralHomologFeature(Feature):
 
         v = vectors[0]
         
-        if data_type[:-1].endswith('phi'):
+        if data_type[:-1].endswith('theta'):
           return np.degrees(np.arctan2(np.sqrt(v[0] ** 2 + v[1] ** 2), v[2]))
 
-        elif data_type[:-1].endswith('theta'):
+        elif data_type[:-1].endswith('phi'):
           data = np.degrees(np.arctan2(v[1], v[0]))
           if data < 0:
             data += 2 * np.pi
