@@ -403,7 +403,7 @@ class StructuralHomologFeature(Feature):
         elif data_type[:-1].endswith('phi'):
           data = np.degrees(np.arctan2(v[1], v[0]))
           if data < 0:
-            data += 2 * np.pi
+            data += 360
           return data
 
         elif data_type[:-1].endswith('length'):
