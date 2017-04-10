@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib
 matplotlib.use('TkAgg') 
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import axes3d
 import pandas as pd
 import Bio.PDB as PDB
 
@@ -375,7 +376,7 @@ class StructuralHomologFeature(Feature):
 
       self.beta_sheet_parameterization_features.append({'type':row[1], 'sheet_network':d_network})
 
-  def visualize_beta_sheet_parameterization_features(self, sheet_type='antiparallel', v_type1='length', v_type2='', position_shift=0, fig_save_path=None):
+  def visualize_beta_sheet_parameterization_features(self, sheet_type='antiparallel', v_type1='length', v_type2='', v_type3='', position_shift=0, fig_save_path=None):
     '''Visualize beta sheet parameterization features.'''
 
     def get_data(data_type, res_dict):
@@ -408,6 +409,15 @@ class StructuralHomologFeature(Feature):
 
         elif data_type[:-1].endswith('length'):
           return np.linalg.norm(v)
+        
+        elif data_type[:-1].endswith('x'):
+          return v[0]
+
+        elif data_type[:-1].endswith('y'):
+          return v[1]
+
+        elif data_type[:-1].endswith('z'):
+          return v[2]
 
       # Get internal coordinate data
 
@@ -421,9 +431,49 @@ class StructuralHomologFeature(Feature):
 
         return data
 
+    # Plot scatter plots of three parameters
+
+    if v_type3 != '':
+      x = []
+      y = []
+      z = []
+
+      for feature_dict in self.beta_sheet_parameterization_features:
+        if feature_dict['type'] == sheet_type:
+            
+          net = feature_dict['sheet_network'] 
+          for res_dict in net:
+
+            data1 = get_data(v_type1, res_dict)
+            data2 = get_data(v_type2, res_dict)
+            data3 = get_data(v_type3, res_dict)
+
+            if data1 and data2:
+              x.append(data1)
+              y.append(data2)
+              z.append(data3)
+   
+      # Shuffle the data
+      
+      indices = np.random.permutation(len(x))
+      points_to_plot = 10000
+
+      x_rand = [x[i] for i in indices[:points_to_plot]]
+      y_rand = [y[i] for i in indices[:points_to_plot]]
+      z_rand = [z[i] for i in indices[:points_to_plot]]
+
+      fig = plt.figure()
+      ax = fig.gca(projection='3d')
+      ax.scatter(x_rand, y_rand, z_rand, s=1)
+      ax.set_xlabel(v_type1)
+      ax.set_ylabel(v_type2)
+      ax.set_zlabel(v_type3)
+
+      plt.show()
+
     # Plot histograms of two parameters
 
-    if v_type2 != '':
+    elif v_type2 != '':
       x = []
       y = []
 
