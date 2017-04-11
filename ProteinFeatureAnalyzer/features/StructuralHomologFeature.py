@@ -456,7 +456,7 @@ class StructuralHomologFeature(Feature):
       # Shuffle the data
       
       indices = np.random.permutation(len(x))
-      points_to_plot = 10000
+      points_to_plot = 5000
 
       x_rand = [x[i] for i in indices[:points_to_plot]]
       y_rand = [y[i] for i in indices[:points_to_plot]]
@@ -498,6 +498,16 @@ class StructuralHomologFeature(Feature):
             if data1 and data2:
               x.append(data1)
               y.append(data2)
+
+      x_y_tuple = list(zip(x, y))
+
+      # Calculate the mean
+
+      print("The mean of {0} and {1} are:\n {2}\n".format(v_type1, v_type2, np.mean(x_y_tuple, axis=0)))
+
+      # Calculate the covariance
+
+      print("The covariance of {0} and {1} are:\n {2}\n".format(v_type1, v_type2, np.cov(x_y_tuple, rowvar=False)))
 
       # Calculate correlation coefficients
 
