@@ -551,3 +551,39 @@ class StructuralHomologFeature(Feature):
     else:
       plt.show()
 
+  def calc_beta_sheet_bb_threading_features(self):
+    '''Calculate features of beta sheets used to thread
+    backbone atoms on Ca tracing.
+    '''
+    self.beta_sheet_bb_threading_features = []
+    
+    for sf in self.superfamilies:
+      for p in sf:
+        for sheet in p['sheet_list']:
+          for strand in sheet.strand_list:
+            strand.calc_bb_threading_features()
+            
+            for c in strand.ca_n_internal_coord_n_term:
+              self.beta_sheet_bb_threading_features.append(
+                      {'type':sheet.type, 'position':'n_term', 'atom':'N', 'internal_coord':c})
+
+            for c in strand.ca_c_internal_coord_n_term:
+              self.beta_sheet_bb_threading_features.append(
+                      {'type':sheet.type, 'position':'n_term', 'atom':'C', 'internal_coord':c})
+
+            for c in strand.ca_n_internal_coord_mid:
+              self.beta_sheet_bb_threading_features.append(
+                      {'type':sheet.type, 'position':'mid', 'atom':'N', 'internal_coord':c})
+
+            for c in strand.ca_c_internal_coord_mid:
+              self.beta_sheet_bb_threading_features.append(
+                      {'type':sheet.type, 'position':'mid', 'atom':'C', 'internal_coord':c})
+
+            for c in strand.ca_n_internal_coord_c_term:
+              self.beta_sheet_bb_threading_features.append(
+                      {'type':sheet.type, 'position':'c_term', 'atom':'N', 'internal_coord':c})
+
+            for c in strand.ca_c_internal_coord_c_term:
+              self.beta_sheet_bb_threading_features.append(
+                      {'type':sheet.type, 'position':'c_term', 'atom':'C', 'internal_coord':c})
+

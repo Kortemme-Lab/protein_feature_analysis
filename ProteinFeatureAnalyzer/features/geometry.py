@@ -4,6 +4,27 @@ import scipy.spatial
 import Bio.PDB as PDB
 
 
+def angle(v1, v2):
+    '''Return the angle between two vectors in radian.'''
+    cos = max(-1, min(1, np.dot(normalize(v1), normalize(v2))))
+    return np.arccos(cos)
+
+def dihedral(p1, p2, p3, p4):
+    '''Return the dihedral defined by 4 points in 
+    range [-pi, pi].
+    '''
+    v1 = normalize(p2 - p1)
+    v2 = normalize(p3 - p2)
+    v3 = normalize(p4 - p3)
+
+    n1 = normalize(np.cross(v1, v2))
+    n2 = normalize(np.cross(v2, v3))
+
+    c = np.dot(n1, n2)
+    s = np.dot(v2, np.cross(n1, n2))
+
+    return np.arctan2(s, c) 
+
 def get_phi(chain, residue):
   '''Calculate the phi torsion of a residue.'''
   
@@ -183,3 +204,35 @@ def random_euler_angles():
   uniform distribution in SO(3).
   '''
   return rotation_matrix_to_euler_angles(random_rotation_matrix())
+
+def rotation_matrix_from_axis_and_angle(u, theta):
+  '''Calculate a rotation matrix from an axis and an angle.'''
+
+  u = normalize(u)
+  x = u[0]
+  y = u[1]
+  z = u[2]
+  s = np.sin(theta)
+  c = np.cos(theta)
+
+  return np.array([[c + x**2 * (1 - c), x * y * (1 - c) - z * s, x * z * (1 - c) + y * s],
+                   [y * x * (1 - c) + z * s, c + y**2 * (1 - c), y * z * (1 - c) - x * s ],
+                   [z * x * (1 - c) - y * s, z * y * (1 - c) + x * s, c + z**2 * (1 - c) ]])
+
+def cartesian_coord_from_internal_coord(p1, p2, p3, d, theta, tau):
+  '''Calculate the cartesian coordinates of an atom from 
+  three internal coordinates and three reference points.
+  '''
+  axis1 = np.cross(p1 - p2, p3 - p2)
+  axis2 = p3 - p2
+
+  M1 = rotation_matrix_from_axis_and_angle(axis1, theta - np.pi)
+  M2 = rotation_matrix_from_axis_and_angle(axis2, tau)
+
+  return p3 + d * np.dot(M2, np.dot(M1, normalize(p3 - p2)))
+
+def cartesian_coord_to_internal_coord(p1, p2, p3, p):
+  '''Cacluate internal coordinates of a point from its
+  cartesian coordinates based on three reference points.
+  '''
+  return np.linalg.norm(p - p3), angle(p - p3, p2 - p3), dihedral(p1, p2, p3, p)

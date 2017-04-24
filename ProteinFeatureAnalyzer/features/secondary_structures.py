@@ -187,6 +187,68 @@ class BetaStrand(SecondaryStructure):
     self.residue_list = residue_list
     self.sheet_id = sheet_id
 
+  def calc_bb_threading_features(self):
+    '''Calculate backbone threading features.'''
+    self.ca_n_internal_coord_n_term = []
+    self.ca_c_internal_coord_n_term = []
+    self.ca_n_internal_coord_mid = []
+    self.ca_c_internal_coord_mid = []
+    self.ca_n_internal_coord_c_term = []
+    self.ca_c_internal_coord_c_term = []
+
+    if len(self.residue_list) < 3:
+        return
+
+    # Calculate the N terminal features
+
+    self.ca_n_internal_coord_n_term.append(
+            geometry.cartesian_coord_to_internal_coord(
+            self.residue_list[2]['CA'].get_coord(),
+            self.residue_list[1]['CA'].get_coord(),
+            self.residue_list[0]['CA'].get_coord(),
+            self.residue_list[0]['N'].get_coord()))
+
+    self.ca_c_internal_coord_n_term.append( 
+            geometry.cartesian_coord_to_internal_coord(
+            self.residue_list[2]['CA'].get_coord(),
+            self.residue_list[1]['CA'].get_coord(),
+            self.residue_list[0]['CA'].get_coord(),
+            self.residue_list[0]['C'].get_coord()))
+
+    # Calculate the middle features
+
+    for i in range(1, len(self.residue_list) - 1):
+
+      self.ca_n_internal_coord_mid.append(
+              geometry.cartesian_coord_to_internal_coord(
+              self.residue_list[i - 1]['CA'].get_coord(),
+              self.residue_list[i + 1]['CA'].get_coord(),
+              self.residue_list[i]['CA'].get_coord(),
+              self.residue_list[i]['N'].get_coord()))
+
+      self.ca_c_internal_coord_mid.append(
+              geometry.cartesian_coord_to_internal_coord(
+              self.residue_list[i + 1]['CA'].get_coord(),
+              self.residue_list[i - 1]['CA'].get_coord(),
+              self.residue_list[i]['CA'].get_coord(),
+              self.residue_list[i]['C'].get_coord()))
+
+    # Calculate the C terminal features
+
+    self.ca_n_internal_coord_c_term.append(
+            geometry.cartesian_coord_to_internal_coord(
+            self.residue_list[-3]['CA'].get_coord(),
+            self.residue_list[-2]['CA'].get_coord(),
+            self.residue_list[-1]['CA'].get_coord(),
+            self.residue_list[-1]['N'].get_coord()))
+
+    self.ca_c_internal_coord_c_term.append(
+            geometry.cartesian_coord_to_internal_coord(
+            self.residue_list[-3]['CA'].get_coord(),
+            self.residue_list[-2]['CA'].get_coord(),
+            self.residue_list[-1]['CA'].get_coord(),
+            self.residue_list[-1]['C'].get_coord()))
+
 class BetaSheet(SecondaryStructure):
   '''Class that represents a beta sheet.'''
   def __init__(self, sheet_id, strand_list, dssp_dict):
