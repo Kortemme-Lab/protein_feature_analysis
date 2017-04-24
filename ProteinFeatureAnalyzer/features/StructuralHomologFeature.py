@@ -282,7 +282,7 @@ class StructuralHomologFeature(Feature):
           x += feature_dict['angles'][:-1]
           y += feature_dict['torsions']
 
-      elif v_type == 't_t': # Torsions and torsions on the next i postion
+      elif v_type == 't_t': # Torsions and torsions on the next i position
         for feature_dict in self.alpha_helix_parameterization_features:
           t_len = len(feature_dict['torsions'])
           if position_shift > t_len: continue
@@ -602,5 +602,35 @@ class StructuralHomologFeature(Feature):
     for index, row in df.iterrows():
      
       self.beta_sheet_bb_threading_features.append(
-              {'type':row[3], 'postion':row[2], 'atom':row[0], 'internal_coord':json.loads(row[1])})
+              {'type':row[3], 'position':row[2], 'atom':row[0], 'internal_coord':json.loads(row[1])})
+
+  def visualize_beta_sheet_bb_threading_features(self, sheet_type, position, atom, feature, fig_save_path=None):
+    '''Visualize beta sheet backbone threading features'''
+    map_to_id = {'length': 0, 'angle': 1, 'dihedral': 2}
+
+    data = [d['internal_coord'][map_to_id[feature]] for d in self.beta_sheet_bb_threading_features
+            if d['type'] == sheet_type and d['position'] == position and d['atom'] == atom]
+    
+    if feature == 'angle' or feature == 'dihedral':
+      data = [np.degrees(x) for x in data]
+
+    # Calculate mean and standard deviation
+    
+    print("mean = {0}, std = {1}".format(np.mean(data), np.std(data)))
+    
+    # Make histograms
+    
+    step = (max(data) - min(data)) / 100
+    hist, bin_edges = np.histogram(data, bins=np.arange(min(data), max(data), step))
+
+    plt.bar(bin_edges[0:-1], hist, width=step, edgecolor='black')
+    plt.ylabel('Number of structures')
+    plt.xlabel('-'.join([sheet_type, position, atom, feature]))
+   
+    # Save or plot
+
+    if fig_save_path:
+      plt.savefig(os.path.join(fig_save_path, ss + '-' + s_type + '.png'))
+    else:
+      plt.show()
 
