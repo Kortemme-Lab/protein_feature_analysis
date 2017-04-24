@@ -235,4 +235,4 @@ def cartesian_coord_to_internal_coord(p1, p2, p3, p):
   '''Cacluate internal coordinates of a point from its
   cartesian coordinates based on three reference points.
   '''
-  return np.linalg.norm(p - p3), angle(p - p3, p2 - p3), dihedral(p1, p2, p3, p)
+  return [np.linalg.norm(p - p3), angle(p - p3, p2 - p3), dihedral(p1, p2, p3, p)]

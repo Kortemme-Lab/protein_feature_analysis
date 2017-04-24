@@ -19,13 +19,13 @@ if __name__ == '__main__':
 
   feature = PFA.features.StructuralHomologFeature(dssp_path)
   
-  feature.extract(input_path, data_path, num_jobs, job_id)
+  #feature.extract(input_path, data_path, num_jobs, job_id)
   
   #feature.save_ss_composition_features(data_path)
   #feature.save_ss_sizes_features(data_path)
   #feature.save_alpha_helix_parameterization_features(data_path)
   #feature.save_beta_sheet_parameterization_features(data_path)
-  feature.calc_beta_sheet_bb_threading_features()
+  #feature.save_beta_sheet_bb_threading_features(data_path)
 
   #feature.load_ss_composition_features(data_path)
   #feature.visualize_ss_composition_features('num_alpha_helix')
@@ -35,4 +35,5 @@ if __name__ == '__main__':
   #feature.visualize_alpha_helix_parameterization_features(v_type='a_t', position_shift=1)
   #feature.load_beta_sheet_parameterization_features(data_path)
   #feature.visualize_beta_sheet_parameterization_features(sheet_type='parallel', v_type1='bp_vectors_x+', v_type2='bp_vectors_y+', position_shift=0)
+  feature.load_beta_sheet_bb_threading_features(data_path)
   

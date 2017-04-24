@@ -587,3 +587,20 @@ class StructuralHomologFeature(Feature):
               self.beta_sheet_bb_threading_features.append(
                       {'type':sheet.type, 'position':'c_term', 'atom':'C', 'internal_coord':c})
 
+  def save_beta_sheet_bb_threading_features(self, data_path):
+    '''Save beta sheet backbone threading features.'''
+    self.calc_beta_sheet_bb_threading_features()
+    df = pd.DataFrame(data=self.beta_sheet_bb_threading_features)
+    
+    self.append_to_csv(df, os.path.join(data_path, 'beta_sheet_bb_threading_features.csv'))
+
+  def load_beta_sheet_bb_threading_features(self, data_path):
+    '''Load beta sheet backbone threading features'''
+    df = pd.read_csv(os.path.join(data_path, 'beta_sheet_bb_threading_features.csv'), header=None)
+   
+    self.beta_sheet_bb_threading_features = []
+    for index, row in df.iterrows():
+     
+      self.beta_sheet_bb_threading_features.append(
+              {'type':row[3], 'postion':row[2], 'atom':row[0], 'internal_coord':json.loads(row[1])})
+
