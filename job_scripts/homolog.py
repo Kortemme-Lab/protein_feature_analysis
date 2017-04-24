@@ -36,5 +36,11 @@ if __name__ == '__main__':
   #feature.load_beta_sheet_parameterization_features(data_path)
   #feature.visualize_beta_sheet_parameterization_features(sheet_type='parallel', v_type1='bp_vectors_x+', v_type2='bp_vectors_y+', position_shift=0)
   feature.load_beta_sheet_bb_threading_features(data_path)
-  feature.visualize_beta_sheet_bb_threading_features('parallel', 'mid', 'N', 'angle')
+
+  for sheet_type in ['parallel', 'antiparallel']:
+    for atom in ['N', 'C']:
+      for position in ['n_term', 'mid', 'c_term']:
+        for coord in ['length', 'angle', 'dihedral']:
+          print(sheet_type, atom, position, coord)  
+          feature.visualize_beta_sheet_bb_threading_features(sheet_type, position, atom, coord, fig_save_path=data_path)
   

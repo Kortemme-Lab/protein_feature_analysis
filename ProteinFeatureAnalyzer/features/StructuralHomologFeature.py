@@ -623,6 +623,7 @@ class StructuralHomologFeature(Feature):
     step = (max(data) - min(data)) / 100
     hist, bin_edges = np.histogram(data, bins=np.arange(min(data), max(data), step))
 
+    plt.clf()
     plt.bar(bin_edges[0:-1], hist, width=step, edgecolor='black')
     plt.ylabel('Number of structures')
     plt.xlabel('-'.join([sheet_type, position, atom, feature]))
@@ -630,7 +631,7 @@ class StructuralHomologFeature(Feature):
     # Save or plot
 
     if fig_save_path:
-      plt.savefig(os.path.join(fig_save_path, ss + '-' + s_type + '.png'))
+      plt.savefig(os.path.join(fig_save_path, '-'.join(['beta_sheet_bb_threading', sheet_type, position, atom, feature]) + '.png'))
     else:
       plt.show()
 
