@@ -16,6 +16,7 @@ setup(
         'scipy',
         'matplotlib',
         'biopython',
+        'networkx',
         'docopt',
         'pandas',
         'flufl.lock',

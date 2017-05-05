@@ -86,7 +86,6 @@ class StructuralHomologFeature(Feature):
 
             candidate_proteins.append({'structure' : structure, 'path' : structure_path})
 
-
     for p in candidate_proteins:
       try:  
         self.find_secondary_structures(p)

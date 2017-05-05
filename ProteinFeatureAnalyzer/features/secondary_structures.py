@@ -2,6 +2,7 @@ import subprocess
 
 import numpy as np
 import Bio.PDB as PDB
+import networkx as nx
 
 from . import geometry
 
@@ -144,7 +145,7 @@ def pack_dssp_dict_into_ss_list(model, dssp_dict, key_map):
   for sheet_id in sheet_id_set:  
     sheet_list.append(BetaSheet(sheet_id, 
         [ss for ss in ss_list if isinstance(ss, BetaStrand) and ss.sheet_id == sheet_id],
-        dssp_dict))
+        dssp_dict, key_map, model))
 
   return ss_list, sheet_list
 
@@ -166,9 +167,60 @@ class BetaStrand(SecondaryStructure):
 
 class BetaSheet(SecondaryStructure):
   '''Class that represents a beta sheet.'''
-  def __init__(self, sheet_id, strand_list, dssp_dict):
+  def __init__(self, sheet_id, strand_list, dssp_dict, key_map, model):
     self.sheet_id = sheet_id
     self.strand_list = strand_list
+    self.init_sheet_graph(dssp_dict, key_map, model)
+
+  def init_sheet_graph(self, dssp_dict, key_map, model):
+    '''Initialize a graph to represent a beta sheet.'''
+    self.graph = nx.MultiDiGraph()
+
+    # Add the strands
+
+    for strand in self.strand_list:
+      for i in range(len(strand.residue_list) - 1):
+        self.graph.add_edge(strand.residue_list[i],
+                strand.residue_list[i + 1], edge_type='pp_bond')
+    
+    # Add the hydrogen bonds
+
+    residues = [res for strand in self.strand_list for res in strand.residue_list]
+
+    for res in residues:
+      d = dssp_dict[(res.get_parent().get_id(), res.get_id()[1])]
+
+      # Add a hydrogen bond if the H bond energy is below a limit
+
+      HB_ENERGY_LIMIT = -1.5
+
+      if d['nh_to_o1'][1] < HB_ENERGY_LIMIT:
+        key = key_map[d['seq_num'] + d['nh_to_o1'][0]]
+        res2 = model[key[0]][key[1]]
+        
+        if res2 in residues:
+          self.graph.add_edge(res, res2, edge_type='nh_to_o1')
+        
+      if d['o_to_nh1'][1] < HB_ENERGY_LIMIT:
+        key = key_map[d['seq_num'] + d['o_to_nh1'][0]]
+        res2 = model[key[0]][key[1]]
+        
+        if res2 in residues:
+          self.graph.add_edge(res, res2, edge_type='o_to_nh1')
+        
+      if d['nh_to_o2'][1] < HB_ENERGY_LIMIT:
+        key = key_map[d['seq_num'] + d['nh_to_o2'][0]]
+        res2 = model[key[0]][key[1]]
+        
+        if res2 in residues:
+          self.graph.add_edge(res, res2, edge_type='nh_to_o2')
+        
+      if d['o_to_nh2'][1] < HB_ENERGY_LIMIT:
+        key = key_map[d['seq_num'] + d['o_to_nh2'][0]]
+        res2 = model[key[0]][key[1]]
+        
+        if res2 in residues:
+          self.graph.add_edge(res, res2, edge_type='o_to_nh2')
 
 class Loop(SecondaryStructure):
   '''Class that represents a loop.'''

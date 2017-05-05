@@ -21,11 +21,11 @@ if __name__ == '__main__':
   
   feature.extract(input_path, data_path, num_jobs, job_id)
   
-  feature.save_ss_composition_features(data_path)
+  #feature.save_ss_composition_features(data_path)
   #feature.save_ss_sizes_features(data_path)
 
   #feature.load_ss_composition_features(data_path)
-  feature.visualize_ss_composition_features('num_alpha_helix')
+  #feature.visualize_ss_composition_features('num_alpha_helix')
   #feature.load_ss_sizes_features(data_path)
   #feature.visualize_ss_sizes_features(ss='beta_sheet', s_type='antiparallel', fig_save_path=data_path)
   
