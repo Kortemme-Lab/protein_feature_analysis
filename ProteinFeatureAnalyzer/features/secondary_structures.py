@@ -140,46 +140,15 @@ def pack_dssp_dict_into_ss_list(model, dssp_dict, key_map):
 
   return ss_list, sheet_list
 
-
 class SecondaryStructure:
   '''Base class for secondary structures.'''
   def __init__(self):
     pass
 
-
 class AlphaHelix(SecondaryStructure):
   '''Class that represents an alpha helix.'''
   def __init__(self, residue_list):
     self.residue_list = residue_list
-
-  def parameterize(self):
-    '''Get the Ca representation of the helix and get the bond lengths,
-    bond angles and torsions of the Ca representation. There will be n-1 bonds,
-    n-2 angles and n-3 torsions.
-    '''
-    cas = [r['CA'] for r in self.residue_list]
-    cas_v = [a.get_vector() for a in cas]
-    
-    self.bond_lengths = []
-    self.bond_angles = []
-    self.bond_torsions = []
-    
-    # Get bond lengths
-    
-    for i in range(len(cas) - 1):
-      self.bond_lengths.append(cas[i + 1] - cas[i])
-
-    # Get bond angles
-
-    for i in range(1, len(cas) - 1):
-      self.bond_angles.append(np.degrees(PDB.calc_angle(cas_v[i - 1],
-          cas_v[i], cas_v[i + 1])))
-
-    # Get torsions
-
-    for i in range(1, len(cas) - 2):
-      self.bond_torsions.append(np.degrees(PDB.calc_dihedral(cas_v[i - 1],
-          cas_v[i], cas_v[i + 1], cas_v[i + 2])))
 
 class BetaStrand(SecondaryStructure):
   '''Class that represents a beta strand.'''
@@ -187,232 +156,15 @@ class BetaStrand(SecondaryStructure):
     self.residue_list = residue_list
     self.sheet_id = sheet_id
 
-  def calc_bb_threading_features(self):
-    '''Calculate backbone threading features.'''
-    self.ca_n_internal_coord_n_term = []
-    self.ca_c_internal_coord_n_term = []
-    self.ca_n_internal_coord_mid = []
-    self.ca_c_internal_coord_mid = []
-    self.ca_n_internal_coord_c_term = []
-    self.ca_c_internal_coord_c_term = []
-
-    if len(self.residue_list) < 3:
-        return
-
-    # Calculate the N terminal features
-
-    self.ca_n_internal_coord_n_term.append(
-            geometry.cartesian_coord_to_internal_coord(
-            self.residue_list[2]['CA'].get_coord(),
-            self.residue_list[1]['CA'].get_coord(),
-            self.residue_list[0]['CA'].get_coord(),
-            self.residue_list[0]['N'].get_coord()))
-
-    self.ca_c_internal_coord_n_term.append( 
-            geometry.cartesian_coord_to_internal_coord(
-            self.residue_list[2]['CA'].get_coord(),
-            self.residue_list[1]['CA'].get_coord(),
-            self.residue_list[0]['CA'].get_coord(),
-            self.residue_list[0]['C'].get_coord()))
-
-    # Calculate the middle features
-
-    for i in range(1, len(self.residue_list) - 1):
-
-      self.ca_n_internal_coord_mid.append(
-              geometry.cartesian_coord_to_internal_coord(
-              self.residue_list[i - 1]['CA'].get_coord(),
-              self.residue_list[i + 1]['CA'].get_coord(),
-              self.residue_list[i]['CA'].get_coord(),
-              self.residue_list[i]['N'].get_coord()))
-
-      self.ca_c_internal_coord_mid.append(
-              geometry.cartesian_coord_to_internal_coord(
-              self.residue_list[i + 1]['CA'].get_coord(),
-              self.residue_list[i - 1]['CA'].get_coord(),
-              self.residue_list[i]['CA'].get_coord(),
-              self.residue_list[i]['C'].get_coord()))
-
-    # Calculate the C terminal features
-
-    self.ca_n_internal_coord_c_term.append(
-            geometry.cartesian_coord_to_internal_coord(
-            self.residue_list[-3]['CA'].get_coord(),
-            self.residue_list[-2]['CA'].get_coord(),
-            self.residue_list[-1]['CA'].get_coord(),
-            self.residue_list[-1]['N'].get_coord()))
-
-    self.ca_c_internal_coord_c_term.append(
-            geometry.cartesian_coord_to_internal_coord(
-            self.residue_list[-3]['CA'].get_coord(),
-            self.residue_list[-2]['CA'].get_coord(),
-            self.residue_list[-1]['CA'].get_coord(),
-            self.residue_list[-1]['C'].get_coord()))
-
 class BetaSheet(SecondaryStructure):
   '''Class that represents a beta sheet.'''
   def __init__(self, sheet_id, strand_list, dssp_dict):
     self.sheet_id = sheet_id
     self.strand_list = strand_list
-    self.init_sheet_network(dssp_dict)
-    self.determine_sheet_type()
-
-  def init_sheet_network(self, dssp_dict):
-    '''Initialize a network that represents the beta sheet.'''
-    self.sheet_network = []
-
-    # Initialize a none-connected network
-
-    for strand in self.strand_list:
-      for r in strand.residue_list:
-        self.sheet_network.append({'residue':r, 'prev':None, 'next':None, 'bps':[]})
-
-    # Initialize connections within strands
-
-    for i in range(len(self.sheet_network) - 1):
-      node1 = self.sheet_network[i]
-      node2 = self.sheet_network[i + 1]
-
-      if node1['residue'].get_parent().get_id() != node2['residue'].get_parent().get_id():
-        continue
-
-      if node1['residue'].get_id()[1] + 1 == node2['residue'].get_id()[1]:
-        node1['next'] = i + 1
-        node2['prev'] = i
-
-    # Initialize a map from the DSSP sequential numbers to indices of the sheet_network
-
-    id_map = {}
-
-    for i, node in enumerate(self.sheet_network):
-      seq_num = dssp_dict[(node['residue'].get_parent().get_id(),
-                           node['residue'].get_id()[1])]['seq_num']
-      id_map[seq_num] = i
-
-    # Initialize connections between strands
-   
-    for node in self.sheet_network:
-      res_id = (node['residue'].get_parent().get_id(), node['residue'].get_id()[1])
-      bp1 = dssp_dict[res_id]['bp1']
-      bp2 = dssp_dict[res_id]['bp2']
-
-      if bp1 > 0:
-        node['bps'].append(id_map[bp1])
-      if bp2 > 0:
-        node['bps'].append(id_map[bp2])
-
-  def determine_sheet_type(self):
-    '''Determine if the sheet is parallel, antiparallel or mixed.'''
-    num_parallel = 0
-    num_antiparallel = 0
-
-    i = 0
-    while i < len(self.sheet_network):
-      
-      # Find the start of this strand
-
-      strand_start = i
-
-      while self.sheet_network[i]['next']:
-        i += 1
-      i += 1
-
-      # If the strand only has one residue, take add a antiparallel strand
-
-      if self.sheet_network[strand_start]['next'] == None:
-        num_antiparallel += 1
-        continue
-
-      # Determine if the partner strands are parallel to this strand
-
-      for j in self.sheet_network[strand_start]['bps']:
-
-        # Its an parallel ladder if j + 1 is paired with strand_start + 1
-
-        if self.sheet_network[j]['next'] != None \
-           and  strand_start + 1 in self.sheet_network[j + 1]['bps']:
-          num_parallel += 1
-
-        else:
-          num_antiparallel += 1
-
-    if num_parallel == 0:
-      self.type = 'antiparallel'
-    elif num_antiparallel == 0:
-      self.type = 'parallel'
-    else:
-      self.type = 'mixed'
-
-  def parameterize(self):
-    '''Parameterize the BetaSheet.
-    The parameters are the 'bond' lengths, angles and torsions between Ca of each strand,
-    as well as the vectors from each Ca to its beta pateners. The parameters are saved in
-    the sheet_network.
-    '''
-    # Format the sheet_network
-
-    for node in self.sheet_network:
-      node['length'] = None
-      node['angle'] = None
-      node['torsion'] = None
-      node['bp_vectors'] = []
-
-    # Get the parameters
-    
-    i = 0
-    while i < len(self.sheet_network):
-      
-      # Find the start and end of this strand
-
-      strand_start = i
-      strand_end = i
-
-      while self.sheet_network[strand_end]['next']:
-        strand_end += 1
-
-      # Get bond lengths
-
-      for j in range(strand_start, strand_end):
-        self.sheet_network[j]['length'] = self.sheet_network[j + 1]['residue']['CA'] \
-                - self.sheet_network[j]['residue']['CA']
-
-      # Get bond angles
-
-      for j in range(strand_start + 1, strand_end):
-        self.sheet_network[j]['angle'] = np.degrees(PDB.calc_angle( 
-                self.sheet_network[j - 1]['residue']['CA'].get_vector(),
-                self.sheet_network[j]['residue']['CA'].get_vector(),
-                self.sheet_network[j + 1]['residue']['CA'].get_vector()))
-
-      # Get bond torsions
-
-      for j in range(strand_start + 1, strand_end - 1):
-        self.sheet_network[j]['torsion'] = np.degrees(PDB.calc_dihedral(
-            self.sheet_network[j - 1]['residue']['CA'].get_vector(),
-            self.sheet_network[j]['residue']['CA'].get_vector(),
-            self.sheet_network[j + 1]['residue']['CA'].get_vector(),
-            self.sheet_network[j + 2]['residue']['CA'].get_vector()))
-
-      # Get the bp vectors
-
-      for j in range(strand_start + 1, strand_end):
-        stub = geometry.get_stub_matrix(self.sheet_network[j + 1]['residue']['CA'].get_coord(),
-                self.sheet_network[j]['residue']['CA'].get_coord(),
-                self.sheet_network[j - 1]['residue']['CA'].get_coord())
-
-        for k in self.sheet_network[j]['bps']:
-          bp_v_global = self.sheet_network[k]['residue']['CA'].get_coord() \
-                  - self.sheet_network[j]['residue']['CA'].get_coord()
-
-          self.sheet_network[j]['bp_vectors'].append(list(np.dot(np.array(stub.T), bp_v_global)))
-
-      i = strand_end + 1
-
 
 class Loop(SecondaryStructure):
   '''Class that represents a loop.'''
   def __init__(self, residue_list, ss_type):
     self.residue_list = residue_list
     self.type = ss_type
-
 
