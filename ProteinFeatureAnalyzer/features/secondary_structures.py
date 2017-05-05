@@ -57,10 +57,18 @@ def make_dssp_dict(pdb_path, dssp_path):
     bp1 = int(l[26:29])     # Beta bridge partner 1
     bp2 = int(l[30:33])     # Beta bridge partner 2
     bsl = l[33]             # Beta sheet label
+    nh_to_o1 = l[39:50].split(',')     # Hydrogen bond from NH to O 1
+    o_to_nh1 = l[50:61].split(',')     # Hydrogen bond from O to NH 1
+    nh_to_o2 = l[61:72].split(',')     # Hydrogen bond from NH to O 2
+    o_to_nh2 = l[72:83].split(',')     # Hydrogen bond from O to NH 2
 
     key_map[seq_num] = (chain_id, res_id)
     dssp_dict[(chain_id, res_id)] = {'seq_num':seq_num, 'ss':ss,
-            'bbl1':bbl1, 'bbl2':bbl2, 'bp1':bp1, 'bp2':bp2, 'bsl':bsl}
+            'bbl1':bbl1, 'bbl2':bbl2, 'bp1':bp1, 'bp2':bp2, 'bsl':bsl,
+            'nh_to_o1':(int(nh_to_o1[0]), float(nh_to_o1[1])),
+            'o_to_nh1':(int(o_to_nh1[0]), float(o_to_nh1[1])),
+            'nh_to_o2':(int(nh_to_o2[0]), float(nh_to_o2[1])),
+            'o_to_nh2':(int(o_to_nh2[0]), float(o_to_nh2[1])) }
 
   return dssp_dict, key_map
 
