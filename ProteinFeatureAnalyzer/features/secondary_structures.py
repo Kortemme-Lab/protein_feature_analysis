@@ -173,6 +173,7 @@ class BetaSheet(SecondaryStructure):
     self.init_sheet_graph(dssp_dict, key_map, model)
     self.init_boundaries(dssp_dict)
     self.init_mismatches()
+    self.propagate_node_attributes()
     self.determine_sheet_type()
 
     for res in self.graph.nodes(): ###DEBUG
@@ -304,6 +305,27 @@ class BetaSheet(SecondaryStructure):
         if ((prev_r is not None) and self.num_hbonds(prev_r) < 2) \
                 or ((next_r is not None) and self.num_hbonds(next_r) < 2):
           self.graph.node[res]['mismatch'] = 0
+
+  def propagate_node_attributes(self):
+    '''Propagate the the side, teminal and mismatch attributes throughout
+    the whole graph.
+    '''
+    def propagete_recursively(node):
+      '''Propagate the attributes recursively.'''
+      updated_nodes = set()
+
+      for neighbor in self.graph.neighbors(node):
+        
+        for attribute in ['side', 'terminal', 'mismatch']:
+          if self.graph.node[neighbor][attribute] > self.graph.node[node][attribute] + 1:
+            self.graph.node[neighbor][attribute] = self.graph.node[node][attribute] + 1
+            updated_nodes.add(neighbor)
+
+      for neighbor in updated_nodes:
+        propagete_recursively(neighbor)
+
+    for node in self.graph.nodes():
+      propagete_recursively(node)
 
   def determine_sheet_type(self):
     '''Determine the type of the beta sheet.'''
