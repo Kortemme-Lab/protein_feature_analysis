@@ -176,9 +176,6 @@ class BetaSheet(SecondaryStructure):
     self.propagate_node_attributes()
     self.determine_sheet_type()
 
-    for res in self.graph.nodes(): ###DEBUG
-      print(self.graph.node[res])
-
   def init_sheet_graph(self, dssp_dict, key_map, model):
     '''Initialize a graph to represent a beta sheet.
     Nodes are residues and edges are peptide bonds or

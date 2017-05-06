@@ -11,6 +11,7 @@ import Bio.PDB as PDB
 
 from .Feature import Feature
 from . import topology
+from . import geometry
 from . import secondary_structures
 
 
@@ -87,11 +88,10 @@ class StructuralHomologFeature(Feature):
             candidate_proteins.append({'structure' : structure, 'path' : structure_path})
 
     for p in candidate_proteins:
-      self.find_secondary_structures(p) ###DEBUG
-      #try:  
-      #  self.find_secondary_structures(p)
-      #except:
-      #  continue
+      try:  
+        self.find_secondary_structures(p)
+      except:
+        continue
       self.superfamilies[-1].append(p) # Add a protein to a superfamily if there's no exception
 
   def find_secondary_structures(self, protein_dict):
@@ -235,4 +235,26 @@ class StructuralHomologFeature(Feature):
       plt.savefig(os.path.join(fig_save_path, ss + '-' + s_type + '.png'))
     else:
       plt.show()
+
+  def calc_beta_sheet_features(self):
+    '''Calculate features of beta sheets.'''
+    self.beta_sheet_features = []
+
+    for sf in self.superfamilies:
+      for p in sf:
+        for sheet in p['sheet_list']:
+          for res in sheet.graph.nodes():
+
+            d = sheet.graph.node[res]
+            self.beta_sheet_features.append({'mismatch' : d['mismatch'], 'path' : p['path'], 
+                'phi' : np.degrees(geometry.get_phi(res.get_parent(), res)), 
+                'psi' : np.degrees(geometry.get_psi(res.get_parent(), res)), 
+                'side' : d['side'], 'terminal' : d['terminal'], 'type' : sheet.type})
+
+  def save_beta_sheet_features(self, data_path):
+    '''Save beta sheet features.'''
+    self.calc_beta_sheet_features()
+    df = pd.DataFrame(data=self.beta_sheet_features)
+    
+    self.append_to_csv(df, os.path.join(data_path, 'beta_sheet_features.csv'))
 
