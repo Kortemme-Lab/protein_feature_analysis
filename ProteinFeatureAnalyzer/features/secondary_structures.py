@@ -171,9 +171,13 @@ class BetaSheet(SecondaryStructure):
     self.sheet_id = sheet_id
     self.strand_list = strand_list
     self.init_sheet_graph(dssp_dict, key_map, model)
+    self.determine_sheet_type()
 
   def init_sheet_graph(self, dssp_dict, key_map, model):
-    '''Initialize a graph to represent a beta sheet.'''
+    '''Initialize a graph to represent a beta sheet.
+    Nodes are residues and edges are peptide bonds or
+    hydrogen bonds.
+    '''
     self.graph = nx.MultiDiGraph()
 
     # Add the strands
@@ -221,6 +225,47 @@ class BetaSheet(SecondaryStructure):
         
         if res2 in residues:
           self.graph.add_edge(res, res2, edge_type='o_to_nh2')
+
+  def get_next_node(self, residue):
+    '''Get the next node of a residue in the beta sheet graph.
+    Return None if next node doesn't exist.
+    '''
+    for edge in self.graph.out_edges(residue): 
+      edge_types = [d['edge_type'] for d in self.graph.get_edge_data(*edge).values()]
+      
+      if 'pp_bond' in edge_types:
+        return edge[1]
+
+    return None
+
+  def determine_sheet_type(self):
+    '''Determine the type of the beta sheet.'''
+    directions = [] # Save all the directions found
+
+    for node1 in self.graph.nodes():
+      next1 = self.get_next_node(node1)
+
+      for edge in self.graph.out_edges(node1):
+        edge_types = [d['edge_type'] for d in self.graph.get_edge_data(*edge).values()]
+        
+        if 'pp_bond' in edge_types:
+          continue
+        
+        node2 = edge[1]
+        next2 = self.get_next_node(node2)
+
+        if bool(next1 and next2):
+          v1 = next1['CA'].get_coord() - node1['CA'].get_coord()
+          v2 = next2['CA'].get_coord() - node2['CA'].get_coord()
+
+          directions.append(np.dot(v1, v2) > 0)
+
+    if not (True in directions):
+      self.type = 'antiparallel'
+    elif not (False in directions):
+      self.type = 'parallel'
+    else:
+      self.type = 'mixed'
 
 class Loop(SecondaryStructure):
   '''Class that represents a loop.'''

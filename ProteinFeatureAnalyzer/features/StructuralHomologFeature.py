@@ -87,10 +87,11 @@ class StructuralHomologFeature(Feature):
             candidate_proteins.append({'structure' : structure, 'path' : structure_path})
 
     for p in candidate_proteins:
-      try:  
-        self.find_secondary_structures(p)
-      except:
-        continue
+      self.find_secondary_structures(p) ###DEBUG
+      #try:  
+      #  self.find_secondary_structures(p)
+      #except:
+      #  continue
       self.superfamilies[-1].append(p) # Add a protein to a superfamily if there's no exception
 
   def find_secondary_structures(self, protein_dict):
