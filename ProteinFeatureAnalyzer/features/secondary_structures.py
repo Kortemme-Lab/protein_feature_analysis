@@ -172,7 +172,11 @@ class BetaSheet(SecondaryStructure):
     self.strand_list = strand_list
     self.init_sheet_graph(dssp_dict, key_map, model)
     self.init_boundaries(dssp_dict)
+    self.init_mismatches()
     self.determine_sheet_type()
+
+    for res in self.graph.nodes(): ###DEBUG
+      print(self.graph.node[res])
 
   def init_sheet_graph(self, dssp_dict, key_map, model):
     '''Initialize a graph to represent a beta sheet.
@@ -185,7 +189,11 @@ class BetaSheet(SecondaryStructure):
     
     residues = [res for strand in self.strand_list for res in strand.residue_list]
     for res in residues:
-      self.graph.add_node(res, side=False, terminal=False)
+      
+      # The attributes side, terminal and mismatch tell the shortest distance
+      # of a residue to side, terminal and mismatch residues.
+        
+      self.graph.add_node(res, side=1000, terminal=1000, mismatch=1000)
 
     for strand in self.strand_list:
       for i in range(len(strand.residue_list) - 1):
@@ -255,20 +263,47 @@ class BetaSheet(SecondaryStructure):
 
   def init_boundaries(self, dssp_dict): 
     '''Initialize the boundary residues of the graph.'''
-    # Find boundary residues which has only one beta sheet pair residue
 
     for res in self.graph.nodes():
       key = (res.get_parent().get_id(), res.get_id()[1])
       
-      # Set side residues
+      # Set side residues which has only one beta sheet pair residue
 
       if dssp_dict[key]['bp1'] == 0 or dssp_dict[key]['bp2'] == 0:
-        self.graph.node[res]['side'] = True
+        self.graph.node[res]['side'] = 0
 
       # Set terminal residues
 
       if self.get_next_node(res) is None or self.get_prev_node(res) is None:
-        self.graph.node[res]['terminal'] = True
+        self.graph.node[res]['terminal'] = 0
+
+  def num_hbonds(self, residue):
+    '''Return the number of Hbonds of a residue.'''
+    hbonds = []
+    
+    for edge in self.graph.out_edges(residue):
+      hbonds += [d for d in self.graph.get_edge_data(*edge).values() if
+                    d['edge_type'] != 'pp_bond']
+    return len(hbonds)
+  
+  def init_mismatches(self):
+    '''Initialize the mismatched residues.
+    Internal and terminal residues without both N and O Hbonded are regarded as mismatches.
+    Side residue are mismatches unless they have at leat one Hbond or both its previous
+    and next residues have two Hbonds.
+    '''
+    for res in self.graph.nodes():
+
+      if self.graph.node[res]['side'] > 0 and self.num_hbonds(res) < 2:
+        self.graph.node[res]['mismatch'] = 0
+
+      elif self.graph.node[res]['side'] == 0 and self.num_hbonds(res) < 1:
+        prev_r = self.get_prev_node(res)
+        next_r = self.get_next_node(res)
+
+        if ((prev_r is not None) and self.num_hbonds(prev_r) < 2) \
+                or ((next_r is not None) and self.num_hbonds(next_r) < 2):
+          self.graph.node[res]['mismatch'] = 0
 
   def determine_sheet_type(self):
     '''Determine the type of the beta sheet.'''
