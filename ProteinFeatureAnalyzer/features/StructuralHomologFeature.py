@@ -267,3 +267,49 @@ class StructuralHomologFeature(Feature):
       self.beta_sheet_features.append({'mismatch':row[0], 'path':row[1],
           'phi':row[2], 'psi':row[3], 'side':row[4], 'terminal':row[5], 'type':row[6]})
 
+  def visualize_beta_sheet_features(self, sheet_type, feature1, feature2='', 
+          side_threshold=0, terminal_threshold=0, mismatch_threshold=0, fig_save_path=None):
+    '''Visualize beta sheet features.'''
+    
+    data1 = [d[feature1] for d in self.beta_sheet_features if d['type'] == sheet_type
+            and d['side'] >= side_threshold and d['terminal'] >= terminal_threshold
+            and d['mismatch'] >= mismatch_threshold]
+
+    # Visualize one feature
+    
+    if feature2 == '':
+
+      # Calculate mean and standard deviation
+      
+      print("mean = {0}, std = {1}".format(np.mean(data1), np.std(data1)))
+      
+      # Make histograms
+      
+      step = (max(data1) - min(data1)) / 100
+      hist, bin_edges = np.histogram(data1, bins=np.arange(min(data1), max(data1), step))
+
+      plt.clf()
+      plt.bar(bin_edges[0:-1], hist, width=step, edgecolor='black')
+      plt.ylabel('Number of residues')
+      plt.xlabel('-'.join([sheet_type, feature1]))
+  
+    # Visualize two features
+
+    else:
+      
+      data2 = [d[feature2] for d in self.beta_sheet_features if d['type'] == sheet_type
+              and d['side'] >= side_threshold and d['terminal'] >= terminal_threshold
+              and d['mismatch'] >= mismatch_threshold]
+
+      # Draw a heat map 
+    
+      heatmap, xedges, yedges = np.histogram2d(data1, data2, bins=(128,128))
+      extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
+      plt.imshow(np.transpose(heatmap), extent=extent, origin='lower', aspect='auto')
+
+    # Save or plot
+
+    if fig_save_path:
+      plt.savefig(os.path.join(fig_save_path, '-'.join(['beta_sheet', sheet_type, feature1, feature2]) + '.png'))
+    else:
+      plt.show()

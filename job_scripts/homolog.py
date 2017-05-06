@@ -19,7 +19,7 @@ if __name__ == '__main__':
 
   feature = PFA.features.StructuralHomologFeature(dssp_path)
   
-  feature.extract(input_path, data_path, num_jobs, job_id)
+  #feature.extract(input_path, data_path, num_jobs, job_id)
   
   #feature.save_ss_composition_features(data_path)
   #feature.save_ss_sizes_features(data_path)
@@ -30,4 +30,5 @@ if __name__ == '__main__':
   #feature.load_ss_sizes_features(data_path)
   #feature.visualize_ss_sizes_features(ss='beta_sheet', s_type='antiparallel', fig_save_path=data_path)
   feature.load_beta_sheet_features(data_path)
+  feature.visualize_beta_sheet_features('parallel', 'phi', feature2='psi')
   
