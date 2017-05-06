@@ -258,3 +258,12 @@ class StructuralHomologFeature(Feature):
     
     self.append_to_csv(df, os.path.join(data_path, 'beta_sheet_features.csv'))
 
+  def load_beta_sheet_features(self, data_path):
+    '''Load beta sheet features.'''
+    df = pd.read_csv(os.path.join(data_path, 'beta_sheet_features.csv'), header=None)
+   
+    self.beta_sheet_features = []
+    for index, row in df.iterrows():
+      self.beta_sheet_features.append({'mismatch':row[0], 'path':row[1],
+          'phi':row[2], 'psi':row[3], 'side':row[4], 'terminal':row[5], 'type':row[6]})
+
