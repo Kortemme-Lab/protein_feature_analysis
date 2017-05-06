@@ -171,6 +171,7 @@ class BetaSheet(SecondaryStructure):
     self.sheet_id = sheet_id
     self.strand_list = strand_list
     self.init_sheet_graph(dssp_dict, key_map, model)
+    self.init_boundaries(dssp_dict)
     self.determine_sheet_type()
 
   def init_sheet_graph(self, dssp_dict, key_map, model):
@@ -181,15 +182,17 @@ class BetaSheet(SecondaryStructure):
     self.graph = nx.MultiDiGraph()
 
     # Add the strands
+    
+    residues = [res for strand in self.strand_list for res in strand.residue_list]
+    for res in residues:
+      self.graph.add_node(res, side=False, terminal=False)
 
     for strand in self.strand_list:
       for i in range(len(strand.residue_list) - 1):
         self.graph.add_edge(strand.residue_list[i],
                 strand.residue_list[i + 1], edge_type='pp_bond')
-    
-    # Add the hydrogen bonds
 
-    residues = [res for strand in self.strand_list for res in strand.residue_list]
+    # Add the hydrogen bonds
 
     for res in residues:
       d = dssp_dict[(res.get_parent().get_id(), res.get_id()[1])]
@@ -226,6 +229,18 @@ class BetaSheet(SecondaryStructure):
         if res2 in residues:
           self.graph.add_edge(res, res2, edge_type='o_to_nh2')
 
+  def get_prev_node(self, residue):
+    '''Get the previous node of a residue in the beta sheet graph.
+    Return None in the previous node doesn't exist.
+    '''
+    for edge in self.graph.in_edges(residue):
+      edge_types = [d['edge_type'] for d in self.graph.get_edge_data(*edge).values()]
+
+      if 'pp_bond' in edge_types:
+        return edge[0]
+
+    return None
+
   def get_next_node(self, residue):
     '''Get the next node of a residue in the beta sheet graph.
     Return None if next node doesn't exist.
@@ -237,6 +252,23 @@ class BetaSheet(SecondaryStructure):
         return edge[1]
 
     return None
+
+  def init_boundaries(self, dssp_dict): 
+    '''Initialize the boundary residues of the graph.'''
+    # Find boundary residues which has only one beta sheet pair residue
+
+    for res in self.graph.nodes():
+      key = (res.get_parent().get_id(), res.get_id()[1])
+      
+      # Set side residues
+
+      if dssp_dict[key]['bp1'] == 0 or dssp_dict[key]['bp2'] == 0:
+        self.graph.node[res]['side'] = True
+
+      # Set terminal residues
+
+      if self.get_next_node(res) is None or self.get_prev_node(res) is None:
+        self.graph.node[res]['terminal'] = True
 
   def determine_sheet_type(self):
     '''Determine the type of the beta sheet.'''
