@@ -268,12 +268,17 @@ class StructuralHomologFeature(Feature):
           'phi':row[2], 'psi':row[3], 'side':row[4], 'terminal':row[5], 'type':row[6]})
 
   def visualize_beta_sheet_features(self, sheet_type, feature1, feature2='', 
-          side_threshold=0, terminal_threshold=0, mismatch_threshold=0, fig_save_path=None):
+          side_threshold=(0, 10000), terminal_threshold=(0, 10000), 
+          mismatch_threshold=(0, 10000), fig_save_path=None):
     '''Visualize beta sheet features.'''
-    
-    data1 = [d[feature1] for d in self.beta_sheet_features if d['type'] == sheet_type
-            and d['side'] >= side_threshold and d['terminal'] >= terminal_threshold
-            and d['mismatch'] >= mismatch_threshold]
+   
+    def get_data(feature):
+      return [d[feature] for d in self.beta_sheet_features if d['type'] == sheet_type
+            and side_threshold[0] <= d['side'] <= side_threshold[1]
+            and terminal_threshold[0] <= d['terminal'] <= terminal_threshold[1]
+            and mismatch_threshold[0] <= d['mismatch'] <= mismatch_threshold[1]]
+
+    data1 = get_data(feature1)
 
     # Visualize one feature
     
@@ -281,7 +286,8 @@ class StructuralHomologFeature(Feature):
 
       # Calculate mean and standard deviation
       
-      print("mean = {0}, std = {1}".format(np.mean(data1), np.std(data1)))
+      print("mean = {0}, std = {1}, num_data = {2}".format(
+          np.mean(data1), np.std(data1), len(data1)))
       
       # Make histograms
       
@@ -297,9 +303,7 @@ class StructuralHomologFeature(Feature):
 
     else:
       
-      data2 = [d[feature2] for d in self.beta_sheet_features if d['type'] == sheet_type
-              and d['side'] >= side_threshold and d['terminal'] >= terminal_threshold
-              and d['mismatch'] >= mismatch_threshold]
+      data2 = get_data(feature2)
 
       # Draw a heat map 
     

@@ -198,6 +198,19 @@ class BetaSheet(SecondaryStructure):
         self.graph.add_edge(strand.residue_list[i],
                 strand.residue_list[i + 1], edge_type='pp_bond')
 
+    # Add the beta pairs
+
+    for res in residues:
+      d = dssp_dict[(res.get_parent().get_id(), res.get_id()[1])]
+      
+      for value in ['bp1', 'bp2']:
+        if d[value] > 0:
+          key = key_map[d[value]]
+          res2 = model[key[0]][key[1]]
+
+          if res2 in residues:
+            self.graph.add_edge(res, res2, edge_type='bp')
+
     # Add the hydrogen bonds
 
     for res in residues:
@@ -207,34 +220,14 @@ class BetaSheet(SecondaryStructure):
 
       HB_ENERGY_LIMIT = -1.5
 
-      if d['nh_to_o1'][1] < HB_ENERGY_LIMIT:
-        key = key_map[d['seq_num'] + d['nh_to_o1'][0]]
-        res2 = model[key[0]][key[1]]
+      for value in ['nh_to_o1', 'nh_to_o2', 'o_to_nh1', 'o_to_nh2']:
+        if d[value][1] < HB_ENERGY_LIMIT:
+          key = key_map[d['seq_num'] + d[value][0]]
+          res2 = model[key[0]][key[1]]
+          
+          if res2 in residues:
+            self.graph.add_edge(res, res2, edge_type=value)
         
-        if res2 in residues:
-          self.graph.add_edge(res, res2, edge_type='nh_to_o1')
-        
-      if d['o_to_nh1'][1] < HB_ENERGY_LIMIT:
-        key = key_map[d['seq_num'] + d['o_to_nh1'][0]]
-        res2 = model[key[0]][key[1]]
-        
-        if res2 in residues:
-          self.graph.add_edge(res, res2, edge_type='o_to_nh1')
-        
-      if d['nh_to_o2'][1] < HB_ENERGY_LIMIT:
-        key = key_map[d['seq_num'] + d['nh_to_o2'][0]]
-        res2 = model[key[0]][key[1]]
-        
-        if res2 in residues:
-          self.graph.add_edge(res, res2, edge_type='nh_to_o2')
-        
-      if d['o_to_nh2'][1] < HB_ENERGY_LIMIT:
-        key = key_map[d['seq_num'] + d['o_to_nh2'][0]]
-        res2 = model[key[0]][key[1]]
-        
-        if res2 in residues:
-          self.graph.add_edge(res, res2, edge_type='o_to_nh2')
-
   def get_prev_node(self, residue):
     '''Get the previous node of a residue in the beta sheet graph.
     Return None in the previous node doesn't exist.
@@ -281,7 +274,7 @@ class BetaSheet(SecondaryStructure):
     
     for edge in self.graph.out_edges(residue):
       hbonds += [d for d in self.graph.get_edge_data(*edge).values() if
-                    d['edge_type'] != 'pp_bond']
+                    d['edge_type'] in ['nh_to_o1', 'nh_to_o2', 'o_to_nh1', 'o_to_nh2']]
     return len(hbonds)
   
   def init_mismatches(self):
