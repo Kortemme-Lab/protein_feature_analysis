@@ -175,6 +175,7 @@ class BetaSheet(SecondaryStructure):
     self.init_mismatches()
     self.propagate_node_attributes()
     self.determine_sheet_type()
+    self.init_gaussian_curvatures()
 
   def init_sheet_graph(self, dssp_dict, key_map, model):
     '''Initialize a graph to represent a beta sheet.
@@ -191,7 +192,8 @@ class BetaSheet(SecondaryStructure):
       # The attributes side, terminal and mismatch tell the shortest distance
       # of a residue to side, terminal and mismatch residues.
         
-      self.graph.add_node(res, side=1000, terminal=1000, mismatch=1000)
+      self.graph.add_node(res, side=1000, terminal=1000, mismatch=1000, 
+              gauss_cur='null', edge_cur1='null', edge_cur2='null', edge_cur3='null', edge_cur4='null')
 
     for strand in self.strand_list:
       for i in range(len(strand.residue_list) - 1):
@@ -345,6 +347,45 @@ class BetaSheet(SecondaryStructure):
       self.type = 'parallel'
     else:
       self.type = 'mixed'
+
+  def init_gaussian_curvatures(self):
+    '''Calculate gaussian curvatures of residues that
+    are in the internal of a sheet.
+    '''
+    for res in self.graph.nodes():
+      
+      # Get the +2 residue
+
+      p2_res = self.get_next_node(res)
+      p2_res = self.get_next_node(p2_res) if p2_res else None
+      if p2_res is None: continue
+
+      # Get the -2 residue
+      
+      m2_res = self.get_prev_node(res)
+      m2_res = self.get_prev_node(m2_res) if m2_res else None
+      if m2_res is None: continue
+
+      # Get the beta pair residues
+
+      bp_res = set()
+
+      for edge in self.graph.out_edges(res):
+        if 'bp' in [d['edge_type'] for d in self.graph.get_edge_data(*edge).values()]:
+          bp_res.add(edge[1])
+          
+      if len(bp_res) < 2:
+        continue
+        
+      gaussian_curvature, edge_curvatures= geometry.calc_discrete_curvatures(
+              res['CA'].get_coord(), [p2_res['CA'].get_coord(), bp_res.pop()['CA'].get_coord(),
+                  m2_res['CA'].get_coord(), bp_res.pop()['CA'].get_coord()])
+
+      self.graph.node[res]['gauss_cur'] = np.degrees(gaussian_curvature)
+      self.graph.node[res]['edge_cur1'] = np.degrees(edge_curvatures[0])
+      self.graph.node[res]['edge_cur2'] = np.degrees(edge_curvatures[1])
+      self.graph.node[res]['edge_cur3'] = np.degrees(edge_curvatures[2])
+      self.graph.node[res]['edge_cur4'] = np.degrees(edge_curvatures[3])
 
 class Loop(SecondaryStructure):
   '''Class that represents a loop.'''

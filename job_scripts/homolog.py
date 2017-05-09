@@ -19,7 +19,7 @@ if __name__ == '__main__':
 
   feature = PFA.features.StructuralHomologFeature(dssp_path)
   
-  #feature.extract(input_path, data_path, num_jobs, job_id)
+  feature.extract(input_path, data_path, num_jobs, job_id)
   
   #feature.save_ss_composition_features(data_path)
   #feature.save_ss_sizes_features(data_path)
@@ -37,5 +37,6 @@ if __name__ == '__main__':
   #      print('<td>{0}</td><td>{1}</td><td></td><td></td><td></td><td>{2}</td><td>{3}</td><td>{4}</td>'.format(st, dof, t[0], t[1], t[2]))
   #      feature.visualize_beta_sheet_features(st, dof, side_threshold=t[0], terminal_threshold=t[1], mismatch_threshold=t[2], fig_save_path=data_path)
   
-  feature.visualize_beta_sheet_features('antiparallel', 'phi', feature2='psi', side_threshold=(0,10000), terminal_threshold=(0, 10000), mismatch_threshold=(0, 10000))
+  feature.visualize_beta_sheet_features('parallel', 'edge_cur', side_threshold=(0,10000), terminal_threshold=(0, 10000), mismatch_threshold=(0, 10000))
+  #feature.visualize_beta_sheet_features('antiparallel', 'phi', feature2='psi', side_threshold=(0,10000), terminal_threshold=(0, 10000), mismatch_threshold=(0, 10000))
   

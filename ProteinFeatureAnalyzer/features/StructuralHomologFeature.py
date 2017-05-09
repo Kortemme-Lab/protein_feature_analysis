@@ -246,7 +246,13 @@ class StructuralHomologFeature(Feature):
           for res in sheet.graph.nodes():
 
             d = sheet.graph.node[res]
-            self.beta_sheet_features.append({'mismatch' : d['mismatch'], 'path' : p['path'], 
+            self.beta_sheet_features.append({
+                'edge_cur1' : d['edge_cur1'],
+                'edge_cur2' : d['edge_cur2'],
+                'edge_cur3' : d['edge_cur3'],
+                'edge_cur4' : d['edge_cur4'],
+                'gauss_cur' : d['gauss_cur'],
+                'mismatch' : d['mismatch'], 'path' : p['path'], 
                 'phi' : np.degrees(geometry.get_phi(res.get_parent(), res)), 
                 'psi' : np.degrees(geometry.get_psi(res.get_parent(), res)), 
                 'side' : d['side'], 'terminal' : d['terminal'], 'type' : sheet.type})
@@ -264,19 +270,30 @@ class StructuralHomologFeature(Feature):
    
     self.beta_sheet_features = []
     for index, row in df.iterrows():
-      self.beta_sheet_features.append({'mismatch':row[0], 'path':row[1],
-          'phi':row[2], 'psi':row[3], 'side':row[4], 'terminal':row[5], 'type':row[6]})
+        self.beta_sheet_features.append({
+          'edge_cur1':row[0], 'edge_cur2':row[1], 'edge_cur3':row[2],'edge_cur4':row[3],
+          'gauss_cur':row[4], 'mismatch':row[5], 'path':row[6],
+          'phi':row[7], 'psi':row[8], 'side':row[9], 'terminal':row[10], 'type':row[11]})
 
   def visualize_beta_sheet_features(self, sheet_type, feature1, feature2='', 
           side_threshold=(0, 10000), terminal_threshold=(0, 10000), 
           mismatch_threshold=(0, 10000), fig_save_path=None):
     '''Visualize beta sheet features.'''
-   
+
     def get_data(feature):
-      return [d[feature] for d in self.beta_sheet_features if d['type'] == sheet_type
-            and side_threshold[0] <= d['side'] <= side_threshold[1]
-            and terminal_threshold[0] <= d['terminal'] <= terminal_threshold[1]
-            and mismatch_threshold[0] <= d['mismatch'] <= mismatch_threshold[1]]
+      data = [] 
+      for d in self.beta_sheet_features: 
+        if d['type'] == sheet_type \
+            and side_threshold[0] <= d['side'] <= side_threshold[1] \
+            and terminal_threshold[0] <= d['terminal'] <= terminal_threshold[1] \
+            and mismatch_threshold[0] <= d['mismatch'] <= mismatch_threshold[1] :
+          
+          keys = [k for k in d.keys() if k.startswith(feature)]
+          for k in keys:
+            if d[k] != 'null':
+              data.append(float(d[k]))
+      
+      return data
 
     data1 = get_data(feature1)
 

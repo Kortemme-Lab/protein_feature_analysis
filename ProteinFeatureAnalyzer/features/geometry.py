@@ -236,3 +236,29 @@ def cartesian_coord_to_internal_coord(p1, p2, p3, p):
   cartesian coordinates based on three reference points.
   '''
   return [np.linalg.norm(p - p3), angle(p - p3, p2 - p3), dihedral(p1, p2, p3, p)]
+
+def calc_discrete_curvatures(p, neighbors):
+  '''Calculate discrete curvatures of a point p
+  given its neighbors in a cyclic order. Return the Gaussian
+  curvature at the vertex and curvatures at the edges.
+  '''
+  n = len(neighbors)
+  edges = [n - p for n in neighbors]
+  
+  # Cacluate the Gaussian curvature
+
+  gaussian_curvature = 2 * np.pi
+
+  for i in range(n):
+    gaussian_curvature -= angle(edges[i], edges[(i + 1) % n])
+
+  # Calculate edge curvatures
+
+  edge_curvatures = []
+
+  for i in range(n):
+    edge_curvatures.append(angle(np.cross(edges[i], edges[(i + 1) % n]),
+        np.cross(edges[(i + 1) % n], edges[(i + 2) % n])))
+
+  return gaussian_curvature, edge_curvatures
+
