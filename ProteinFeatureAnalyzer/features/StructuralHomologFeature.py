@@ -277,13 +277,13 @@ class StructuralHomologFeature(Feature):
 
   def visualize_beta_sheet_features(self, sheet_type, feature1, feature2='', 
           side_threshold=(0, 10000), terminal_threshold=(0, 10000), 
-          mismatch_threshold=(0, 10000), fig_save_path=None):
+          mismatch_threshold=(0, 10000), fig_save_path=None, hist_dump_path=None):
     '''Visualize beta sheet features.'''
 
     def get_data(feature):
       data = [] 
       for d in self.beta_sheet_features: 
-        if d['type'] == sheet_type \
+        if (d['type'] == sheet_type or sheet_type == 'all') \
             and side_threshold[0] <= d['side'] <= side_threshold[1] \
             and terminal_threshold[0] <= d['terminal'] <= terminal_threshold[1] \
             and mismatch_threshold[0] <= d['mismatch'] <= mismatch_threshold[1] :
@@ -323,10 +323,30 @@ class StructuralHomologFeature(Feature):
       data2 = get_data(feature2)
 
       # Draw a heat map 
-    
-      heatmap, xedges, yedges = np.histogram2d(data1, data2, bins=(128,128))
+        
+      grid_size = 128
+
+      heatmap, xedges, yedges = np.histogram2d(data1, data2, bins=(grid_size, grid_size))
       extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
       plt.imshow(np.transpose(heatmap), extent=extent, origin='lower', aspect='auto')
+
+      # Dump the histogram to a CSV file
+
+      if hist_dump_path:
+
+        hist_dicts = []
+          
+        for i in range(grid_size):
+            for j in range(grid_size):
+                hist_dicts.append({
+                    feature1 : np.mean([xedges[i], xedges[i + 1]]),
+                    feature2 : np.mean([yedges[j], yedges[j + 1]]),
+                    'count' : heatmap[i][j]
+                    })
+
+        df = pd.DataFrame(data=hist_dicts)
+        with open(os.path.join(hist_dump_path, '-'.join(['histogram', feature1, feature2]) + '.csv'), 'w') as f:
+          df.to_csv(f, index=False)
 
     # Save or plot
 
