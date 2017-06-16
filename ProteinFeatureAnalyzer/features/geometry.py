@@ -219,6 +219,17 @@ def rotation_matrix_from_axis_and_angle(u, theta):
                    [y * x * (1 - c) + z * s, c + y**2 * (1 - c), y * z * (1 - c) - x * s ],
                    [z * x * (1 - c) - y * s, z * y * (1 - c) + x * s, c + z**2 * (1 - c) ]])
 
+def rotation_matrix_to_axis_and_angle(M):
+    '''Calculate the axis and angle of a rotation matrix.'''
+    u = np.array([M[2][1] - M[1][2],
+                  M[0][2] - M[2][0],
+                  M[1][0] - M[0][1]])
+
+    sin_theta = np.linalg.norm(u) / 2
+    cos_theta = (np.trace(M) - 1) / 2
+
+    return normalize(u), np.arctan2(sin_theta, cos_theta)
+
 def cartesian_coord_from_internal_coord(p1, p2, p3, d, theta, tau):
   '''Calculate the cartesian coordinates of an atom from 
   three internal coordinates and three reference points.

@@ -159,6 +159,32 @@ class AlphaHelix(SecondaryStructure):
   def __init__(self, residue_list):
     self.residue_list = residue_list
 
+  def get_direction_vectors(self):
+    '''Get direction vectors corresponding to phi/psi torsions.'''
+    
+    # Get all peptide bond frames
+
+    pp_bond_frames = []
+
+    for i in range(len(self.residue_list) - 1):
+
+        pp_bond_frames.append(np.array(geometry.get_stub_matrix(self.residue_list[i]['CA'].get_coord(),
+            self.residue_list[i]['N'].get_coord(), self.residue_list[i + 1]['C'].get_coord())))
+
+    # Get all transformations of peptide bonds
+
+    pp_transformations = []
+
+    for i in range(len(pp_bond_frames) - 1):
+
+        pp_transformations.append(np.dot(pp_bond_frames[i + 1], np.transpose(pp_bond_frames[i])))
+
+    # Get the direction vectors
+
+    self.direction_vectors = [geometry.rotation_matrix_from_axis_and_angle(M)[0]
+                                for M in pp_transformations]
+
+
 class BetaStrand(SecondaryStructure):
   '''Class that represents a beta strand.'''
   def __init__(self, residue_list, sheet_id):
