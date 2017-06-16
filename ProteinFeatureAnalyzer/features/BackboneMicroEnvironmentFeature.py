@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d
 
 from .Feature import Feature
+from . import data_loading
 from . import geometry
 from . import machine_learning
 
@@ -30,7 +31,7 @@ class BackboneMicroEnvironmentFeature(Feature):
         self.extract_from_one_file(os.path.join(input_path, f))
 
   def extract_from_one_file(self, pdb_file):
-    structure = self.structure_from_pdb_file(pdb_file)
+    structure = data_loading.structure_from_pdb_file(pdb_file)
   
     for model in structure:
       nearest_nb_list = geometry.get_nearest_nonbonded_residues(model)

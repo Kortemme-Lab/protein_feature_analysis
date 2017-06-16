@@ -13,6 +13,7 @@ from .Feature import Feature
 from . import topology
 from . import geometry
 from . import secondary_structures
+from . import data_loading
 
 
 class StructuralHomologFeature(Feature):
@@ -29,84 +30,8 @@ class StructuralHomologFeature(Feature):
     superfamilies from the CATH database.
     '''
 
-    for f in self.list_my_jobs(input_path, total_num_threads, my_id):
-      if f.endswith('.pml'):
-      
-        # Make a scratch directory
-
-        scratch_path = os.path.join(output_path, f[0:-4])
-        if not os.path.exists(scratch_path):
-          os.mkdir(scratch_path)
-
-        # Extract features from one file  
-
-        self.extract_from_one_file(os.path.join(input_path, f), scratch_path)
-
-  def extract_from_one_file(self, pml_file, scratch_path):
-    '''Extract structrual homolog features from a .pml file of superposed
-    homologous superfamilies from the CATH database.
-    '''
-    self.superfamilies.append([])
-    candidate_proteins = []
-
-    with open(pml_file, 'r') as f:
-      while True:
-        line = f.readline()
-        if not line: break
-       
-        # Read one structure
-
-        if line.strip().startswith('cmd.read_pdbstr'):
-          pdb_lines = [line.strip()[19:].strip('\\')]
-          pdb_id = ''
-
-          while True:  
-            line = f.readline()
-            if line.strip().startswith('"""'):
-              pdb_id = line.strip()[5:12]
-              break
-
-            pdb_line = line.strip().strip('\\')
-            if len(pdb_line) > 17:
-              pdb_line = pdb_line[0:16] + ' ' + pdb_line[17:] # Remove all altLoc flags
-            
-            pdb_lines.append(pdb_line) # Remove all altLoc flags
-         
-          # Make a pdb file of the structure for DSSP analysis
-         
-          structure = self.structure_from_pdb_string('\n'.join(pdb_lines), pdb_id)
-
-          # Store structures without chain breaks
-
-          if len(topology.find_structure_chain_breaks(structure)) == 0:
-            structure_path = os.path.join(scratch_path, pdb_id + '.pdb')
-
-            io = PDB.PDBIO()
-            io.set_structure(structure)
-            io.save(structure_path)
-
-            candidate_proteins.append({'structure' : structure, 'path' : structure_path})
-
-    for p in candidate_proteins:
-      try:  
-        self.find_secondary_structures(p)
-      except:
-        continue
-      self.superfamilies[-1].append(p) # Add a protein to a superfamily if there's no exception
-
-  def find_secondary_structures(self, protein_dict):
-    '''Find secondary structures of a protein.
-    
-    Arguements:
-     - protein_dict - a dictionary to store informations of a protein
-    '''
-    protein_dict['dssp_dict'], protein_dict['dssp_key_map'] = \
-      secondary_structures.make_dssp_dict(protein_dict['path'], self.dssp_path)
-
-    protein_dict['ss_list'], protein_dict['sheet_list'] = \
-      secondary_structures.pack_dssp_dict_into_ss_list(protein_dict['structure'][0],
-            protein_dict['dssp_dict'], protein_dict['dssp_key_map'])
-
+    self.superfamilies = data_loading.load_data_from_cath_pmls(input_path, output_path,
+                            self.list_my_jobs(input_path, total_num_threads, my_id), self.dssp_path)
 
   ############## Functions for calculating, saving, loading and visualizing features #################
 
@@ -351,6 +276,7 @@ class StructuralHomologFeature(Feature):
     # Save or plot
 
     if fig_save_path:
-      plt.savefig(os.path.join(fig_save_path, '-'.join(['beta_sheet', sheet_type, feature1, feature2]) + '.png'))
+      #plt.savefig(os.path.join(fig_save_path, '-'.join(['beta_sheet', sheet_type, feature1, feature2]) + '.png'))
+      plt.savefig(os.path.join(fig_save_path, '-'.join(['beta_sheet', sheet_type, feature1, feature2]) + '.svg'))
     else:
       plt.show()

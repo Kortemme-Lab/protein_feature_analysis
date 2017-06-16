@@ -13,6 +13,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn import mixture
 
 from .Feature import Feature
+from . import data_loading
 from . import geometry
 from . import machine_learning
 
@@ -32,7 +33,7 @@ class RamachandranFeature(Feature):
 
   def extract_from_one_file(self, pdb_file):
     '''Extract phi, psi angles from a pdb_file.'''
-    structure = self.structure_from_pdb_file(pdb_file)
+    structure = data_loading.structure_from_pdb_file(pdb_file)
 
     for model in structure:
       for chain in model:
