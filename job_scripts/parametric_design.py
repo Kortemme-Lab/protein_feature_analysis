@@ -19,7 +19,10 @@ if __name__ == '__main__':
 
   feature = PFA.features.ParametricDesignFeature(dssp_path)
 
-  feature.extract(input_path, data_path, num_jobs, job_id)
+  #feature.extract(input_path, data_path, num_jobs, job_id)
   
-
+  #feature.save_alpha_helix_features(data_path)
+  
+  feature.load_alpha_helix_features(data_path)
+  feature.visualize_alpha_helix_features('dihedrals')
   

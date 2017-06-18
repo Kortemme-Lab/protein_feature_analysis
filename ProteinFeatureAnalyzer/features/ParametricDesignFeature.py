@@ -33,4 +33,67 @@ class ParametricDesignFeature(Feature):
     self.superfamilies = data_loading.load_data_from_cath_pmls(input_path, output_path,
                             self.list_my_jobs(input_path, total_num_threads, my_id), self.dssp_path)
 
+  ############## Functions for calculating, saving, loading and visualizing features #################
 
+  def calc_alpha_helix_features(self):
+    '''Calculate features of alpha helices.'''
+    self.alpha_helix_features = []
+
+    for sf in self.superfamilies:
+      for p in sf:
+        for helix in p['ss_list']:
+          if not isinstance(helix, secondary_structures.AlphaHelix):
+              continue
+
+          self.alpha_helix_features.append({'angles': helix.angles, 'dihedrals': helix.dihedrals})
+
+  def save_alpha_helix_features(self, data_path):
+    '''Save alpha helix features.'''
+    self.calc_alpha_helix_features()
+    df = pd.DataFrame(data=self.alpha_helix_features)
+    
+    self.append_to_csv(df, os.path.join(data_path, 'alpha_helix_features.csv'))
+
+  def load_alpha_helix_features(self, data_path):
+    '''Load alpha helix features.'''
+    df = pd.read_csv(os.path.join(data_path, 'alpha_helix_features.csv'), header=None)
+   
+    self.alpha_helix_features = []
+    for index, row in df.iterrows():
+        self.alpha_helix_features.append({'angles':json.loads(row[0]), 'dihedrals':json.loads(row[1])})
+
+  def visualize_alpha_helix_features(self, feature, fig_save_path=None):
+    '''Visualized the alpha helix features.'''
+    
+    def get_data(feature):
+      data = []
+
+      for d in self.alpha_helix_features:
+        data += d[feature]
+
+      return [np.degrees(x) for x in data]
+    
+    data = get_data(feature)
+
+    # Calculate mean and standard deviation
+    
+    print("mean = {0}, std = {1}, num_data = {2}".format(
+        np.mean(data), np.std(data), len(data)))
+    
+    # Make histograms
+    
+    step = (max(data) - min(data)) / 100
+    hist, bin_edges = np.histogram(data, bins=np.arange(min(data), max(data), step))
+
+    plt.clf()
+    plt.bar(bin_edges[0:-1], hist, width=step, edgecolor='black')
+    plt.ylabel('Number of data')
+    plt.xlabel(feature)
+    
+    # Save or plot
+
+    if fig_save_path:
+      #plt.savefig(os.path.join(fig_save_path, '-'.join(['beta_sheet', sheet_type, feature1, feature2]) + '.png'))
+      plt.savefig(os.path.join(fig_save_path, '-'.join(['beta_sheet', sheet_type, feature1, feature2]) + '.svg'))
+    else:
+      plt.show()

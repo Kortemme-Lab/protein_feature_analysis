@@ -158,9 +158,12 @@ class AlphaHelix(SecondaryStructure):
   '''Class that represents an alpha helix.'''
   def __init__(self, residue_list):
     self.residue_list = residue_list
+    self.init_direction_vectors()
+    self.init_angles()
+    self.init_dihedrals()
 
-  def get_direction_vectors(self):
-    '''Get direction vectors corresponding to phi/psi torsions.'''
+  def init_direction_vectors(self):
+    '''Initialize direction vectors corresponding to phi/psi torsions.'''
     
     # Get all peptide bond frames
 
@@ -181,9 +184,24 @@ class AlphaHelix(SecondaryStructure):
 
     # Get the direction vectors
 
-    self.direction_vectors = [geometry.rotation_matrix_from_axis_and_angle(M)[0]
+    self.direction_vectors = [geometry.rotation_matrix_to_axis_and_angle(M)[0]
                                 for M in pp_transformations]
 
+  def init_angles(self):
+    '''Initialize angles between direction vectors.'''
+    self.angles = []
+
+    for i in range(len(self.direction_vectors) - 1):
+        self.angles.append(geometry.angle(self.direction_vectors[i], self.direction_vectors[i + 1]))
+
+  def init_dihedrals(self):
+    '''Initialize dihedrals among direction vectors'''
+    self.dihedrals = []
+
+    for i in range(len(self.direction_vectors) - 2):
+        self.dihedrals.append(geometry.dihedral(np.zeros(3), np.zeros(3) + self.direction_vectors[i],
+            np.zeros(3) + self.direction_vectors[i] + self.direction_vectors[i + 1],
+            np.zeros(3) + self.direction_vectors[i] + self.direction_vectors[i + 1] + self.direction_vectors[i + 2]))
 
 class BetaStrand(SecondaryStructure):
   '''Class that represents a beta strand.'''
