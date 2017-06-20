@@ -457,14 +457,14 @@ class BetaSheet(SecondaryStructure):
 
       bp_res = set()
 
-      for central_res in [res, p2_res, m2_res]: 
+      for central_res in [res]:
         for edge in self.graph.out_edges(central_res):
           if 'bp' in [d['edge_type'] for d in self.graph.get_edge_data(*edge).values()]:
             bp_res.add(edge[1])
      
-      # At least 9 residues are neeeded for cylinder fitting
+      # At least 5 residues are neeeded for cylinder fitting
 
-      if len(bp_res) < 6:
+      if len(bp_res) < 2:
         continue
 
       # Fit the CA atoms to a cylinder
