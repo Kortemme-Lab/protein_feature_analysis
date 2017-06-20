@@ -462,9 +462,9 @@ class BetaSheet(SecondaryStructure):
           if 'bp' in [d['edge_type'] for d in self.graph.get_edge_data(*edge).values()]:
             bp_res.add(edge[1])
      
-      # At least 5 residues are neeeded for cylinder fitting
+      # At least 9 residues are neeeded for cylinder fitting
 
-      if len(bp_res) < 2:
+      if len(bp_res) < 6:
         continue
 
       # Fit the CA atoms to a cylinder
@@ -473,7 +473,12 @@ class BetaSheet(SecondaryStructure):
 
       w_fit, C_fit, r_fit = cylinder_fitting.fit(cas)
 
+      strand_direction = geometry.normalize(p2_res['CA'].get_coord() - m2_res['CA'].get_coord())
+      if np.dot(w_fit, strand_direction) < 0:
+          strand_direction = -strand_direction
+
       self.graph.node[res]['cylinder_radius'] = r_fit
+      self.graph.node[res]['cylinder_strand_angle'] = geometry.angle(w_fit, strand_direction)
 
 class Loop(SecondaryStructure):
   '''Class that represents a loop.'''

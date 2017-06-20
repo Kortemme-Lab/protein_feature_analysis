@@ -108,9 +108,9 @@ class ParametricDesignFeature(Feature):
 
             d = sheet.graph.node[res]
             if d['cylinder_radius'] != 'null':
-                self.beta_sheet_features.append({'cylinder_radius' : d['cylinder_radius']
-                    })
-  
+                self.beta_sheet_features.append({'cylinder_radius' : d['cylinder_radius'],
+                    'cylinder_strand_angle' : d['cylinder_strand_angle']})
+
   def save_beta_sheet_features(self, data_path):
     '''Save beta sheet features.'''
     self.calc_beta_sheet_features()
@@ -118,4 +118,46 @@ class ParametricDesignFeature(Feature):
     
     self.append_to_csv(df, os.path.join(data_path, 'beta_sheet_features.csv'))
 
+  def load_beta_sheet_features(self, data_path):
+    '''Load beta sheet features.'''
+    df = pd.read_csv(os.path.join(data_path, 'beta_sheet_features.csv'), header=None)
+   
+    self.beta_sheet_features = []
+    for index, row in df.iterrows():
+        self.beta_sheet_features.append({'cylinder_radius' : row[0],
+            'cylinder_strand_angle' : row[1]})
+
+  def visualize_beta_sheet_features(self, feature, fig_save_path=None):
+    '''Visualized the beta sheet features features.'''
+    
+    def get_data(feature):
+      if feature == 'cylinder_radius':
+          return [d[feature] for d in self.beta_sheet_features]
+      elif feature == 'cylinder_strand_angle':
+          return [np.degrees(d[feature]) for d in self.beta_sheet_features]
+    
+    data = get_data(feature)
+
+    # Calculate mean and standard deviation
+    
+    print("mean = {0}, std = {1}, num_data = {2}".format(
+        np.mean(data), np.std(data), len(data)))
+    
+    # Make histograms
+    
+    step = (max(data) - min(data)) / 100
+    hist, bin_edges = np.histogram(data, bins=np.arange(min(data), max(data), step))
+
+    plt.clf()
+    plt.bar(bin_edges[0:-1], hist, width=step, edgecolor='black')
+    plt.ylabel('Number of data')
+    plt.xlabel(feature)
+    
+    # Save or plot
+
+    if fig_save_path:
+      plt.savefig(os.path.join(fig_save_path, '-'.join(['beta_sheet', feature]) + '.svg'))
+    else:
+      plt.show()
+  
 
