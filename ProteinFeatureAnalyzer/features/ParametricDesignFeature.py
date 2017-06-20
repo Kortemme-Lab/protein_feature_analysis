@@ -133,6 +133,8 @@ class ParametricDesignFeature(Feature):
     def get_data(feature):
       if feature == 'cylinder_radius':
           return [d[feature] for d in self.beta_sheet_features]
+      elif feature == 'cylinder_curvature':
+          return [1 / d['cylinder_radius'] for d in self.beta_sheet_features]
       elif feature == 'cylinder_strand_angle':
           return [np.degrees(d[feature]) for d in self.beta_sheet_features]
     

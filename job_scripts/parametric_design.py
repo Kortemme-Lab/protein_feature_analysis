@@ -27,5 +27,5 @@ if __name__ == '__main__':
   #feature.load_alpha_helix_features(data_path)
   #feature.visualize_alpha_helix_features('angles')
   #feature.load_beta_sheet_features(data_path)
-  #feature.visualize_beta_sheet_features('cylinder_radius')
+  #feature.visualize_beta_sheet_features('cylinder_strand_angle')
   
