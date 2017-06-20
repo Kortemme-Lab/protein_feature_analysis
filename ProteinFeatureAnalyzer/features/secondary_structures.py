@@ -3,6 +3,7 @@ import subprocess
 import numpy as np
 import Bio.PDB as PDB
 import networkx as nx
+import cylinder_fitting
 
 from . import geometry
 
@@ -220,6 +221,7 @@ class BetaSheet(SecondaryStructure):
     self.propagate_node_attributes()
     self.determine_sheet_type()
     self.init_gaussian_curvatures()
+    self.fit_to_cylinder()
 
   def init_sheet_graph(self, dssp_dict, key_map, model):
     '''Initialize a graph to represent a beta sheet.
@@ -237,7 +239,8 @@ class BetaSheet(SecondaryStructure):
       # of a residue to side, terminal and mismatch residues.
         
       self.graph.add_node(res, side=1000, terminal=1000, mismatch=1000, 
-              gauss_cur='null', edge_cur1='null', edge_cur2='null', edge_cur3='null', edge_cur4='null')
+              gauss_cur='null', edge_cur1='null', edge_cur2='null', edge_cur3='null', edge_cur4='null',
+              cylinder_radius='null')
 
     for strand in self.strand_list:
       for i in range(len(strand.residue_list) - 1):
@@ -430,6 +433,47 @@ class BetaSheet(SecondaryStructure):
       self.graph.node[res]['edge_cur2'] = np.degrees(edge_curvatures[1])
       self.graph.node[res]['edge_cur3'] = np.degrees(edge_curvatures[2])
       self.graph.node[res]['edge_cur4'] = np.degrees(edge_curvatures[3])
+
+  def fit_to_cylinder(self):
+    '''Fit local patches of beta sheets to a cylinder. Calculate
+    the angle between the cylinder axies and the beta strand direction.
+    Also calculate the local bending angle.
+    '''
+    for res in self.graph.nodes():
+
+      # Get the +2 residue
+
+      p2_res = self.get_next_node(res)
+      p2_res = self.get_next_node(p2_res) if p2_res else None
+      if p2_res is None: continue
+
+      # Get the -2 residue
+      
+      m2_res = self.get_prev_node(res)
+      m2_res = self.get_prev_node(m2_res) if m2_res else None
+      if m2_res is None: continue
+
+      # Get the beta pair residues for all 3 residues on the central strand
+
+      bp_res = set()
+
+      for central_res in [res, p2_res, m2_res]: 
+        for edge in self.graph.out_edges(central_res):
+          if 'bp' in [d['edge_type'] for d in self.graph.get_edge_data(*edge).values()]:
+            bp_res.add(edge[1])
+     
+      # At least 5 residues are neeeded for cylinder fitting
+
+      if len(bp_res) < 2:
+        continue
+
+      # Fit the CA atoms to a cylinder
+
+      cas = [r['CA'].get_coord() for r in list(bp_res) + [res, p2_res, m2_res]]
+
+      w_fit, C_fit, r_fit = cylinder_fitting.fit(cas)
+
+      self.graph.node[res]['cylinder_radius'] = r_fit
 
 class Loop(SecondaryStructure):
   '''Class that represents a loop.'''

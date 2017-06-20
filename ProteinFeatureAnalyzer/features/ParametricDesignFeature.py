@@ -93,7 +93,29 @@ class ParametricDesignFeature(Feature):
     # Save or plot
 
     if fig_save_path:
-      #plt.savefig(os.path.join(fig_save_path, '-'.join(['beta_sheet', sheet_type, feature1, feature2]) + '.png'))
-      plt.savefig(os.path.join(fig_save_path, '-'.join(['beta_sheet', sheet_type, feature1, feature2]) + '.svg'))
+      plt.savefig(os.path.join(fig_save_path, '-'.join(['alpha_helix', feature]) + '.svg'))
     else:
       plt.show()
+  
+  def calc_beta_sheet_features(self):
+    '''Calculate features of beta sheets.'''
+    self.beta_sheet_features = []
+
+    for sf in self.superfamilies:
+      for p in sf:
+        for sheet in p['sheet_list']:
+          for res in sheet.graph.nodes():
+
+            d = sheet.graph.node[res]
+            if d['cylinder_radius'] != 'null':
+                self.beta_sheet_features.append({'cylinder_radius' : d['cylinder_radius']
+                    })
+  
+  def save_beta_sheet_features(self, data_path):
+    '''Save beta sheet features.'''
+    self.calc_beta_sheet_features()
+    df = pd.DataFrame(data=self.beta_sheet_features)
+    
+    self.append_to_csv(df, os.path.join(data_path, 'beta_sheet_features.csv'))
+
+

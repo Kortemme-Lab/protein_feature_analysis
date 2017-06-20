@@ -22,6 +22,7 @@ setup(
         'flufl.lock',
         'sklearn',
         'pytest',
+        'cylinder_fitting',
     ],
     entry_points={
         'console_scripts': [
