@@ -471,7 +471,10 @@ class BetaSheet(SecondaryStructure):
 
       cas = [r['CA'].get_coord() for r in list(bp_res) + [res, p2_res, m2_res]]
 
-      w_fit, C_fit, r_fit = cylinder_fitting.fit(cas)
+      cas += [(res['CA'].get_coord() + p2_res['CA'].get_coord()) / 2, 
+              (res['CA'].get_coord() + m2_res['CA'].get_coord()) / 2]#DEBUG 
+
+      w_fit, C_fit, r_fit, fit_err = cylinder_fitting.fit(cas)
 
       strand_direction = geometry.normalize(p2_res['CA'].get_coord() - m2_res['CA'].get_coord())
       if np.dot(w_fit, strand_direction) < 0:
