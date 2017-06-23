@@ -506,7 +506,13 @@ class BetaSheet(SecondaryStructure):
 
       if s_half > 1: continue
 
-      folding_angle = 2 * np.arcsin(s_half)
+      folding_angle = np.arcsin(s_half)
+      
+      #print("Fitting RMSD =", cylinder_fitting.fitting_rmsd(w_fit, C_fit, r_fit, cas)) ###DEBUG
+      #print("Radius =", r_fit)###DEBUG
+      #print("Arc =", max(arc_strand, arc_pair))
+      #print("Folding_anlge =", folding_angle)###DEBUG
+      #cylinder_fitting.show_fit(w_fit, C_fit, r_fit, cas) ###DEBUG
 
       self.graph.node[res]['cylinder_radius'] = r_fit
       self.graph.node[res]['cylinder_strand_angle'] = geometry.angle(w_fit, strand_direction)

@@ -132,16 +132,19 @@ class ParametricDesignFeature(Feature):
             'cylinder_strand_angle' : row[2],
             'folding_angle' : row[3]})
 
-  def visualize_beta_sheet_features(self, feature, fig_save_path=None):
+  def visualize_beta_sheet_features(self, feature, rmsd_cutoff=float('inf'), fig_save_path=None):
     '''Visualized the beta sheet features features.'''
     
     def get_data(feature):
       if feature == 'cylinder_curvature':
-          return [1 / d['cylinder_radius'] for d in self.beta_sheet_features]
+          return [1 / d['cylinder_radius'] for d in self.beta_sheet_features 
+                  if d['cylinder_fitting_rmsd'] < rmsd_cutoff]
       elif feature in ['cylinder_strand_angle', 'folding_angle']:
-          return [np.degrees(d[feature]) for d in self.beta_sheet_features]
+          return [np.degrees(d[feature]) for d in self.beta_sheet_features
+                  if d['cylinder_fitting_rmsd'] < rmsd_cutoff]
       else:
-          return [d[feature] for d in self.beta_sheet_features]
+          return [d[feature] for d in self.beta_sheet_features
+                  if d['cylinder_fitting_rmsd'] < rmsd_cutoff]
     
     data = get_data(feature)
 
