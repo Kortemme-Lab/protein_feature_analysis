@@ -273,3 +273,10 @@ def calc_discrete_curvatures(p, neighbors):
 
   return gaussian_curvature, edge_curvatures
 
+def projection(direction, v):
+  '''Return the projection of vector v to the plane perpendicular
+  to the given direction.
+  '''
+  direction = normalize(direction)
+  return v - np.dot(direction, v) * direction
+

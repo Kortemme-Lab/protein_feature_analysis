@@ -109,7 +109,9 @@ class ParametricDesignFeature(Feature):
             d = sheet.graph.node[res]
             if d['cylinder_radius'] != 'null':
                 self.beta_sheet_features.append({'cylinder_radius' : d['cylinder_radius'],
-                    'cylinder_strand_angle' : d['cylinder_strand_angle']})
+                    'cylinder_strand_angle' : d['cylinder_strand_angle'],
+                    'cylinder_fitting_rmsd' : d['cylinder_fitting_rmsd'],
+                    'folding_angle' : d['folding_angle']})
 
   def save_beta_sheet_features(self, data_path):
     '''Save beta sheet features.'''
@@ -124,19 +126,22 @@ class ParametricDesignFeature(Feature):
    
     self.beta_sheet_features = []
     for index, row in df.iterrows():
-        self.beta_sheet_features.append({'cylinder_radius' : row[0],
-            'cylinder_strand_angle' : row[1]})
+        self.beta_sheet_features.append({
+            'cylinder_fitting_rmsd' : row[0],
+            'cylinder_radius' : row[1],
+            'cylinder_strand_angle' : row[2],
+            'folding_angle' : row[3]})
 
   def visualize_beta_sheet_features(self, feature, fig_save_path=None):
     '''Visualized the beta sheet features features.'''
     
     def get_data(feature):
-      if feature == 'cylinder_radius':
-          return [d[feature] for d in self.beta_sheet_features]
-      elif feature == 'cylinder_curvature':
+      if feature == 'cylinder_curvature':
           return [1 / d['cylinder_radius'] for d in self.beta_sheet_features]
-      elif feature == 'cylinder_strand_angle':
+      elif feature in ['cylinder_strand_angle', 'folding_angle']:
           return [np.degrees(d[feature]) for d in self.beta_sheet_features]
+      else:
+          return [d[feature] for d in self.beta_sheet_features]
     
     data = get_data(feature)
 

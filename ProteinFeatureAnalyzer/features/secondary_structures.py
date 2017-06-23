@@ -467,21 +467,51 @@ class BetaSheet(SecondaryStructure):
       if len(bp_res) < 6:
         continue
 
+      # Get the beta pair residues for the centeral residue
+
+      central_bp_res = set()
+
+      for edge in self.graph.out_edges(res):
+        if 'bp' in [d['edge_type'] for d in self.graph.get_edge_data(*edge).values()]:
+          central_bp_res.add(edge[1])
+     
+      if len(central_bp_res) < 2:
+        continue
+
+      central_bp_res = list(central_bp_res)
+
       # Fit the CA atoms to a cylinder
 
       cas = [r['CA'].get_coord() for r in list(bp_res) + [res, p2_res, m2_res]]
 
       cas += [(res['CA'].get_coord() + p2_res['CA'].get_coord()) / 2, 
-              (res['CA'].get_coord() + m2_res['CA'].get_coord()) / 2]#DEBUG 
+              (res['CA'].get_coord() + m2_res['CA'].get_coord()) / 2]
 
       w_fit, C_fit, r_fit, fit_err = cylinder_fitting.fit(cas)
+
+      # Get the direction of the central strand
 
       strand_direction = geometry.normalize(p2_res['CA'].get_coord() - m2_res['CA'].get_coord())
       if np.dot(w_fit, strand_direction) < 0:
           strand_direction = -strand_direction
 
+      # Caculate the folding angle from the cylinder radius
+
+      arc_strand = np.linalg.norm(geometry.projection(w_fit, 
+                    p2_res['CA'].get_coord() - m2_res['CA'].get_coord()))
+      arc_pair = np.linalg.norm(geometry.projection(w_fit, 
+                    central_bp_res[0]['CA'].get_coord() -central_bp_res[1]['CA'].get_coord()))
+
+      s_half = max(arc_strand, arc_pair) / (2 * r_fit)
+
+      if s_half > 1: continue
+
+      folding_angle = 2 * np.arcsin(s_half)
+
       self.graph.node[res]['cylinder_radius'] = r_fit
       self.graph.node[res]['cylinder_strand_angle'] = geometry.angle(w_fit, strand_direction)
+      self.graph.node[res]['cylinder_fitting_rmsd'] = cylinder_fitting.fitting_rmsd(w_fit, C_fit, r_fit, cas)
+      self.graph.node[res]['folding_angle'] = folding_angle
 
 class Loop(SecondaryStructure):
   '''Class that represents a loop.'''
