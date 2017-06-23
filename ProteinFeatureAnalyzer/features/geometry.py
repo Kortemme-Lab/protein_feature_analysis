@@ -280,3 +280,4 @@ def projection(direction, v):
   direction = normalize(direction)
   return v - np.dot(direction, v) * direction
 
+

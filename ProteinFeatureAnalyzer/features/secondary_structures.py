@@ -495,6 +495,12 @@ class BetaSheet(SecondaryStructure):
       if np.dot(w_fit, strand_direction) < 0:
           strand_direction = -strand_direction
 
+      # Get the sign of the angle between the central strand and the cylinder axis
+      # positive for left handed folding and negative for right handed
+
+      cr_v = geometry.projection(w_fit, res['CA'].get_coord() - C_fit)
+      saa_sign = np.sign(np.dot(cr_v, np.cross(strand_direction, w_fit)))
+
       # Caculate the folding angle from the cylinder radius
 
       arc_strand = np.linalg.norm(geometry.projection(w_fit, 
@@ -515,7 +521,7 @@ class BetaSheet(SecondaryStructure):
       #cylinder_fitting.show_fit(w_fit, C_fit, r_fit, cas) ###DEBUG
 
       self.graph.node[res]['cylinder_radius'] = r_fit
-      self.graph.node[res]['cylinder_strand_angle'] = geometry.angle(w_fit, strand_direction)
+      self.graph.node[res]['cylinder_strand_angle'] = saa_sign * geometry.angle(w_fit, strand_direction)
       self.graph.node[res]['cylinder_fitting_rmsd'] = cylinder_fitting.fitting_rmsd(w_fit, C_fit, r_fit, cas)
       self.graph.node[res]['folding_angle'] = folding_angle
 
