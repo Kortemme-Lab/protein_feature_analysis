@@ -22,12 +22,15 @@ if __name__ == '__main__':
   feature.extract(input_path, data_path, num_jobs, job_id)
   
   #feature.save_alpha_helix_features(data_path)
-  feature.save_beta_sheet_features(data_path)
+  #feature.save_beta_sheet_features(data_path)
   
   #feature.load_alpha_helix_features(data_path)
-  #feature.visualize_alpha_helix_features('angles')
+  #feature.visualize_alpha_helix_features('angles', fig_save_path=data_path)
+  
   #feature.load_beta_sheet_features(data_path)
   #feature.visualize_beta_sheet_features('cylinder_fitting_rmsd')
-  #feature.visualize_beta_sheet_features('cylinder_strand_angle')
-  #feature.visualize_beta_sheet_features('cylinder_curvature')
-  
+  #feature.visualize_beta_sheet_features('folding_angle', rmsd_cutoff=0.9)
+  #feature.visualize_beta_sheet_features('cylinder_curvature', rmsd_cutoff=0.9)
+  #feature.visualize_beta_sheet_features('folding_angle', rmsd_cutoff=0.9, fig_save_path=data_path)
+ 
+  feature.save_beta_sheets(data_path)

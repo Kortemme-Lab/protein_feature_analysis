@@ -62,38 +62,57 @@ class ParametricDesignFeature(Feature):
     for index, row in df.iterrows():
         self.alpha_helix_features.append({'angles':json.loads(row[0]), 'dihedrals':json.loads(row[1])})
 
-  def visualize_alpha_helix_features(self, feature, fig_save_path=None):
+  def visualize_alpha_helix_features(self, feature1, feature2='', fig_save_path=None):
     '''Visualized the alpha helix features.'''
     
     def get_data(feature):
       data = []
 
       for d in self.alpha_helix_features:
-        data += d[feature]
+        if feature == 'angles':
+          data += d[feature][:-1]
+        else:  
+          data += d[feature]
 
       return [np.degrees(x) for x in data]
-    
-    data = get_data(feature)
+   
+    # Visualize a single feature
 
-    # Calculate mean and standard deviation
-    
-    print("mean = {0}, std = {1}, num_data = {2}".format(
-        np.mean(data), np.std(data), len(data)))
-    
-    # Make histograms
-    
-    step = (max(data) - min(data)) / 100
-    hist, bin_edges = np.histogram(data, bins=np.arange(min(data), max(data), step))
+    if feature2 == '': 
 
-    plt.clf()
-    plt.bar(bin_edges[0:-1], hist, width=step, edgecolor='black')
-    plt.ylabel('Number of data')
-    plt.xlabel(feature)
-    
+        data = get_data(feature1)
+
+        # Calculate mean and standard deviation
+        
+        print("mean = {0}, std = {1}, num_data = {2}".format(
+            np.mean(data), np.std(data), len(data)))
+        
+        # Make histograms
+        
+        step = (max(data) - min(data)) / 100
+        hist, bin_edges = np.histogram(data, bins=np.arange(min(data), max(data), step))
+
+        plt.clf()
+        plt.bar(bin_edges[0:-1], hist, width=step, edgecolor='black')
+        plt.ylabel('Number of data')
+        plt.xlabel(feature1)
+   
+    else:
+      
+      data1 = get_data(feature1)
+      data2 = get_data(feature2)
+      
+      grid_size = 128
+
+      heatmap, xedges, yedges = np.histogram2d(data1, data2, bins=(grid_size, grid_size))
+      extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
+      plt.imshow(np.transpose(heatmap), extent=extent, origin='lower', aspect='auto')
+
+
     # Save or plot
 
     if fig_save_path:
-      plt.savefig(os.path.join(fig_save_path, '-'.join(['alpha_helix', feature]) + '.svg'))
+      plt.savefig(os.path.join(fig_save_path, '-'.join(['alpha_helix', feature1, feature2]) + '.svg'))
     else:
       plt.show()
   
@@ -132,7 +151,7 @@ class ParametricDesignFeature(Feature):
             'cylinder_strand_angle' : row[2],
             'folding_angle' : row[3]})
 
-  def visualize_beta_sheet_features(self, feature, rmsd_cutoff=float('inf'), fig_save_path=None):
+  def visualize_beta_sheet_features(self, feature1, feature2='', rmsd_cutoff=float('inf'), fig_save_path=None):
     '''Visualized the beta sheet features features.'''
     
     def get_data(feature):
@@ -145,29 +164,65 @@ class ParametricDesignFeature(Feature):
       else:
           return [d[feature] for d in self.beta_sheet_features
                   if d['cylinder_fitting_rmsd'] < rmsd_cutoff]
-    
-    data = get_data(feature)
+   
+    # Visualize a single feature
 
-    # Calculate mean and standard deviation
-    
-    print("mean = {0}, std = {1}, num_data = {2}".format(
-        np.mean(data), np.std(data), len(data)))
-    
-    # Make histograms
-    
-    step = (max(data) - min(data)) / 100
-    hist, bin_edges = np.histogram(data, bins=np.arange(min(data), max(data), step))
+    if feature2 == '':
 
-    plt.clf()
-    plt.bar(bin_edges[0:-1], hist, width=step, edgecolor='black')
-    plt.ylabel('Number of data')
-    plt.xlabel(feature)
-    
+      data = get_data(feature1)
+
+      # Calculate mean and standard deviation
+      
+      print("mean = {0}, std = {1}, num_data = {2}".format(
+          np.mean(data), np.std(data), len(data)))
+      
+      # Make histograms
+      
+      step = (max(data) - min(data)) / 100
+      hist, bin_edges = np.histogram(data, bins=np.arange(min(data), max(data), step))
+
+      plt.clf()
+      plt.bar(bin_edges[0:-1], hist, width=step, edgecolor='black')
+      plt.ylabel('Number of data')
+      plt.xlabel(feature1)
+   
+    # Visualize two features
+
+    else:
+      
+      data1 = get_data(feature1)
+      data2 = get_data(feature2)
+      
+      grid_size = 128
+
+      heatmap, xedges, yedges = np.histogram2d(data1, data2, bins=(grid_size, grid_size))
+      extent = [xedges[0], xedges[-1], yedges[0], yedges[-1]]
+      plt.imshow(np.transpose(heatmap), extent=extent, origin='lower', aspect='auto')
+
     # Save or plot
 
     if fig_save_path:
-      plt.savefig(os.path.join(fig_save_path, '-'.join(['beta_sheet', feature]) + '.svg'))
+      plt.savefig(os.path.join(fig_save_path, '-'.join(['beta_sheet', feature1, feature2]) + '.svg'))
     else:
       plt.show()
   
+  def save_beta_sheets(self, data_path):
+    '''Save beta sheets into pdb files.'''
+    # Create the directory for sheets
+    
+    sheets_path = os.path.join(data_path, 'sheets') 
+    if not os.path.exists(sheets_path):
+      os.mkdir(sheets_path)
 
+    for sf in self.superfamilies:
+      for p in sf:
+        
+        # Create the directory for the superfamily
+
+        path_split = p['path'].split(os.sep)
+        superfamily_path = os.path.join(sheets_path, path_split[-2])
+        if not os.path.exists(superfamily_path):
+          os.mkdir(superfamily_path)
+
+        for i, sheet in enumerate(p['sheet_list']):
+          sheet.save_pdb(os.path.join(superfamily_path, path_split[-1][1:-4] + '_' + str(i) + '.pdb'))

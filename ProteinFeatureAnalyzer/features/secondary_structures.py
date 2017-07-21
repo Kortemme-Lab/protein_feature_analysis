@@ -524,6 +524,22 @@ class BetaSheet(SecondaryStructure):
       self.graph.node[res]['cylinder_strand_angle'] = saa_sign * geometry.angle(w_fit, strand_direction)
       self.graph.node[res]['cylinder_fitting_rmsd'] = cylinder_fitting.fitting_rmsd(w_fit, C_fit, r_fit, cas)
       self.graph.node[res]['folding_angle'] = folding_angle
+    
+  def save_pdb(self, file_name):
+    '''Save the sheet to a PDB file.'''
+    c = PDB.Chain.Chain('A')
+    for strand in self.strand_list:
+      for r in strand.residue_list:
+        c.add(r)
+
+    m = PDB.Model.Model(0)
+    m.add(c)
+    s = PDB.Structure.Structure('s')
+    s.add(m)
+
+    io = PDB.PDBIO()
+    io.set_structure(s)
+    io.save(file_name)
 
 class Loop(SecondaryStructure):
   '''Class that represents a loop.'''
