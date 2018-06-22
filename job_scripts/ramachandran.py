@@ -11,9 +11,9 @@ if __name__ == '__main__':
   tf = True
 
   feature = PFA.features.RamachandranFeature()
-  #feature.extract(input_path)
+  feature.extract(input_path)
   #feature.save(data_path)
-  feature.load(data_path)
+  #feature.load(data_path)
   
   #feature.learn(transform_features=tf)
   #feature.learn("IsolationForest", transform_features=tf)
