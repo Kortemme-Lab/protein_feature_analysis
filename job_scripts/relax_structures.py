@@ -13,8 +13,8 @@ from flufl.lock import Lock
 import pyrosetta
 from pyrosetta import rosetta
 
-def append_to_csv(dataframe, file_name):
-    '''Append a pandas dataframe to a csv file. This function is thread safe.'''
+def append_to_csv(data_list, file_name):
+    '''Append a list of tuples to a csv file. This function is thread safe.'''
     
     # Make a lock
 
@@ -26,7 +26,9 @@ def append_to_csv(dataframe, file_name):
     
     with lock:
       with open(file_name, 'a+') as f:
-        dataframe.to_csv(f, header=False, index=False)
+        for t in data_list:
+            f.write(','.join([str(x) for x in t]) + '\n')
+
 
 def get_superimpose_transformation(P1, P2):
     '''Get the superimpose transformation that transfoms a list of
@@ -113,8 +115,8 @@ def relax_structures(data_path, input_path, num_jobs, job_id):
                
                 bb_rmsds = align_points_and_calculate_RMSD(xyzs_before, xyzs_after)
 
-                df = pd.DataFrame(data=[(f.split('.')[0], bb_rmsds)])
-                append_to_csv(df, os.path.join(data_path, 'summary.csv'))
+                data_list = [(f.split('.')[0], bb_rmsds)]
+                append_to_csv(data_list, os.path.join(data_path, 'summary.csv'))
 
                 pose.dump_pdb(os.path.join(data_path, f.split('.')[0] + '.pdb.gz'))
 
