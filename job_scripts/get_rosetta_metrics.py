@@ -109,8 +109,17 @@ def get_holes_score(pose):
     dalphaball = 'dependencies/dependencies/DAlpahBall/DAlphaBall.gcc'
     rosetta.basic.options.set_file_option('holes:dalphaball', dalphaball)
    
-    hf = rosetta.protocols.simple_filters.HolesFilter()
-    return hf.compute(pose)
+    # Make a lock
+
+    lock_name = os.path.join('hole_score.lock')
+    lock = Lock(lock_name)
+    lock.lifetime = timedelta(minutes=3)
+
+    # Write to the result file with a lock
+    
+    with lock:
+        hf = rosetta.protocols.simple_filters.HolesFilter()
+        return hf.compute(pose)
 
 def get_holes_score_data(pose, structure_name):
     '''Get the list of tuples for the holes score'''
