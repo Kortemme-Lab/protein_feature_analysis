@@ -88,21 +88,26 @@ def get_average_num_over_saturated_hbond_acceptors_data(pose, structure_name):
     '''Get the list of tuples for the average number of over saturated hbond acceptors.'''
     return [(structure_name, get_num_over_saturated_hbond_acceptors(pose) / pose.size())]
 
-def get_hydrophobic_sasa(pose):
-    '''Calculate the hydrophobic sasa'''
+def get_sasa(pose):
+    '''Calculate the total and hydrophobic sasa'''
     rsd_sasa = pyrosetta.rosetta.utility.vector1_double()
     rsd_hydrophobic_sasa = pyrosetta.rosetta.utility.vector1_double()
     rosetta.core.scoring.calc_per_res_hydrophobic_sasa(pose, rsd_sasa, rsd_hydrophobic_sasa, 1.4) #The last arguement is the probe radius
 
-    return sum(rsd_hydrophobic_sasa)
+    return sum(rsd_sasa), sum(rsd_hydrophobic_sasa)
 
 def get_hydrophobic_sasa_data(pose, structure_name):
     '''Get the list of tuples for the hydrophobic sasa data.'''
-    return [(structure_name, get_hydrophobic_sasa(pose))]
+    return [(structure_name, get_sasa(pose)[1])]
 
 def get_average_hydrophobic_sasa_data(pose, structure_name):
     '''Get the list of tuples for the average hydrophobic sasa data.'''
-    return [(structure_name, get_hydrophobic_sasa(pose) / pose.size())]
+    return [(structure_name, get_sasa(pose)[1] / pose.size())]
+
+def get_relative_hydrophobic_sasa_data(pose, structure_name):
+    '''Get the list of tuples for relative hydrophobic sasa'''
+    total_sasa, hydrophobic_sasa = get_sasa(pose)
+    return [(structure_name, hydrophobic_sasa / total_sasa)]
 
 def get_holes_score(pose):
     '''Get the holes score for a list of residues.'''
@@ -143,6 +148,7 @@ def get_metrics_for_one_pose(pose, structure_name):
 
     d_of_data['hydrophobic_sasa'] = get_hydrophobic_sasa_data(pose, structure_name)
     d_of_data['average_hydrophobic_sasa'] = get_average_hydrophobic_sasa_data(pose, structure_name)
+    d_of_data['relative_hydrophobic_sasa'] = get_relative_hydrophobic_sasa_data(pose, structure_name)
    
     d_of_data['holes_score'] = get_holes_score_data(pose, structure_name)
 
