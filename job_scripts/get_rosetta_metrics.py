@@ -106,7 +106,7 @@ def get_average_hydrophobic_sasa_data(pose, structure_name):
 
 def get_holes_score(pose):
     '''Get the holes score for a list of residues.'''
-    dalphaball = 'dependencies/dependencies/DAlpahBall/DAlphaBall.gcc'
+    dalphaball = os.path.join(os.getcwd(), 'dependencies/dependencies/DAlpahBall/DAlphaBall.gcc')
     rosetta.basic.options.set_file_option('holes:dalphaball', dalphaball)
    
     # Make a lock
