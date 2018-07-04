@@ -7,7 +7,6 @@ import os
 from datetime import timedelta
 
 import numpy as np
-import pandas as pd
 from flufl.lock import Lock
 
 import pyrosetta
