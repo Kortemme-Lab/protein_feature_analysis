@@ -35,7 +35,11 @@ def make_histogram(data, column_id=1):
     num_bins = 100
     bin_width = (max(data_col) - min(data_col)) / num_bins
 
-    print(max(data_col), min(data_col))
+    print('min = {0}'.format(min(data_col)))
+    print('max = {0}'.format(max(data_col)))
+    print('mean = {0}'.format(np.mean(data_col)))
+    print('median = {0}'.format(np.median(data_col)))
+    print('standard deviation = {0}'.format(np.std(data_col)))
 
     hist, bin_edges = np.histogram(data_col, bins=num_bins)
 
