@@ -32,16 +32,25 @@ def make_histogram(data, column_id=1):
     '''Make histogram of a column of a data matrix.'''
     data_col = [float(x) for x in data[column_id]]
    
-    num_bins = 100
-    bin_width = (max(data_col) - min(data_col)) / num_bins
-
     print('min = {0}'.format(min(data_col)))
     print('max = {0}'.format(max(data_col)))
     print('mean = {0}'.format(np.mean(data_col)))
-    print('median = {0}'.format(np.median(data_col)))
     print('standard deviation = {0}'.format(np.std(data_col)))
+    print('median = {0}'.format(np.median(data_col)))
+    print('3rd quartile - 1st quartile = {0}'.format(np.percentile(data_col, 75) - np.percentile(data_col, 25))) 
 
-    hist, bin_edges = np.histogram(data_col, bins=num_bins)
+    median = np.median(data_col)
+    percentile_low = np.percentile(data_col, 10)
+    percentile_up = np.percentile(data_col, 90)
+    upper_cut = median + 1.5 * (percentile_up - percentile_low)
+    lower_cut = median - 1.5 * (percentile_up - percentile_low)
+
+    num_bins = 100
+    bin_width = (upper_cut - lower_cut) / num_bins
+
+    bins = [lower_cut + bin_width * i for i in range(num_bins)]
+
+    hist, bin_edges = np.histogram(data_col, bins=bins)
 
     plt.bar(bin_edges[0:-1], hist, width=bin_width)
     plt.show()
