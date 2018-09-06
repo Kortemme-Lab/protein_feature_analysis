@@ -130,6 +130,38 @@ def get_holes_score_data(pose, structure_name):
     '''Get the list of tuples for the holes score'''
     return [(structure_name, get_holes_score(pose))]
 
+def calc_buried_np_AFILMVWY(pose):
+    '''Calculate the buried nonpolar surface area in the designed
+    structure on nonpolar amino acids (AFILMVWY)'''
+    rsd_sasa = pyrosetta.rosetta.utility.vector1_double()
+    rsd_hydrophobic_sasa = pyrosetta.rosetta.utility.vector1_double()
+    rosetta.core.scoring.calc_per_res_hydrophobic_sasa(pose, rsd_sasa, rsd_hydrophobic_sasa, 1.4) #The last arguement is the probe radius
+
+    afilmvwy_residues = [i for i in range(1, pose.size() + 1) if pose.residue(i).name1()
+                         in ['A', 'F', 'I', 'L', 'M', 'V', 'W', 'Y']]
+
+    return sum(rsd_hydrophobic_sasa[i] for i in afilmvwy_residues)
+
+def get_buried_np_AFILMVWY_per_res_data(pose, structure_name):
+    '''Get the buried non-polar surface area divided by the total number of residues.'''
+    return [(structure_name, calc_buried_np_AFILMVWY(pose) / pose.size())]
+
+def get_atomic_contact_data(pose, structure_name):
+    '''Get the atomic contact number for a pose.'''
+    acf = rosetta.protocols.rosetta_scripts.XmlObjects.static_get_filter('<AtomicContactCount name="contact" />')
+    return [(structure_name, acf.report_sm(pose))]
+
+def get_exposed_polar_SASA_data(pose, structure_name):
+    '''Get the exposed polar surface area.'''
+    sasa_f = rosetta.protocols.rosetta_scripts.XmlObjects.static_get_filter('<TotalSasa name="exposed_polars" polar="True" />')
+    return [(structure_name, sasa_f.report_sm(pose))]
+
+def get_rosetta_score_term_data(pose, structure_name, score_term):
+    '''Get the rosetta score for a specific term.'''
+    sfxn = rosetta.core.scoring.get_score_function()
+    sfxn(pose)
+    return [(structure_name, pose.energies().total_energies()[score_term])]
+
 def get_metrics_for_one_pose(pose, structure_name):
     '''Get rosetta metrics for one pose.
     Return a dictionary of data which is a list of tuples.
@@ -151,6 +183,13 @@ def get_metrics_for_one_pose(pose, structure_name):
     d_of_data['relative_hydrophobic_sasa'] = get_relative_hydrophobic_sasa_data(pose, structure_name)
    
     d_of_data['holes_score'] = get_holes_score_data(pose, structure_name)
+
+    d_of_data['buried_np_AFILMVWY_per_res'] = get_buried_np_AFILMVWY_per_res_data(pose, structure_name)
+    d_of_data['atomic_contact'] = get_atomic_contact_data(pose, structure_name)
+    d_of_data['exposed_polar_SASA'] = get_exposed_polar_SASA_data(pose, structure_name)
+    d_of_data['ref_score'] = get_rosetta_score_term_data(pose, structure_name, rosetta.core.scoring.ScoreType.ref)
+    d_of_data['p_aa_pp_score'] = get_rosetta_score_term_data(pose, structure_name, rosetta.core.scoring.ScoreType.p_aa_pp)
+
 
     return d_of_data
 
