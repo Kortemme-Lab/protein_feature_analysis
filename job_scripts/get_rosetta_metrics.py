@@ -163,6 +163,10 @@ def get_rosetta_score_term_data(pose, structure_name, score_term):
     sfxn(pose)
     return [(structure_name, pose.energies().total_energies()[score_term])]
 
+def get_aa_composition_data(pose, structure_name, residues):
+    '''Get the composition of the given type of residues.'''
+    return [(structure_name, sum(1 for i in range(1, pose.size() +1) if pose.residue(i).name1() in residues) / pose.size())]
+
 def get_metrics_for_one_pose(pose, structure_name):
     '''Get rosetta metrics for one pose.
     Return a dictionary of data which is a list of tuples.
@@ -192,7 +196,7 @@ def get_metrics_for_one_pose(pose, structure_name):
     d_of_data['exposed_polar_SASA'] = get_exposed_polar_SASA_data(pose, structure_name)
     d_of_data['ref_score'] = get_rosetta_score_term_data(pose, structure_name, rosetta.core.scoring.ScoreType.ref)
     d_of_data['p_aa_pp_score'] = get_rosetta_score_term_data(pose, structure_name, rosetta.core.scoring.ScoreType.p_aa_pp)
-
+    d_of_data['hydrophobic_AFILMVWY_composition'] = get_aa_composition_data(pose, structure_name, ['A', 'F', 'I', 'L', 'M', 'V', 'W', 'Y'])
 
     return d_of_data
 
