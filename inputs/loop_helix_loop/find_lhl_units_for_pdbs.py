@@ -44,12 +44,22 @@ def find_lhl_units_for_one_pdb(pdb_file):
 
     for i in range(1, len(ss_structs) - 3):
         if ss_structs[i][2] + ss_structs[i + 1][2] + ss_structs[i + 2][2] == 'LHL':
-            lhl_info.append({'start' : ss_structs[i][0],
-                             'stop' : ss_structs[i + 2][1],
+            start = ss_structs[i][0]
+            stop = ss_structs[i + 2][1]
+           
+            pre_anchor_ca = pose.residue(start - 1).xyz('CA')
+            post_anchor_ca = pose.residue(stop + 1).xyz('CA')
+
+            lhl_info.append({'start' : start,
+                             'stop' : stop,
                              'H_start' : ss_structs[i + 1][0],
                              'H_stop' : ss_structs[i + 1][1],
                              'ss_pre' : ss_structs[i - 1][2],
-                             'ss_post' : ss_structs[i + 3][2]
+                             'ss_post' : ss_structs[i + 3][2],
+                             'pdb_file' : os.path.basename(pdb_file),
+                            
+                             'pre_anchor_ca' : [pre_anchor_ca.x, pre_anchor_ca.y, pre_anchor_ca.z], 
+                             'post_anchor_ca' : [post_anchor_ca.x, post_anchor_ca.y, post_anchor_ca.z], 
                             })
 
     return lhl_info
