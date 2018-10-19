@@ -19,6 +19,12 @@ def lhl_units_in_same_cluster(lhl_unit1, lhl_unit2, ca_cutoff):
     if lhl_unit1['pdb_file'] == lhl_unit2['pdb_file']:
         return False
 
+    if lhl_unit1['ss_pre'] != lhl_unit2['ss_pre']:
+        return False
+
+    if lhl_unit1['ss_post'] != lhl_unit2['ss_post']:
+        return False
+
     if np.linalg.norm(lhl_unit1['pre_anchor_ca'] - lhl_unit2['pre_anchor_ca']) > ca_cutoff:
         return False
 
