@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 '''Make a histogram for a metric_csv_file
 Usage:
-    ./make_histogram.py metric_csv_file
+    ./make_histogram.py [output_file] metric_csv_file1 [metric_csv_file2 ...]
 '''
 
-import sys
+from optparse import OptionParser
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -28,35 +28,58 @@ def load_csv_data(csv_file):
 
     return data
 
-def make_histogram(data, column_id=1):
+def make_histogram(data_list, output_file=None, column_id=1, normalize=False, data_labels=None):
     '''Make histogram of a column of a data matrix.'''
-    data_col = [float(x) for x in data[column_id]]
+    
+    for k, data in enumerate(data_list):
+        data_col = [float(x) for x in data[column_id]]
    
-    print('min = {0}'.format(min(data_col)))
-    print('max = {0}'.format(max(data_col)))
-    print('mean = {0}'.format(np.mean(data_col)))
-    print('standard deviation = {0}'.format(np.std(data_col)))
-    print('median = {0}'.format(np.median(data_col)))
-    print('3rd quartile - 1st quartile = {0}'.format(np.percentile(data_col, 75) - np.percentile(data_col, 25))) 
+        print('min = {0}'.format(min(data_col)))
+        print('max = {0}'.format(max(data_col)))
+        print('mean = {0}'.format(np.mean(data_col)))
+        print('standard deviation = {0}'.format(np.std(data_col)))
+        print('median = {0}'.format(np.median(data_col)))
+        print('3rd quartile - 1st quartile = {0}'.format(np.percentile(data_col, 75) - np.percentile(data_col, 25))) 
 
-    median = np.median(data_col)
-    percentile_low = np.percentile(data_col, 10)
-    percentile_up = np.percentile(data_col, 90)
-    upper_cut = median + 1.5 * (percentile_up - percentile_low)
-    lower_cut = median - 1.5 * (percentile_up - percentile_low)
+        median = np.median(data_col)
+        percentile_low = np.percentile(data_col, 10)
+        percentile_up = np.percentile(data_col, 90)
+        upper_cut = median + 1.5 * (percentile_up - percentile_low)
+        lower_cut = median - 1.5 * (percentile_up - percentile_low)
 
-    num_bins = 100
-    bin_width = (upper_cut - lower_cut) / num_bins
+        num_bins = 100
+        bin_width = (upper_cut - lower_cut) / num_bins
 
-    bins = [lower_cut + bin_width * i for i in range(num_bins)]
+        bins = [lower_cut + bin_width * i for i in range(num_bins)]
 
-    hist, bin_edges = np.histogram(data_col, bins=bins)
+        hist, bin_edges = np.histogram(data_col, bins=bins)
 
-    plt.bar(bin_edges[0:-1], hist, width=bin_width)
-    plt.show()
+        if normalize:
+            hist = [h / max(hist) for h in hist]
+
+        if data_labels:
+            plt.bar(bin_edges[0:-1], hist, width=bin_width, alpha=1.0/len(data_list), label=data_labels[k])
+        else:    
+            plt.bar(bin_edges[0:-1], hist, width=bin_width, alpha=1.0/len(data_list))
+   
+    plt.legend()
+
+    if output_file: 
+        plt.title(output_file.split('.')[0])
+        plt.savefig(output_file)
+    else:
+        plt.show()
 
 if __name__ == '__main__':
-    metric_csv_file = sys.argv[1]
+    parser = OptionParser()
+    parser.add_option("-o", "--output", dest="output")
+    parser.add_option("-n", action="store_true", dest="normalize")
+    parser.add_option("-c", "--column", default=1, dest="column")
+    (options, args) = parser.parse_args()
 
-   
-    make_histogram(load_csv_data(metric_csv_file))
+    metric_csv_files = args
+    output_file = options.output
+  
+    data_list = [load_csv_data(f) for f in metric_csv_files]
+
+    make_histogram(data_list, output_file, normalize=options.normalize, data_labels=metric_csv_files, column_id=int(options.column))
