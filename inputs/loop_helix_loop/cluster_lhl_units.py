@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 '''Cluster the LHL units 
-Dump the lhl clusters to a clusters directory 
+Dump the lhl clusters to a clusters directory.
+Also dump the edges between LHL units into a edges.json file.
 
 Usage:
     ./cluster_lhl_units.py lhl_info_path
@@ -108,6 +109,17 @@ def cluster_lhl_units(lhl_info_path, ca_cutoff=2):
        
         with open(os.path.join('clusters', '{0}.json'.format(i)), 'w') as f:
             json.dump(c, f)           
+
+    # Dump the edges
+
+    edges_pairs = []
+
+    for i in range(len(lhl_edges)):
+        for j in lhl_edges[i]:
+            edges_pairs.append([i, j])
+
+    with open('edges.json', 'w') as f:
+        json.dump(edges_pairs, f)
 
 if __name__ == '__main__':
     lhl_info_path = sys.argv[1]
