@@ -28,7 +28,7 @@ def load_csv_data(csv_file):
 
     return data
 
-def make_histogram(data_list, output_file=None, column_id=1, normalize=False, data_labels=None):
+def make_histogram(data_list, output_file=None, column_id=1, normalize=False, data_labels=None, xlabel=None):
     '''Make histogram of a column of a data matrix.'''
     
     for k, data in enumerate(data_list):
@@ -64,6 +64,14 @@ def make_histogram(data_list, output_file=None, column_id=1, normalize=False, da
    
     plt.legend()
 
+    if xlabel:
+        plt.xlabel(xlabel)
+
+    if normalize:
+        plt.ylabel('Normalized count')
+    else:
+        plt.ylabel('Count')
+
     if output_file: 
         plt.title(output_file.split('.')[0])
         plt.savefig(output_file)
@@ -75,6 +83,7 @@ if __name__ == '__main__':
     parser.add_option("-o", "--output", dest="output")
     parser.add_option("-n", action="store_true", dest="normalize")
     parser.add_option("-c", "--column", default=1, dest="column")
+    parser.add_option("-x", "--xlabel", default=None, dest="xlabel")
     (options, args) = parser.parse_args()
 
     metric_csv_files = args
@@ -82,4 +91,4 @@ if __name__ == '__main__':
   
     data_list = [load_csv_data(f) for f in metric_csv_files]
 
-    make_histogram(data_list, output_file, normalize=options.normalize, data_labels=metric_csv_files, column_id=int(options.column))
+    make_histogram(data_list, output_file, normalize=options.normalize, data_labels=metric_csv_files, column_id=int(options.column), xlabel=options.xlabel)
