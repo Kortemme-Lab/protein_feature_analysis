@@ -68,6 +68,18 @@ def get_back_loop_lengths(lhl_infos):
     '''Get the distribution of back loop lengths of LHL units.'''
     return [lhl['stop'] - lhl['H_stop'] for lhl in lhl_infos]
 
+def get_lhl_pair_helix_length_diffs(lhl_infos, edges):
+    '''Get the helix length difference between pairs of LHL units.'''
+    length_diffs = []
+
+    for i, j in edges:
+        length1 = lhl_infos[i]['H_stop'] - lhl_infos[i]['H_start'] + 1
+        length2 = lhl_infos[j]['H_stop'] - lhl_infos[j]['H_start'] + 1
+
+        length_diffs.append(np.absolute(length1 - length2))
+
+    return length_diffs
+
 def get_lhl_pair_length_diffs(lhl_infos, edges):
     '''Get the length difference between pairs of LHL units.'''
     length_diffs = []
@@ -79,6 +91,27 @@ def get_lhl_pair_length_diffs(lhl_infos, edges):
         length_diffs.append(np.absolute(length1 - length2))
 
     return length_diffs
+
+def get_lhl_pair_helix_rmsds(poses_map, lhl_infos, edges):
+    '''Get the helix backbone RMSDs between pairs of LHL units'''
+    rmsds = []
+
+    for i, j in edges:
+        length1 = lhl_infos[i]['H_stop'] - lhl_infos[i]['H_start'] + 1
+        length2 = lhl_infos[j]['H_stop'] - lhl_infos[j]['H_start'] + 1
+
+        len_comp = min(length1, length2)
+
+        h_mid_start1 = (lhl_infos[i]['H_start'] + lhl_infos[i]['H_stop'] - len_comp) // 2
+        h_mid_start2 = (lhl_infos[j]['H_start'] + lhl_infos[j]['H_stop'] - len_comp) // 2
+
+        residues1 = [h_mid_start1 + k for k in range(len_comp)]
+        residues2 = [h_mid_start2 + k for k in range(len_comp)]
+
+        rmsds.append(calc_backbone_RMSD(poses_map[lhl_infos[i]['pdb_file']], residues1,
+            poses_map[lhl_infos[j]['pdb_file']], residues2))
+
+    return rmsds
 
 def get_lhl_pair_rmsds(poses_map, lhl_infos, edges):
     '''Get the backbone RMSDs between pairs of LHL units'''
@@ -146,23 +179,29 @@ def get_lhl_distributions(pdbs_path, lhl_info_path, edges_file):
 
     # Calcualte and dump the distributions
 
-    lhl_lengths = get_lhl_lengths(lhl_infos)
-    dump_distribution(lhl_lengths, 'lhl_lengths')
-
-    front_loop_lengths = get_front_loop_lengths(lhl_infos)
-    dump_distribution(front_loop_lengths, 'front_loop_lengths')
-
-    back_loop_lengths = get_back_loop_lengths(lhl_infos)
-    dump_distribution(back_loop_lengths, 'back_loop_lengths')
-
-    lhl_pair_length_diffs = get_lhl_pair_length_diffs(lhl_infos, edges)
-    dump_distribution(lhl_pair_length_diffs, 'lhl_pair_length_diffs')
-
-    lhl_pair_rmsds = get_lhl_pair_rmsds(poses_map, lhl_infos, edges)
-    dump_distribution(lhl_pair_rmsds, 'lhl_pair_rmsds')
-
-    lhl_pair_helices_angles = get_lhl_pair_helicies_angles(poses_map, lhl_infos, edges)
-    dump_distribution(lhl_pair_helices_angles, 'lhl_pair_helices_angles')
+#    lhl_lengths = get_lhl_lengths(lhl_infos)
+#    dump_distribution(lhl_lengths, 'lhl_lengths')
+#
+#    front_loop_lengths = get_front_loop_lengths(lhl_infos)
+#    dump_distribution(front_loop_lengths, 'front_loop_lengths')
+#
+#    back_loop_lengths = get_back_loop_lengths(lhl_infos)
+#    dump_distribution(back_loop_lengths, 'back_loop_lengths')
+#
+    lhl_pair_helix_length_diffs = get_lhl_pair_helix_length_diffs(lhl_infos, edges)
+    dump_distribution(lhl_pair_helix_length_diffs, 'lhl_pair_helix_length_diffs')
+#
+#    lhl_pair_length_diffs = get_lhl_pair_length_diffs(lhl_infos, edges)
+#    dump_distribution(lhl_pair_length_diffs, 'lhl_pair_length_diffs')
+#
+    lhl_pair_helix_rmsds = get_lhl_pair_helix_rmsds(poses_map, lhl_infos, edges)
+    dump_distribution(lhl_pair_helix_rmsds, 'lhl_pair_helix_rmsds')
+#
+#    lhl_pair_rmsds = get_lhl_pair_rmsds(poses_map, lhl_infos, edges)
+#    dump_distribution(lhl_pair_rmsds, 'lhl_pair_rmsds')
+#
+#    lhl_pair_helices_angles = get_lhl_pair_helicies_angles(poses_map, lhl_infos, edges)
+#    dump_distribution(lhl_pair_helices_angles, 'lhl_pair_helices_angles')
 
 if __name__ == '__main__':
     pdbs_path = sys.argv[1]
