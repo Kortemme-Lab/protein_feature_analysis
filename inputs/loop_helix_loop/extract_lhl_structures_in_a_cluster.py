@@ -49,6 +49,9 @@ def extract_lhl_structures_in_a_cluster(pdbs_path, cluster_file):
     with open(cluster_file, 'r') as f:
         cluster = json.load(f)
 
+    lhl_lengths = []
+    helix_lengths = []
+
     # Dump the lhl units in the cluster
 
     #print(len(cluster))
@@ -74,6 +77,9 @@ def extract_lhl_structures_in_a_cluster(pdbs_path, cluster_file):
         for j in range(lhl_unit['stop'] + 1, post_ss_stop + 1):
             flanking_residues.append((i, pose.pdb_info().pose2pdb(j).split(' ')[0]))
 
+        lhl_lengths.append(lhl_unit['stop'] - lhl_unit['start'] + 1)
+        helix_lengths.append(lhl_unit['H_stop'] - lhl_unit['H_start'] + 1)
+
     # Print the PyMol selection command for the flanking residues
 
     pymol_str = 'sele flanking_residues,'
@@ -82,6 +88,14 @@ def extract_lhl_structures_in_a_cluster(pdbs_path, cluster_file):
         pymol_str += ' (model_{0} and res {1})'.format(i, j)
 
     print(pymol_str)
+
+    with open('lhl_lengths.txt', 'w') as f:
+        for l in lhl_lengths:
+            f.write(str(l) + '\n')
+
+    with open('helix_lengths.txt', 'w') as f:
+        for l in helix_lengths:
+            f.write(str(l) + '\n')
 
 if __name__ == '__main__':
     pdbs_path = sys.argv[1]
