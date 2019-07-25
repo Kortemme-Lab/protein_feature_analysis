@@ -136,7 +136,8 @@ def analyze_one_superfamily(pdb_path):
     lhl_stat['lhl_lengths'] = [lhl['stop'] - lhl['start'] + 1 for lhls in lhl_units for lhl in lhls]
     lhl_stat['loop_lengths'] = []
         
-    for lhls in lhl_units for lhl in lhls:
+    for lhls in lhl_units:
+        for lhl in lhls:
             lhl_stat['loop_lengths'].append(lhl['H_start'] - lhl['start'])
             lhl_stat['loop_lengths'].append(lhl['stop'] - lhl['H_stop'])
 
