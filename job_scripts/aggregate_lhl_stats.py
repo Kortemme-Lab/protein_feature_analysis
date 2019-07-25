@@ -14,7 +14,8 @@ if __name__ == '__main__':
     median_number_of_lhl_units = []
     lhl_lengths = []
     helix_rmsds = []
-    
+    loop_lengths = []
+
     for f in os.listdir(input_path):
 
         if f.endswith('.json'):
@@ -24,6 +25,7 @@ if __name__ == '__main__':
                 median_number_of_lhl_units.append(lhl_info['median_number_of_lhl_units'])
                 lhl_lengths += lhl_info['lhl_lengths']
                 helix_rmsds += lhl_info['helix_rmsds']
+                loop_lengths += lhl_info['loop_lengths']
 
     with open(os.path.join(data_path, 'median_number_of_lhl_units.json'), 'w') as f:
         json.dump(median_number_of_lhl_units, f)
@@ -33,3 +35,6 @@ if __name__ == '__main__':
 
     with open(os.path.join(data_path, 'helix_rmsds.json'), 'w') as f:
         json.dump(helix_rmsds, f)
+
+    with open(os.path.join(data_path, 'loop_lengths.json'), 'w') as f:
+        json.dump(loop_lengths, f)
