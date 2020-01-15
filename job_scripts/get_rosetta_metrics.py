@@ -13,6 +13,8 @@ from flufl.lock import Lock
 import pyrosetta
 from pyrosetta import rosetta
 
+from hydrogen_bonds import get_backrub_ensemble_consensus_buhs_for_each_atom
+
 def append_to_csv(data_list, file_name):
     '''Append a list of tuples to a csv file. This function is thread safe.'''
     
@@ -189,7 +191,11 @@ def get_metrics_for_one_pose(pose, structure_name):
     
     d_of_data['num_buried_unsatisfied_hbonds'] = get_num_buried_unsatisfied_hbonds_data(pose, structure_name)
     d_of_data['average_num_buried_unsatisfied_hbonds'] = get_average_num_buried_unsatisfied_hbonds_data(pose, structure_name)
-    
+   
+    buried_unsat_acceptors, buried_unsat_donors = get_backrub_ensemble_consensus_buhs_for_each_atom(pose)
+    d_of_data['num_backrub_ensemble_buhs'] = len(buried_unsat_donors) + len(buried_unsat_donors)
+    d_of_data['average_num_backrub_ensemble_buhs'] = (len(buried_unsat_donors) + len(buried_unsat_donors)) / pose.size()
+
     d_of_data['num_over_saturated_hbond_acceptors'] = get_num_over_saturated_hbond_acceptors_data(pose, structure_name)
     d_of_data['average_num_over_saturated_hbond_acceptors'] = get_average_num_over_saturated_hbond_acceptors_data(pose, structure_name)
 
