@@ -76,6 +76,60 @@ def closest_rmsds_between_lhl_units(pose1, lhl_units1, pose2, lhl_units2):
 
     return closest_rmsds
 
+def rmsds_between_matched_lhl_units(pose1, lhl_units1, pose2, lhl_units2, match_dist_cutoff=3, max_loop_len=5):
+    '''Calculate RMSDs between lhl units in two structures.
+    The RMSDs are calculated only when the Ca distances between the
+    anchoring points are within the match_dist_cutoff and the loop_lengths
+    are within the max_loop_len.
+    If more than one LHL units are matched, RMSDs for all matches are calculated.
+    '''
+    if len(lhl_units2) < len(lhl_units1):
+        query_pose = pose2
+        query_lhls = lhl_units2
+        target_pose = pose1
+        target_lhls = lhl_units1
+    else:
+        query_pose = pose1
+        query_lhls = lhl_units1
+        target_pose = pose2
+        target_lhls = lhl_units2
+
+    rmsds = []
+    
+    for q_lhl in query_lhls:
+        pre_anchor_ca1 = query_pose.residue(q_lhl['start'] - 1).xyz('CA')
+        post_anchor_ca1 = query_pose.residue(q_lhl['stop'] + 1).xyz('CA')
+
+        pre_loop_len1 = q_lhl['H_start'] - q_lhl['start']
+        post_loop_len1 = q_lhl['stop'] - q_lhl['H_stop']
+       
+        if pre_loop_len1 > max_loop_len or post_loop_len1 > max_loop_len:
+            continue
+
+        # Find the corresponding LHL unit and calculate RMSD
+        
+        for t_lhl in target_lhls:
+            pre_anchor_ca2 = target_pose.residue(t_lhl['start'] - 1).xyz('CA')
+            post_anchor_ca2 = target_pose.residue(t_lhl['stop'] + 1).xyz('CA')
+
+            pre_loop_len2 = t_lhl['H_start'] - t_lhl['start']
+            post_loop_len2 = t_lhl['stop'] - t_lhl['H_stop']
+       
+            if pre_loop_len2 > max_loop_len or post_loop_len2 > max_loop_len:
+                continue
+
+            pre_d = pre_anchor_ca1.distance(pre_anchor_ca2)
+            post_d = post_anchor_ca1.distance(post_anchor_ca2)
+
+            if pre_d > match_dist_cutoff or post_d > match_dist_cutoff:
+                continue
+
+            rmsds.append(rmsd_between_two_helices(query_pose, q_lhl['H_start'], q_lhl['H_stop'], target_pose, t_lhl['H_start'], t_lhl['H_stop']))
+
+    return rmsds
+
+
+
 def find_lhl_units_for_one_pdb(pdb_file):
     '''Find LHL units for one pdb file.
     Return a list of the LHL units information.
@@ -123,7 +177,7 @@ def analyze_one_superfamily(pdb_path):
     '''Return a dictionary of the statistics.'''
     lhl_stat = {}
 
-    pdb_files = [os.path.join(pdb_path, f) for f in os.listdir(pdb_path) if f.endswith('.pdb.gz')]
+    pdb_files = [os.path.join(pdb_path, f) for f in os.listdir(pdb_path) if f.endswith('.pdb.gz') or f.endswith('.pdb')]
     lhl_units = [find_lhl_units_for_one_pdb(f) for f in pdb_files]
 
     # Get the median number of LHL units
@@ -151,7 +205,8 @@ def analyze_one_superfamily(pdb_path):
         for j in range(i + 1, len(pdb_files)):
             pose2 = rosetta.core.import_pose.pose_from_file(pdb_files[j])
 
-            helix_rmsds += closest_rmsds_between_lhl_units(pose1, lhl_units[i], pose2, lhl_units[j])
+            #helix_rmsds += closest_rmsds_between_lhl_units(pose1, lhl_units[i], pose2, lhl_units[j])
+            helix_rmsds += rmsds_between_matched_lhl_units(pose1, lhl_units[i], pose2, lhl_units[j])
 
     lhl_stat['helix_rmsds'] = helix_rmsds
 
@@ -171,13 +226,12 @@ if __name__ == '__main__':
     
     data_path = sys.argv[1]
     cath_pdb_path = sys.argv[2]
-    
+   
     num_jobs = 1
     job_id = 0
     if len(sys.argv) > 4:
       num_jobs = int(sys.argv[3])
       job_id = int(sys.argv[4]) - 1
-
 
     pyrosetta.init(options='-ignore_unrecognized_res true')
 
