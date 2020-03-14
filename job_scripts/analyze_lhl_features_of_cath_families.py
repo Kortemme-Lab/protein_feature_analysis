@@ -207,8 +207,8 @@ def analyze_one_superfamily(pdb_path):
             pose2 = rosetta.core.import_pose.pose_from_file(pdb_files[j])
 
             #helix_rmsds += closest_rmsds_between_lhl_units(pose1, lhl_units[i], pose2, lhl_units[j])
-            helix_rmsds += rmsds_between_matched_lhl_units(pose1, lhl_units[i], pose2, lhl_units[j])
-            helix_rmsds_within_5res_loop += rmsds_between_matched_lhl_units(pose1, lhl_units[i], pose2, lhl_units[j], max_loop_len=float('inf'))
+            helix_rmsds_within_5res_loop += rmsds_between_matched_lhl_units(pose1, lhl_units[i], pose2, lhl_units[j])
+            helix_rmsds += rmsds_between_matched_lhl_units(pose1, lhl_units[i], pose2, lhl_units[j], max_loop_len=float('inf'))
 
     lhl_stat['helix_rmsds'] = helix_rmsds
     lhl_stat['helix_rmsds_within_5res_loop'] = helix_rmsds_within_5res_loop
