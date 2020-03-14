@@ -14,6 +14,7 @@ if __name__ == '__main__':
     median_number_of_lhl_units = []
     lhl_lengths = []
     helix_rmsds = []
+    helix_rmsds_within_5res_loop = []
     loop_lengths = []
 
     for f in os.listdir(input_path):
